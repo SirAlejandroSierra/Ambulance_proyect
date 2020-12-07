@@ -21,10 +21,10 @@ public class Server_Hospital {
         System.out.println("If you desire to shut down the server in any moment, type finish.");
         try {
             while (true) {
-                /*Socket socketObject = serverSocket.accept();*/
+                Socket socketObject = serverSocket.accept();
                 Socket socketChat = serverSocket.accept();
                 System.out.println("Connection with ambulance created");
-                /*new Thread(new Server_Hospital_Thread_Object(socketObject)).start();*/
+                new Thread(new Server_Hospital_Thread_Object(socketObject)).start();
                 new Thread(new Server_Hospital_Chat_Client_Server(socketChat)).start();
                 new Thread(new Server_Hospital_Chat_Server_Client(socketChat)).start();
             }

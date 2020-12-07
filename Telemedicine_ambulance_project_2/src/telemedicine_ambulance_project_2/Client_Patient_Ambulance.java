@@ -9,6 +9,7 @@ package telemedicine_ambulance_project_2;
 *HOLA
 HOLAAAAA
 HOLA*/
+import Server.FXMLDocumentServerController;
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -39,12 +40,32 @@ public class Client_Patient_Ambulance {
         }
         System.out.println("Starting connection with server...");
         Socket socket = new Socket(serverIP, portNumber);
+        FileInputStream fi;
+        Patient patient = new Patient();
+        try {
+            fi = new FileInputStream(new File("Objects.txt"));
+            ObjectInputStream oi = new ObjectInputStream(fi);
+
+            // Read objects
+            patient = (Patient) oi.readObject();
+
+            System.out.println(patient.toString());
+
+            oi.close();
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FXMLDocumentServerController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLDocumentServerController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FXMLDocumentServerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         /*Comunication coming from server*/
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String received = "";
         /*End comunication coming from server*/
  /*Send object to server*/
- /*OutputStream outputStream = socket.getOutputStream();
+        OutputStream outputStream = socket.getOutputStream();
         ObjectOutputStream objectOutputStream = null;
         try {
             objectOutputStream = new ObjectOutputStream(outputStream);
@@ -55,8 +76,8 @@ public class Client_Patient_Ambulance {
             Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             releaseObjectOutputStream(objectOutputStream);
-        }------------*/
- /*end send object to server*/
+        }
+        /*end send object to server*/
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
         System.out.println("Connection established.");
         System.out.println("When you want to end connection with server, type stop.");
