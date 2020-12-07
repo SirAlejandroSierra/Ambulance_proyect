@@ -7,7 +7,8 @@ package telemedicine_ambulance_project_2;
 
 /*hola*
 *HOLA
-HOLAAAAA*/
+HOLAAAAA
+HOLA*/
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
