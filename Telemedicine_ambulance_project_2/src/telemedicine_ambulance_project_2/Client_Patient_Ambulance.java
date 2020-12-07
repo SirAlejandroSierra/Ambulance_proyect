@@ -29,7 +29,7 @@ public class Client_Patient_Ambulance {
             readString = consolee.readLine();
             portNumber = Integer.parseInt(readString);
             while (portNumber < 1024 || portNumber > 49151) {
-                System.out.println("This port is not available for network users. Try again: ");
+                System.out.println("---This port is not available for network users. Try again: ");
                 readString = consolee.readLine();
                 portNumber = Integer.parseInt(readString);
             }
@@ -37,7 +37,7 @@ public class Client_Patient_Ambulance {
             ex.printStackTrace();
         }
         
-        System.out.println("Starting connection with server...");
+        System.out.println("    Starting connection with server...");
         Socket socket = new Socket(serverIP, portNumber);
         
         //------------ READ PATIENT
@@ -77,7 +77,7 @@ public class Client_Patient_Ambulance {
             objectOutputStream.flush();
             
         } catch (IOException ex) {
-            System.out.println("Unable to write the object on the server.");
+            System.out.println("----Unable to write the object on the server.");
             Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
@@ -86,8 +86,8 @@ public class Client_Patient_Ambulance {
         PrintWriter printWriter = new PrintWriter(socketChat.getOutputStream(), true);
          BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socketChat.getInputStream()));
         System.out.println("Connection established.");
-        System.out.println("When you want to end connection with server, type stop.");
-        System.out.println("If you wish to communicate with the hospital, write here: ");
+        System.out.println("\nWhen you want to end connection with server, type stop.");
+        System.out.println("If you wish to communicate with the hospital, write here: \n\n");
         
         while (true) {
             
@@ -103,7 +103,7 @@ public class Client_Patient_Ambulance {
                 /*comunication coming from server*/
                 
                 received = bufferedReader.readLine();
-                System.out.println("Hospital: " + received);
+                System.out.println("    Hospital: " + received);
 
                 /*end comunication coming from server*/
             } catch (IOException ex) {

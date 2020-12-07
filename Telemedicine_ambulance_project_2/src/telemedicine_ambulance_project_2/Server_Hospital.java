@@ -14,41 +14,25 @@ import java.util.logging.Logger;
 public class Server_Hospital {
 
     public static void main(String args[]) throws IOException, ClassNotFoundException {
-        
-        /*
-        ServerSocket serverSocket = new ServerSocket(9000);
-        try {
-            while (true) {
-                //Thie executes when we have a client
-                Socket socket = serverSocket.accept();
-                new Thread(new ServerThreads(socket, serverSocket)).start();
-            }
-        } finally {
-            releaseResourcesServer(serverSocket);
-        }
-        */
-        
-        
+ 
         ServerSocket serverSocket = new ServerSocket(9000);
        
         try {
             while (true) {
                 Socket socketObject = serverSocket.accept();
                 System.out.println("Welcome to HOSPITAL CEU server");
-                System.out.println("IP address of server: " + serverSocket.getInetAddress());
-                System.out.println("Port of the server: " + serverSocket.getLocalPort());
-                System.out.println("If you desire to shut down the server in any moment, type finish.");
                 
+                System.out.println("    If you desire to shut down the server in any moment, type finish.");
                 
-                System.out.println("Connection with ambulance created");
+                System.out.println("\nConnection with ambulance created\n\n");
                 new Thread(new Server_Hospital_Thread_Object(socketObject)).start();
-                System.out.println("paso");
                 
                 Socket socketChat = serverSocket.accept();
                 
                 new Thread(new Server_Hospital_Chat_Client_Server(socketChat)).start();
                 //new Thread(new Server_Hospital_Chat_Server_Client(socketChat)).start();
             }
+            
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
