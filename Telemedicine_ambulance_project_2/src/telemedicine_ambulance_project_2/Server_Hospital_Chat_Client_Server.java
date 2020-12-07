@@ -21,18 +21,18 @@ public class Server_Hospital_Chat_Client_Server implements Runnable {
 
     @Override
     public void run() {
-        String readString="";
+        String readString = "";
         BufferedReader consolee = new BufferedReader(new InputStreamReader(System.in)); //Si lo cerramos, luego no funciona
-        
+
         try {
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
+
             while ((received = bufferedReader.readLine()) != null) {
-            
+
                 if (received.toLowerCase().contains("stop")) {
                     System.out.println("---The ambulance stopped the connection");
-                    releaseResources( bufferedReader, printWriter,  socket );
+                    releaseResources(bufferedReader, printWriter, socket);
                     break;
                 }
                 System.out.println("    Ambulance: " + received);
@@ -41,13 +41,13 @@ public class Server_Hospital_Chat_Client_Server implements Runnable {
                 printWriter.println(readString);
 
             }
-            
+
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println("The ambulance was disconnected from the server.");
         }
     }
 
-    private static void releaseResources( BufferedReader bufferedReader, PrintWriter printWriter, Socket socket) {
+    private static void releaseResources(BufferedReader bufferedReader, PrintWriter printWriter, Socket socket) {
         printWriter.close();
         try {
             bufferedReader.close();
@@ -58,6 +58,6 @@ public class Server_Hospital_Chat_Client_Server implements Runnable {
             socket.close();
         } catch (IOException ex) {
             Logger.getLogger(Server_Hospital.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 }
