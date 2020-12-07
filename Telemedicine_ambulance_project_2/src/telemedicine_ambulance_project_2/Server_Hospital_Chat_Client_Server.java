@@ -21,15 +21,25 @@ public class Server_Hospital_Chat_Client_Server implements Runnable {
 
     @Override
     public void run() {
+        String readString="";
+        BufferedReader consolee = new BufferedReader(new InputStreamReader(System.in)); //Si lo cerramos, luego no funciona
+        
         try {
+            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             while ((received = bufferedReader.readLine()) != null) {
                 if (received.toLowerCase().contains("stop")) {
                     System.out.println("The ambulance stopped the connection");
-                    releaseResources(bufferedReader, socket);
+                    releaseResources( bufferedReader, printWriter,  socket );
                     break;
                 }
+                
                 System.out.println("Ambulance: " + received);
+
+                readString = consolee.readLine();
+                printWriter.println(readString);
+                
+                
             }
 
         } catch (IOException ex) {
@@ -37,18 +47,23 @@ public class Server_Hospital_Chat_Client_Server implements Runnable {
         }
     }
 
-    private static void releaseResources(BufferedReader bufferedReader, Socket socket) {
+    private static void releaseResources( BufferedReader bufferedReader, PrintWriter printWriter, Socket socket) {
 
+        printWriter.close();
+        System.out.println("print writer closed");
         try {
             bufferedReader.close();
+            System.out.println("buffer closed");
         } catch (IOException ex) {
             Logger.getLogger(Server_Hospital.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             socket.close();
+            System.out.println("socket closed");
         } catch (IOException ex) {
             Logger.getLogger(Server_Hospital.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        
     }
 }

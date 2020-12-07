@@ -21,11 +21,12 @@ public class Server_Hospital_Chat_Server_Client implements Runnable {
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             while (true) {
                 try {
-                    System.out.println("delete ambulance");
+                    
                     readString = consolee.readLine();
                     if (readString.toLowerCase().contains("delete ambulance")) {
                         releaseResources(printWriter, consolee, socket);
                     }
+                    
                     printWriter.println(readString);
                 } catch (IOException ex) {
                     ex.printStackTrace();

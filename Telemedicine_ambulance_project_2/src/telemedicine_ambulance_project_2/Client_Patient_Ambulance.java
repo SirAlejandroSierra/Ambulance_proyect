@@ -5,10 +5,7 @@
  */
 package telemedicine_ambulance_project_2;
 
-/*hola*
-*HOLA
-HOLAAAAA
-HOLA*/
+
 import Server.FXMLDocumentServerController;
 import java.io.*;
 import java.net.Socket;
@@ -22,6 +19,7 @@ public class Client_Patient_Ambulance {
         String readString = " ";
         String serverIP = " ";
         int portNumber = 0;
+        
         try {
 
             System.out.println("Introduce the IP address of the server: ");
@@ -38,8 +36,11 @@ public class Client_Patient_Ambulance {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        
         System.out.println("Starting connection with server...");
         Socket socket = new Socket(serverIP, portNumber);
+        
+        //------------ READ PATIENT
         FileInputStream fi;
         Patient patient = new Patient();
         try {
@@ -49,7 +50,7 @@ public class Client_Patient_Ambulance {
             // Read objects
             patient = (Patient) oi.readObject();
 
-            System.out.println(patient.toString());
+            //System.out.println(patient.toString());
 
             oi.close();
 
@@ -60,38 +61,47 @@ public class Client_Patient_Ambulance {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(FXMLDocumentServerController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //----------------------------
+        
         /*Comunication coming from server*/
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+       
         String received = "";
+        
         /*End comunication coming from server*/
- /*Send object to server*/
+        /*Send object to server*/
         OutputStream outputStream = socket.getOutputStream();
         ObjectOutputStream objectOutputStream = null;
         try {
             objectOutputStream = new ObjectOutputStream(outputStream);
             objectOutputStream.writeObject(patient);//patient es un ojbejto de la clase creada por adri
             objectOutputStream.flush();
+            
         } catch (IOException ex) {
             System.out.println("Unable to write the object on the server.");
             Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            releaseObjectOutputStream(objectOutputStream);
-        }
+        } 
+        
         /*end send object to server*/
-        PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+        Socket socketChat = new Socket(serverIP, portNumber);
+        PrintWriter printWriter = new PrintWriter(socketChat.getOutputStream(), true);
+         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socketChat.getInputStream()));
         System.out.println("Connection established.");
         System.out.println("When you want to end connection with server, type stop.");
         System.out.println("If you wish to communicate with the hospital, write here: ");
+        
         while (true) {
+            
             try {
                 readString = consolee.readLine();
                 printWriter.println(readString);
-                if (readString.equalsIgnoreCase("stop")) {
+                
+                if (readString.contains("stop")) {
                     System.out.println("FinishClient");
-                    releaseResources(printWriter, consolee, bufferedReader, socket);/*Antes no estaba bufferedReader*/
+                    releaseResources(printWriter, consolee, bufferedReader, socket, objectOutputStream);/*Antes no estaba bufferedReader*/
                     System.exit(0);
                 }
                 /*comunication coming from server*/
+                
                 received = bufferedReader.readLine();
                 System.out.println("Hospital: " + received);
 
@@ -104,8 +114,13 @@ public class Client_Patient_Ambulance {
     }
 
     private static void releaseResources(PrintWriter printWriter,
-            BufferedReader consolee, BufferedReader bufferedReader, Socket socket) {
+        BufferedReader consolee, BufferedReader bufferedReader, Socket socket, ObjectOutputStream o) {
+        try {
+            o.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(Level.SEVERE, null, ex);
 
+        }
         try {
             consolee.close();
         } catch (IOException ex) {
@@ -123,16 +138,10 @@ public class Client_Patient_Ambulance {
         } catch (IOException ex) {
             Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-    }
-
-    private static void releaseObjectOutputStream(ObjectOutputStream o) {
-        try {
-            o.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(Level.SEVERE, null, ex);
-
-        }
+        
 
     }
 }
+
+
+

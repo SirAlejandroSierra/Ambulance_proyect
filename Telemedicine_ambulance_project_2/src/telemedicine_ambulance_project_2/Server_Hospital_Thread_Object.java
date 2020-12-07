@@ -13,17 +13,17 @@ import java.util.logging.Logger;
 public class Server_Hospital_Thread_Object implements Runnable {
 
     Socket socket;
-    Client patient;
+    Patient patient;
 
     public Server_Hospital_Thread_Object(Socket socket) {
         this.socket = socket;
     }
 
-    public Server_Hospital_Thread_Object(Client patient) {
+    public Server_Hospital_Thread_Object(Patient patient) {
         this.patient = patient;
     }
 
-    public Server_Hospital_Thread_Object(Socket socket, Client patient) {
+    public Server_Hospital_Thread_Object(Socket socket, Patient patient) {
         this.socket = socket;
         this.patient = patient;
     }
@@ -35,7 +35,7 @@ public class Server_Hospital_Thread_Object implements Runnable {
             objectInputStream = new ObjectInputStream(socket.getInputStream());
             Object tmp;
             tmp = objectInputStream.readObject();
-            Patient patient = (Patient) tmp;
+            patient = (Patient) tmp;
             System.out.println(patient.toString());
             releaseObjectInputStream(objectInputStream);
         } catch (IOException ex) {
