@@ -34,6 +34,7 @@ public class Server_Hospital_Chat_Client_Server implements Runnable {
                     System.out.println("---The ambulance stopped the connection");
                     releaseResources(bufferedReader, printWriter, socket);
                     break;
+
                 }
                 System.out.println("    Ambulance: " + received);
 
