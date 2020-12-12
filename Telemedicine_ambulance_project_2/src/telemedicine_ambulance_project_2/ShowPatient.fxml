@@ -60,7 +60,7 @@
             </GridPane>
          </children>
       </VBox>
-        <Button fx:id="SaveButton" layoutX="583.0" layoutY="551.0" onAction="#savePatientButtonPushed" text="Save" />
+        <Button fx:id="SaveButton" layoutX="583.0" layoutY="551.0" onAction="#nextButtonPushed" text="Save" />
       <VBox layoutX="33.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="197.0" prefWidth="285.0" spacing="10.0">
          <children>
             <Label text="Basic Information">

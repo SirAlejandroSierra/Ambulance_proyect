@@ -5,6 +5,8 @@
  */
 package telemedicine_ambulance_project_2;
 
+import javafx.stage.Stage;
+
 /**
  *
  * @author gonzalo
@@ -16,6 +18,8 @@ public class Telemedicine_ambulance_project_2 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Stage stage= new Stage();
+        stage.show();
     }
 
 }

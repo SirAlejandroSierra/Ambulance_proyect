@@ -6,6 +6,7 @@
 package telemedicine_ambulance_project_2;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -346,7 +347,7 @@ public class MedicalInfoController implements Initializable {
     
     public void changeSceneToPainInfo(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("FXMLDocument_2.fxml"));
+        loader.setLocation(getClass().getResource("PainInfo.fxml"));
         Parent painInfoParent = loader.load();
         
         Scene painInfoScene = new Scene(painInfoParent);
@@ -379,11 +380,11 @@ public class MedicalInfoController implements Initializable {
     public void backButtonPushed(ActionEvent event) throws IOException
     {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("FXMLDocument.fxml"));
+        loader.setLocation(getClass().getResource("PersonalInfo.fxml"));
         Parent painInfoParent = loader.load();
         
         Scene painInfoScene = new Scene(painInfoParent);
-        FXMLDocumentController controller = loader.getController();
+        PersonalInfoController controller = loader.getController();
         controller.initDataBack(patient);
                 
                 
@@ -404,7 +405,6 @@ public class MedicalInfoController implements Initializable {
         this.Hypotension.setToggleGroup(tensionCond);
         this.UnknownBP.setToggleGroup(tensionCond);
         tensionCond.selectToggle(NormalBP);
-        
         
         heartRate = new ToggleGroup();
         this.LowHR.setToggleGroup(heartRate);

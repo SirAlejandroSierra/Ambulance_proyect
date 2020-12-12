@@ -9,9 +9,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.logging.Logger;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
+import javafx.stage.Stage;
 
 public class Server_Hospital_Thread_Object implements Runnable {
-
+    
+    
+    
     Socket socket;
     Patient patient;
 
@@ -37,6 +46,8 @@ public class Server_Hospital_Thread_Object implements Runnable {
             tmp = objectInputStream.readObject();
             patient = (Patient) tmp;
             System.out.println(patient.toString());
+            
+            
             releaseObjectInputStream(objectInputStream);
         } catch (IOException ex) {
             ex.printStackTrace();

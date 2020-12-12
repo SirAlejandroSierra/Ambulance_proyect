@@ -3,12 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/gonzalo/Documents/NetBeansProjects/Telemedicine_ambulance_project_2/src/telemedicine_ambulance_project_2/Server_Hospital_Chat_Server_Client.java</file>
-            <file>file:/C:/Users/gonzalo/Documents/NetBeansProjects/Telemedicine_ambulance_project_2/src/telemedicine_ambulance_project_2/Telemedicine_ambulance_project_2.java</file>
-            <file>file:/C:/Users/gonzalo/Documents/NetBeansProjects/Telemedicine_ambulance_project_2/src/telemedicine_ambulance_project_2/Server_Hospital_Chat_Client_Server.java</file>
-            <file>file:/C:/Users/gonzalo/Documents/NetBeansProjects/Telemedicine_ambulance_project_2/src/telemedicine_ambulance_project_2/Server_Hospital.java</file>
-            <file>file:/C:/Users/gonzalo/Documents/NetBeansProjects/Telemedicine_ambulance_project_2/src/telemedicine_ambulance_project_2/Server_Hospital_Thread_Object.java</file>
-            <file>file:/C:/Users/gonzalo/Documents/NetBeansProjects/Telemedicine_ambulance_project_2/src/telemedicine_ambulance_project_2/Client_Patient_Ambulance.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/ultimointento/Telemedicine_ambulance_project_2/src/Client/User.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/ultimointento/Telemedicine_ambulance_project_2/src/Client/SampleController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/ultimointento/Telemedicine_ambulance_project_2/src/Server/Server2.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/ultimointento/Telemedicine_ambulance_project_2/src/Client/sample.fxml</file>
+            <file>file:/Users/AdriCortellucci/Documents/ultimointento/Telemedicine_ambulance_project_2/src/telemedicine_ambulance_project_2/MedicalInfoController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/ultimointento/Telemedicine_ambulance_project_2/src/telemedicine_ambulance_project_2/FXMLDocumentController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/ultimointento/Telemedicine_ambulance_project_2/src/Client/Main.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/ultimointento/Telemedicine_ambulance_project_2/src/Server/ClientHandler.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/ultimointento/Telemedicine_ambulance_project_2/src/Client/Room.fxml</file>
+            <file>file:/Users/AdriCortellucci/Documents/ultimointento/Telemedicine_ambulance_project_2/src/Client/RoomController.java</file>
         </group>
     </open-files>
 </project-private>

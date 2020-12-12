@@ -5,15 +5,7 @@
  */
 package telemedicine_ambulance_project_2;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -25,17 +17,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 /**
+ * FXML Controller class
  *
  * @author AdriCortellucci
  */
-public class ShowPatientController implements Initializable {
-    
+public class ServerChatController implements Initializable {
+
     Patient patient= new Patient();
     
     @FXML private Label nameLabel;
@@ -190,6 +180,6 @@ public class ShowPatientController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {  
 // TODO
-    }    
+    }  
     
 }

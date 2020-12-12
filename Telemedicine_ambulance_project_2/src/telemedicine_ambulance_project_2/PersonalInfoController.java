@@ -6,6 +6,7 @@
 package telemedicine_ambulance_project_2;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -26,7 +27,7 @@ import javafx.stage.Stage;
  *
  * @author AdriCortellucci
  */
-public class FXMLDocumentController implements Initializable {
+public class PersonalInfoController implements Initializable {
     
     boolean accurateAge;
     boolean overweithPat;
@@ -202,10 +203,10 @@ public class FXMLDocumentController implements Initializable {
     
     public void changeSceneToMedicalInfo(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("FXMLDocument_1.fxml"));
-        Parent medicalInfoPartent = loader.load();
+        loader.setLocation(getClass().getResource("MedicalInfo.fxml"));
+        Parent medicalInfoParent = loader.load();
         
-        Scene MedicalInfoScene = new Scene(medicalInfoPartent);
+        Scene MedicalInfoScene = new Scene(medicalInfoParent);
         
         //access the controller and call a method
         MedicalInfoController controller = loader.getController();

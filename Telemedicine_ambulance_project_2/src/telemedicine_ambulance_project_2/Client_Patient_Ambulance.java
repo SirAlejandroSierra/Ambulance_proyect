@@ -6,7 +6,6 @@
 package telemedicine_ambulance_project_2;
 
 
-import Server.FXMLDocumentServerController;
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -84,7 +83,7 @@ public class Client_Patient_Ambulance {
         /*end send object to server*/
         Socket socketChat = new Socket(serverIP, portNumber);
         PrintWriter printWriter = new PrintWriter(socketChat.getOutputStream(), true);
-         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socketChat.getInputStream()));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socketChat.getInputStream()));
         System.out.println("Connection established.");
         System.out.println("\nWhen you want to end connection with server, type stop.");
         System.out.println("If you wish to communicate with the hospital, write here: \n\n");

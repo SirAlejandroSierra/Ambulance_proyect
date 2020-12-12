@@ -11,28 +11,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- *
- * @author AdriCortellucci
- */
-public class Client extends Application {
-    
+public class Main extends Application {
+
     @Override
-    public void start(Stage stage) throws Exception {
-        
-        Parent root = FXMLLoader.load(getClass().getResource("PersonalInfo.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("ChatClient.fxml"));
+        primaryStage.setTitle("Messenger!");
+        primaryStage.setScene(new Scene(root));
+        //primaryStage.setResizable(false);
+        primaryStage.show();
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }
-    
 }

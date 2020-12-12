@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="308.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="telemedicine_ambulance_project_2.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="308.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="telemedicine_ambulance_project_2.PersonalInfoController">
     <children>
         <Button fx:id="next" layoutX="298.0" layoutY="228.0" onAction="#changeSceneToMedicalInfo" text="Next" />
       <Label layoutX="50.0" layoutY="64.0" text="Name: " />
