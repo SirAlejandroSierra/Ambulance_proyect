@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="592.0" prefWidth="643.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="telemedicine_ambulance_project_2.ShowPatientController_1">
+<AnchorPane id="AnchorPane" prefHeight="592.0" prefWidth="643.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Server.ShowPatientController_1">
     <children>
       <VBox layoutX="33.0" layoutY="243.0" prefHeight="288.0" prefWidth="302.0" spacing="10.0">
          <children>

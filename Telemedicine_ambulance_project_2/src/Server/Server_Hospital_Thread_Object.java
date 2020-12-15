@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package telemedicine_ambulance_project_2;
+package Server;
 
+import Patient.Patient;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;

@@ -1,4 +1,4 @@
-package telemedicine_ambulance_project_2;
+package Server;
 
 import java.io.*;
 import java.net.Socket;

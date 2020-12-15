@@ -3,8 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package telemedicine_ambulance_project_2;
+package Patient;
 
+import Patient.Gender;
+import Patient.Level;
+import Patient.Family;
+import Patient.LevelUnknown;
+import Patient.Event;
+import Patient.BasicOptions;
 import java.io.*;
 /**
  *

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package telemedicine_ambulance_project_2;
+package Server;
 
 
 import java.io.File;
@@ -28,7 +28,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
-import telemedicine_ambulance_project_2.Patient;
+import Patient.Patient;
 
 /**
  *

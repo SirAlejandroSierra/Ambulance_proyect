@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package telemedicine_ambulance_project_2;
+package Patient;
 
 /**
  *
  * @author AdriCortellucci
  */
-public enum Gender {
-    MALE, FEMALE;
+public enum LevelUnknown {
+    HIGH, NORMAL, LOW, UNKNOWN;
 }

@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="telemedicine_ambulance_project_2.ServerPatientsController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Server.ServerPatientsController">
    <children>
       <TableView fx:id="tableView" layoutX="61.0" layoutY="76.0" onMouseClicked="#userClickedOnTable" prefHeight="185.0" prefWidth="289.0">
         <columns>
