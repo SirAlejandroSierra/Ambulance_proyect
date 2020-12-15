@@ -5,7 +5,15 @@
  */
 package telemedicine_ambulance_project_2;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -17,15 +25,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
  *
  * @author AdriCortellucci
  */
-public class ServerChatController implements Initializable {
-
+public class ShowPatientController_1 implements Initializable {
+    
     Patient patient= new Patient();
     
     @FXML private Label nameLabel;
@@ -59,9 +69,7 @@ public class ServerChatController implements Initializable {
     @FXML private Label coughLabel;
     @FXML private Label dizzinessLabel;
     @FXML private Label notesLabel;
-    
-    @FXML private Button SaveButton;
-    
+        
     
     public void initData(Patient paciente) throws IOException{
         this.patient= paciente;
@@ -100,23 +108,6 @@ public class ServerChatController implements Initializable {
         notesLabel.setText(patient.getNotes());
     }
     
-    public void backButtonPushed(ActionEvent event) throws IOException{
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("PainInfo.fxml"));
-        Parent painInfoParent = loader.load();
-        
-        Scene painInfoScene = new Scene(painInfoParent);
-        PainInfoController controller = loader.getController();
-        controller.initDataBack(patient);
-                
-                
-            //This line gets the Stage information
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(painInfoScene);
-        window.show();
-        
-    }
     
     /*
     public void savePatientButtonPushed(ActionEvent event) throws IOException{
@@ -153,33 +144,11 @@ public class ServerChatController implements Initializable {
         }catch(IOException e){
             e.printStackTrace();}
         
-    }*/
-    
-    public void nextButtonPushed(ActionEvent event) throws IOException {
-        
-        FXMLLoader loader = new FXMLLoader();
-        
-        loader.setLocation(getClass().getResource("ChatClient.fxml"));
-        Parent clientChatParent = loader.load();
-        
-        Scene clientChatScene = new Scene(clientChatParent);
-        ChatClientController controller = loader.getController();
-        
-        controller.initData(patient);
-        
-            //This line gets the Stage information
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-            window.setScene(clientChatScene);
-            window.show();
-        
-    }
-    
-    
+    }*/   
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {  
 // TODO
-    }  
+    }    
     
 }
