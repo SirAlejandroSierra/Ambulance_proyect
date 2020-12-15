@@ -38,7 +38,6 @@ public class ChatClientController extends Thread implements Initializable {
     
     OutputStream os;
     ObjectOutputStream oos;
-    BufferedReader reader;
     PrintWriter writer;
     Socket socket;
     Socket socketChat;
@@ -54,7 +53,6 @@ public class ChatClientController extends Thread implements Initializable {
             
             socketChat=new Socket("localhost", 9000);
 
-            reader = new BufferedReader(new InputStreamReader(socketChat.getInputStream()));
             writer = new PrintWriter(socketChat.getOutputStream(), true);
             
             this.start();
@@ -76,23 +74,7 @@ public class ChatClientController extends Thread implements Initializable {
     
     @Override
     public void run() {
-        try {
-            while (true) {
-                String msg = reader.readLine();
-                if(msg.equals(null)){
-                continue;}
-                
-                if (msg.equalsIgnoreCase("exit")) {
-                    break;
-                } 
-                msgRoom.appendText("    Hospital: "+msg + "\n");
-            }
-            reader.close();
-            writer.close();
-            socket.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
     
     public void sendPatient() {
@@ -113,7 +95,7 @@ public class ChatClientController extends Thread implements Initializable {
         writer.println(msg);
         msgField.setText("");
         if(msg.equalsIgnoreCase("BYE") || (msg.equalsIgnoreCase("logout"))) {
-            releaseResources(os, oos, reader, writer, socket, socketChat);
+            releaseResources(os, oos, writer, socket, socketChat);
         }
     }
     
@@ -127,7 +109,7 @@ public class ChatClientController extends Thread implements Initializable {
     
 
 
-    private static void releaseResources(OutputStream os, ObjectOutputStream oos, BufferedReader reader, 
+    private static void releaseResources(OutputStream os, ObjectOutputStream oos,  
                 PrintWriter writer, Socket socket, Socket socketChat) {
         try {
             os.close();
@@ -136,11 +118,6 @@ public class ChatClientController extends Thread implements Initializable {
         }
         try {
             oos.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        try {
-            reader.close();
         } catch (IOException ex) {
             Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
