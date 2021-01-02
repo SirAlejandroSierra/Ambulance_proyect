@@ -19,7 +19,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Server_two implements Runnable {
-        private String password="password";
+        private String password;
         private ServerOnWindowController window;
 	private int portNumber;
 	private ServerSocket socket;
@@ -29,9 +29,10 @@ public class Server_two implements Runnable {
 	public ObservableList<String> serverLog;
 	public ObservableList<String> clientNames;
         
-	public Server_two(int portNumber, ServerOnWindowController window) throws IOException {
+	public Server_two(int portNumber, ServerOnWindowController window, String password) throws IOException {
             this.window=window;
             this.portNumber = portNumber;
+            this.password=password;
             serverLog = FXCollections.observableArrayList();
             clientNames = FXCollections.observableArrayList();
             patients = new ArrayList<Patient>();

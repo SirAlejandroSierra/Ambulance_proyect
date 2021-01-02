@@ -70,7 +70,6 @@ public class ServerOnWindowController implements Initializable {
             secondStage.setTitle("Password");
             secondStage.setScene(secondScene);
             
-            window.close();
             secondStage.show();
 
             
@@ -90,12 +89,25 @@ public class ServerOnWindowController implements Initializable {
             secondStage.setScene(secondScene);
 
             secondStage.show();
-            closeServer();
         }
     }
     
-    public void closeServer(){
+    public void changePassword(ActionEvent event) throws IOException{
         
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("NewPasswordWindow.fxml"));
+        Parent passwordWindow = loader.load();
+
+        Scene secondScene = new Scene(passwordWindow);
+
+        NewPasswordWindowController controller= loader.getController();
+        controller.initData(server);
+
+        Stage secondStage = new Stage();
+        secondStage.setTitle("New Password");
+        secondStage.setScene(secondScene);
+
+        secondStage.show();
     }
     /**
      * Initializes the controller class.

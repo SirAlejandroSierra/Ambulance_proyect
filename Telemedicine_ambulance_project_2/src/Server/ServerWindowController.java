@@ -24,8 +24,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -41,7 +43,12 @@ public class ServerWindowController implements Initializable {
     @FXML private TableColumn<Patient, String> patientName;
     @FXML private TableColumn<Patient, String> ambulance;
     @FXML private TableColumn<Patient, Date> date;
-        
+    
+    @FXML private TextField password;
+    @FXML private TextField passwordRepeat;
+    
+    @FXML private Label label;
+    
     public static ArrayList<Thread> threads=new ArrayList<Thread>();
     public Server_two server=null;    
     
@@ -56,25 +63,31 @@ public class ServerWindowController implements Initializable {
         //access the controller and call a method
         ServerOnWindowController controller = loader.getController();
         
-        try {
-            server = new Server_two(9000, controller );
-            System.out.println("connected");
-            Thread serverThread = (new Thread(server));
-            serverThread.start();
-            //threads.add(serverThread);
-            
-        } catch (IOException ex) {
-            Logger.getLogger(ServerPatientsController.class.getName()).log(Level.SEVERE, null, ex);
+        if(!password.getText().equals(passwordRepeat.getText())){
+            label.setText("Passwords don´t match");
+        }else{
+            try {
+                server = new Server_two(9000, controller, password.getText());
+                System.out.println("connected");
+                Thread serverThread = (new Thread(server));
+                serverThread.start();
+                //threads.add(serverThread);
+
+            } catch (IOException ex) {
+                Logger.getLogger(ServerPatientsController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+
+            controller.initData(server);
+
+                //This line gets the Stage information
+                Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+                window.setScene(MedicalInfoScene);
+                window.show();
         }
         
         
-        controller.initData(server);
-
-            //This line gets the Stage information
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-            window.setScene(MedicalInfoScene);
-            window.show();
     }
         
     /**
@@ -84,6 +97,7 @@ public class ServerWindowController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         Server_two server=null; 
+        label.setText("");
     }    
     
 }
