@@ -5,18 +5,22 @@
  */
 package Server;
 
-import Client.ClientThread;
+import Server.ClientThread;
 import Patient.Patient;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Server_two implements Runnable {
+        private String password="password";
+        private ServerOnWindowController window;
 	private int portNumber;
 	private ServerSocket socket;
         public ArrayList<Patient> patients;
@@ -25,7 +29,8 @@ public class Server_two implements Runnable {
 	public ObservableList<String> serverLog;
 	public ObservableList<String> clientNames;
         
-	public Server_two(int portNumber) throws IOException {
+	public Server_two(int portNumber, ServerOnWindowController window) throws IOException {
+            this.window=window;
             this.portNumber = portNumber;
             serverLog = FXCollections.observableArrayList();
             clientNames = FXCollections.observableArrayList();
@@ -35,34 +40,66 @@ public class Server_two implements Runnable {
             socket = new ServerSocket(portNumber);
 		
 	}
-
+        
+        public ServerSocket getSocket(){
+            return socket;
+        }
+        
+        public String getPassword(){
+            return password;
+        }
+        
+        public ServerOnWindowController getWindow(){
+            return window;
+        }
+        
+        public  ArrayList<Socket> getClients(){
+            return clients;
+        }
+        public  ArrayList<ClientThread> getClientThreads(){
+            return clientThreads;
+        }
+        public  ArrayList<Patient> getPatients(){
+            return patients;
+        }
+        
+        public void setPassword(String newPassword){
+            this.password=newPassword;
+        }
+        
 	public void run() {
 
-            try {
-		/* Infinite loop to accept any incoming connection requests */
-		while (true) {
-                    
-                    Socket clientSocket = socket.accept();
-                    
-                    /* Add the incoming socket connection to the list of clients */
-                    clients.add(clientSocket);
-                    
-                    ClientThread clientThreadHolderClass = new ClientThread(
-						clientSocket, this);
-                    Thread clientThread = new Thread(clientThreadHolderClass);
-                    clientThreads.add(clientThreadHolderClass);
-                    System.out.println("accepted");
-                    clientThread.setDaemon(true);
-                    clientThread.start();}
-            } catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+            while (socket.isClosed()==false) {
+                Socket clientSocket=null;
+                try{
+                    clientSocket = socket.accept();
+                }catch(Exception e){
+                    break;
+                }
+
+                clients.add(clientSocket);
+
+                ClientThread clientThreadHolderClass = new ClientThread(
+                                            clientSocket, this, window);
+                Thread clientThread = new Thread(clientThreadHolderClass);
+                clientThreads.add(clientThreadHolderClass);
+                System.out.println("accepted");
+                clientThread.start();
+
             }
-	}
+        }
 
-	public void clientDisconnected(ClientThread client) {
-
-            Platform.runLater(new Runnable() {
+        public void close(){
+            try {
+                socket.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Server_two.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+	public void clientDisconnected(Socket socket) {
+            clients.remove(socket);
+            /*Platform.runLater(new Runnable() {
 
             @Override
             public void run() {
@@ -74,7 +111,7 @@ public class Server_two implements Runnable {
 		clientNames.remove(clientThreads.indexOf(client));
 		clientThreads.remove(clientThreads.indexOf(client));
             }
-	});
+	});*/
 		
 		
 	}

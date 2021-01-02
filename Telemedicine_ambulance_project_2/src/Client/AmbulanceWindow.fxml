@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="321.0" prefWidth="486.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.AmbulanceWindowController">
+   <children>
+      <Pane prefHeight="90.0" prefWidth="486.0" style="-fx-background-color: grey;">
+         <children>
+            <Label layoutX="160.0" layoutY="24.0" text="Ambulance" textFill="WHITE">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Button fx:id="ambulance1" layoutX="47.0" layoutY="111.0" mnemonicParsing="false" onAction="#changeSceneToMedicalInfo" prefHeight="53.0" prefWidth="61.0">
+         <graphic>
+            <ImageView fitHeight="66.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/am1.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="ambulance3" layoutX="336.0" layoutY="111.0" mnemonicParsing="false" onAction="#changeSceneToMedicalInfo" prefHeight="53.0" prefWidth="61.0">
+         <graphic>
+            <ImageView fitHeight="66.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/am3.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="ambulance6" layoutX="337.0" layoutY="211.0" mnemonicParsing="false" onAction="#changeSceneToMedicalInfo" prefHeight="53.0" prefWidth="61.0">
+         <graphic>
+            <ImageView fitHeight="66.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/am6.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="ambulance4" layoutX="48.0" layoutY="211.0" mnemonicParsing="false" onAction="#changeSceneToMedicalInfo" prefHeight="53.0" prefWidth="61.0">
+         <graphic>
+            <ImageView fitHeight="66.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/am4.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="ambulance5" layoutX="190.0" layoutY="211.0" mnemonicParsing="false" onAction="#changeSceneToMedicalInfo" prefHeight="53.0" prefWidth="61.0">
+         <graphic>
+            <ImageView fitHeight="66.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/am5.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="ambulance2" layoutX="190.0" layoutY="111.0" mnemonicParsing="false" onAction="#changeSceneToMedicalInfo" prefHeight="53.0" prefWidth="61.0">
+         <graphic>
+            <ImageView fitHeight="66.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/am2.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+   </children>
+</AnchorPane>

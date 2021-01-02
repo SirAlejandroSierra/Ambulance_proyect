@@ -8,6 +8,7 @@ package Server;
 import Patient.Patient;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
@@ -19,9 +20,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
 public class Server_Hospital_Thread_Object implements Runnable {
-    
-    
-    
     Socket socket;
     Patient patient;
 

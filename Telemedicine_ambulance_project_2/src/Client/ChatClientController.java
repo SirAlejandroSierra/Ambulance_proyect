@@ -36,9 +36,10 @@ public class ChatClientController extends Thread implements Initializable {
     
     Patient patient;
     
-    OutputStream os;
-    ObjectOutputStream oos;
-    PrintWriter writer;
+    ObjectOutputStream toServer;
+    //OutputStream os;
+    //ObjectOutputStream oos;
+    //PrintWriter writer;
     Socket socket;
     Socket socketChat;
     
@@ -47,13 +48,14 @@ public class ChatClientController extends Thread implements Initializable {
         try {
             socket = new Socket("localhost", 9000);
             System.out.println("Socket is connected with server!");
-            os= socket.getOutputStream();
-            oos = new ObjectOutputStream(os);
-            sendPatient();
+            toServer= new ObjectOutputStream(socket.getOutputStream());
+            //os= socket.getOutputStream();
+            //oos = new ObjectOutputStream(os);
+            //sendPatient();
             
-            socketChat=new Socket("localhost", 9000);
+            //socket=new Socket("localhost", 9000);
 
-            writer = new PrintWriter(socketChat.getOutputStream(), true);
+            //writer = new PrintWriter(socketChat.getOutputStream(), true);
             
             this.start();
         } catch (IOException e) {
@@ -74,13 +76,14 @@ public class ChatClientController extends Thread implements Initializable {
     
     @Override
     public void run() {
+        sendPatient();
 
     }
     
     public void sendPatient() {
         try {
-            oos.writeObject(patient);//patient es un ojbejto de la clase creada por adri
-            oos.flush();
+            toServer.writeObject(patient);//patient es un ojbejto de la clase creada por adri
+            toServer.flush();
             
         } catch (IOException ex) {
             System.out.println("----Unable to write the object on the server.");
@@ -88,14 +91,14 @@ public class ChatClientController extends Thread implements Initializable {
         } 
     }
     
-    public void send() {
+    public void send() throws IOException {
         String msg = msgField.getText();
         msgRoom.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         msgRoom.appendText("Ambulance: " + msg + "\n");
-        writer.println(msg);
+        toServer.writeObject(msg);
         msgField.setText("");
         if(msg.equalsIgnoreCase("BYE") || (msg.equalsIgnoreCase("logout"))) {
-            releaseResources(os, oos, writer, socket, socketChat);
+            releaseResources(toServer, socket, socketChat);
         }
     }
     
@@ -109,19 +112,12 @@ public class ChatClientController extends Thread implements Initializable {
     
 
 
-    private static void releaseResources(OutputStream os, ObjectOutputStream oos,  
-                PrintWriter writer, Socket socket, Socket socketChat) {
-        try {
-            os.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+    private static void releaseResources(ObjectOutputStream oos, Socket socket, Socket socketChat) {
         try {
             oos.close();
         } catch (IOException ex) {
             Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        writer.close();
         try {
             socket.close();
         } catch (IOException ex) {

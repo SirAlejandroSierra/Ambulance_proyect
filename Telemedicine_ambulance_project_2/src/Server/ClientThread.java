@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Client;
+package Server;
 
 import Patient.Patient;
 import java.io.BufferedReader;
@@ -20,32 +20,33 @@ import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import Server.Server_Hospital;
-import Server.Server_Hospital_Thread_Object;
 import Server.Server_two;
-import static Server.Server_Hospital_Thread_Object.releaseObjectInputStream;
+import java.io.InputStream;
+import java.util.logging.Level;
 
 /* Thread Class for each incoming client */
 public class ClientThread implements Runnable {
-
+        private ServerOnWindowController window;
         private Patient patient;
 	/* The socket of the client */
 	private Socket clientSocket;
 	/* Server class from which thread was called */
 	private Server_two baseServer;
-	private ObjectInputStream objectInputStream;
+	private ObjectInputStream fromClient;
 	/* The name of the client */
 	private String clientName;
+        private String received="";
 
-	public ClientThread(Socket clientSocket, Server_two baseServer) {
-		this.setClientSocket(clientSocket);
+	public ClientThread(Socket clientSocket, Server_two baseServer, ServerOnWindowController window) {
+		this.clientSocket=clientSocket;
 		this.baseServer = baseServer;
+                this.window = window;
 		try {
 			/*
 			 * Reader to get all incoming messages that the client passes to the
 			 * server
 			 */
-                        
-			objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
+			fromClient = new ObjectInputStream(clientSocket.getInputStream());
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -57,21 +58,33 @@ public class ClientThread implements Runnable {
 		
                 try {
                     Object tmp;
-                    tmp = objectInputStream.readObject();
+                    tmp = fromClient.readObject();
                     patient = (Patient) tmp;
-                    
+                    window.chatWindow.appendText(patient.getAmbulance()+":  connected \n");
                     baseServer.patients.add(patient);
                    
                     System.out.println(patient.toString());
+                    
+                    while (true) {
+                        received = (String) fromClient.readObject();
+                        if (received.toLowerCase().contains("stop")) {
+                            System.out.println("---The ambulance stopped the connection");
+                            releaseResources(fromClient, clientSocket);
+                            break;
+                        }
 
-                    releaseObjectInputStream(objectInputStream);
+                        window.chatWindow.appendText(patient.getAmbulance() + ":  " + received + "\n");
+                        //System.out.println("    Ambulance: " + received);
+            }
                     
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    window.chatWindow.appendText(patient.getAmbulance()+":  disconnected \n");
+                    baseServer.clientDisconnected(clientSocket);
+                    
                 } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Server_Hospital_Thread_Object.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                }
-                }
+                Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
 	public String getClientName() {
 		return this.clientName;
@@ -88,13 +101,17 @@ public class ClientThread implements Runnable {
 	public void setClientSocket(Socket clientSocket) {
 		this.clientSocket = clientSocket;
 	}
-        
-        public static void releaseObjectInputStream(ObjectInputStream o) {
-
+   
+        private static void releaseResources(ObjectInputStream o, Socket socket) {
         try {
             o.close();
         } catch (IOException ex) {
-            Logger.getLogger(Server_Hospital.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(Server_Hospital.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Server_Hospital.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

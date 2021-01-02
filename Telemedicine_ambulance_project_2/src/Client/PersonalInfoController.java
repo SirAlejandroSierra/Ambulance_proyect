@@ -5,6 +5,7 @@
  */
 package Client;
 
+import Patient.Ambulance;
 import Patient.Patient;
 import Patient.Gender;
 import java.io.IOException;
@@ -34,8 +35,11 @@ public class PersonalInfoController implements Initializable {
     boolean accurateAge;
     boolean overweithPat;
     
+    Ambulance ambulance;
+    
     Patient patient= new Patient();
     
+    @FXML private Label ambulnceNum;
     @FXML private Button next;
 
     @FXML private TextField textField;
@@ -57,6 +61,11 @@ public class PersonalInfoController implements Initializable {
     @FXML private RadioButton FemaleBtn;
     private ToggleGroup genderSelect;
     
+    public void initData(Ambulance ambulance){
+        this.ambulance= ambulance;
+        patient.setAmbulance(ambulance);
+        ambulnceNum.setText(patient.getAmbulance().toString());
+    }
     
     public void initDataBack(Patient paciente){
         this.patient= paciente;

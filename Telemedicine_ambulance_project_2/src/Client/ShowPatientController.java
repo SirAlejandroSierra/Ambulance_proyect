@@ -42,6 +42,7 @@ public class ShowPatientController implements Initializable {
     
     Patient patient= new Patient();
     
+    @FXML private Label ambulanceLabel;
     @FXML private Label nameLabel;
     @FXML private Label ageLabel;
     @FXML private Label accuracyLabel;
@@ -80,7 +81,7 @@ public class ShowPatientController implements Initializable {
     public void initData(Patient paciente) throws IOException{
         this.patient= paciente;
        
-      
+        ambulanceLabel.setText(patient.getAmbulance().toString());
         nameLabel.setText(patient.getName());
         ageLabel.setText(Integer.toString(patient.getAge()));
         accuracyLabel.setText(String.valueOf(patient.isAccurateAge()));

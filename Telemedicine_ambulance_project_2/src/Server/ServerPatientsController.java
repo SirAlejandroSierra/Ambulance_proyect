@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,6 +47,7 @@ import javafx.stage.Stage;
 public class ServerPatientsController implements Initializable {
 
     public ObservableList <Patient> patients_= FXCollections.observableArrayList();
+    
     @FXML private TableView <Patient> tableView;
     @FXML private TableColumn<Patient, String> patientName;
     @FXML private TableColumn<Patient, String> ambulance;
@@ -53,28 +55,36 @@ public class ServerPatientsController implements Initializable {
     
     @FXML private Button detailedPersonViewButton;
     
-    public static ArrayList<Thread> threads=new ArrayList<Thread>();
+    public ArrayList<Patient> patients= new ArrayList<Patient>();
+    private ArrayList<ClientThread> clientThreads= new ArrayList<ClientThread>();
+    
     public Server_two server;
+    
+    public void initData(Server_two server){
+        this.server=server;
+        patients= this.server.getPatients();
+        clientThreads= this.server.getClientThreads();
+    }
     
     public void changeSceneToDetailedPersonView(ActionEvent event) throws IOException
     {
         
-            StackPane secondaryLayout = new StackPane();
-            
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("ShowPatient_1.fxml"));
-            Parent tableViewParent = loader.load();
+        StackPane secondaryLayout = new StackPane();
+          
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ShowPatient_1.fxml"));
+        Parent tableViewParent = loader.load();
         
-            Scene secondScene = new Scene(tableViewParent);
-            
-            ShowPatientController_1 controller = loader.getController();
-            controller.initData(tableView.getSelectionModel().getSelectedItem());
+        Scene secondScene = new Scene(tableViewParent);
+           
+        ShowPatientController_1 controller = loader.getController();
+        controller.initData(tableView.getSelectionModel().getSelectedItem());
         
-            Stage secondStage = new Stage();
-            secondStage.setTitle("New Stage");
-            secondStage.setScene(secondScene);
+        Stage secondStage = new Stage();
+        secondStage.setTitle("New Stage");
+        secondStage.setScene(secondScene);
             
-            secondStage.show();
+        secondStage.show();
         /*
         
         FXMLLoader loader = new FXMLLoader();
@@ -103,26 +113,10 @@ public class ServerPatientsController implements Initializable {
         this.detailedPersonViewButton.setDisable(false);
     }
     
-    public void connectServer() 
-    {
-        try {
-            server = new Server_two(9000);
-            System.out.println("connected");
-            Thread serverThread = (new Thread(server));
-            serverThread.start();
-            threads.add(serverThread);
-            
-        } catch (IOException ex) {
-            Logger.getLogger(ServerPatientsController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-                        /* Change the view of the primary stage */
-    }
-    
     public void fillPatients() {
         patients_=FXCollections.observableArrayList(server.patients);
         tableView.setItems(patients_);
          
-        
         try
         {
             FileOutputStream fos = new FileOutputStream("patients.txt");
@@ -173,7 +167,6 @@ public class ServerPatientsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {  
 // TODO
-        connectServer();
          //set up the columns in the table
         patientName.setCellValueFactory(new PropertyValueFactory<Patient, String>("name"));
         //patientName.setCellValueFactory(new PropertyValueFactory<Patient, String>("id"));

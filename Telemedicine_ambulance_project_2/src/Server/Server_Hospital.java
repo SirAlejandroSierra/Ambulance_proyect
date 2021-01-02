@@ -16,7 +16,7 @@ public class Server_Hospital {
     public static void main(String args[]) throws IOException, ClassNotFoundException {
  
         ServerSocket serverSocket = new ServerSocket(9000);
-       
+        
         try {
             while (true) {
                 Socket socketObject = serverSocket.accept();
@@ -25,11 +25,11 @@ public class Server_Hospital {
                 System.out.println("    If you desire to shut down the server in any moment, type finish.");
                 
                 System.out.println("\nConnection with ambulance created\n\n");
-                new Thread(new Server_Hospital_Thread_Object(socketObject)).start();
+                new Thread(new Server_Hospital_Chat_Client_Server(socketObject)).start();
                 
                 Socket socketChat = serverSocket.accept();
                 
-                new Thread(new Server_Hospital_Chat_Client_Server(socketChat)).start();
+                new Thread(new Server_Hospital_Thread_Object(socketChat)).start();
                 //new Thread(new Server_Hospital_Chat_Server_Client(socketChat)).start();
             }
             

@@ -21,6 +21,7 @@ public class Patient implements Serializable {
 
     private static final long serialVersionUID = -6291904286218553733L;
 
+    private Ambulance ambulance;
     private String name;
     private String id;
     private boolean accurateAge;
@@ -165,6 +166,10 @@ public class Patient implements Serializable {
         return serialVersionUID;
     }
 
+    public Ambulance getAmbulance() {
+        return ambulance;
+    }
+    
     public String getName() {
         return name;
     }
@@ -281,6 +286,10 @@ public class Patient implements Serializable {
         return notes;
     }
 
+    public void setAmbulance(Ambulance ambulance) {
+        this.ambulance = ambulance;
+    }
+    
     public void setName(String name) {
         this.name = name;
     }
@@ -398,7 +407,8 @@ public class Patient implements Serializable {
     }
 
     public String print() {
-        return  name + "\n" 
+        return  ambulance + "\n"
+                + name + "\n" 
                 + id + "\n" 
                 + accurateAge +"\n"
                 + age + "\n" 
@@ -433,7 +443,7 @@ public class Patient implements Serializable {
     
     @Override
     public String toString() {
-        return "Patient{" + "name=" + name + ", id=" + id + ", accurateAge=" + accurateAge + ", age=" + age + ", gender=" + gender + ", overweight=" + overweight + ", systolicPressure=" + systolicPressure + ", diastolicPressure=" + diastolicPressure + ", tension=" + tension + ", heartRate=" + heartRate + ", smoker=" + smoker + ", drinker=" + drinker + ", diabetic=" + diabetic + ", chosterol=" + chosterol + ", previousEvent=" + previousEvent + ", familyHistory=" + familyHistory + ", chestPressure=" + chestPressure + ", chestPain=" + chestPain + ", NeckPain=" + NeckPain + ", armPain=" + armPain + ", backPain=" + backPain + ", shortnessOfBreath=" + shortnessOfBreath + ", sweating=" + sweating + ", nausea=" + nausea + ", vomiting=" + vomiting + ", anxiety=" + anxiety + ", cough=" + cough + ", dizziness=" + dizziness + ", notes=" + notes + '}';
+        return "Patient{" + "ambulance="+ ambulance + ", name=" + name + ", id=" + id + ", accurateAge=" + accurateAge + ", age=" + age + ", gender=" + gender + ", overweight=" + overweight + ", systolicPressure=" + systolicPressure + ", diastolicPressure=" + diastolicPressure + ", tension=" + tension + ", heartRate=" + heartRate + ", smoker=" + smoker + ", drinker=" + drinker + ", diabetic=" + diabetic + ", chosterol=" + chosterol + ", previousEvent=" + previousEvent + ", familyHistory=" + familyHistory + ", chestPressure=" + chestPressure + ", chestPain=" + chestPain + ", NeckPain=" + NeckPain + ", armPain=" + armPain + ", backPain=" + backPain + ", shortnessOfBreath=" + shortnessOfBreath + ", sweating=" + sweating + ", nausea=" + nausea + ", vomiting=" + vomiting + ", anxiety=" + anxiety + ", cough=" + cough + ", dizziness=" + dizziness + ", notes=" + notes + '}';
     }
 
     

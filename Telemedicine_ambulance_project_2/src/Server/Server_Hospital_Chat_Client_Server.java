@@ -6,14 +6,14 @@
 package Server;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Server_Hospital_Chat_Client_Server implements Runnable {
-
-    String received;
-    Socket socket;
+    private String received;
+    private Socket socket;
 
     public Server_Hospital_Chat_Client_Server(Socket socket) {
         this.socket = socket;
