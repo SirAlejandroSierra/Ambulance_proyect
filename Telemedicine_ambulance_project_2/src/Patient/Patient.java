@@ -5,13 +5,9 @@
  */
 package Patient;
 
-import Patient.Gender;
-import Patient.Level;
-import Patient.Family;
-import Patient.LevelUnknown;
-import Patient.Event;
-import Patient.BasicOptions;
 import java.io.*;
+import java.util.Date;
+
 /**
  *
  * @author AdriCortellucci
@@ -22,13 +18,14 @@ public class Patient implements Serializable {
     private static final long serialVersionUID = -6291904286218553733L;
 
     private Ambulance ambulance;
+    private Date date;
     private String name;
     private String id;
     private boolean accurateAge;
     private int age;
     private Gender gender;
     private boolean overweight;
-    
+
     private Float systolicPressure;
     private Float diastolicPressure;
     private LevelUnknown tension;
@@ -39,7 +36,7 @@ public class Patient implements Serializable {
     private LevelUnknown chosterol;
     private Event previousEvent;
     private Family familyHistory;
-    
+
     private BasicOptions chestPressure;
     private BasicOptions chestPain;
     private BasicOptions NeckPain;
@@ -63,7 +60,7 @@ public class Patient implements Serializable {
         this.overweight = false;
         this.systolicPressure = null;
         this.diastolicPressure = null;
-        this.tension= null;
+        this.tension = null;
         this.heartRate = null;
         this.smoker = null;
         this.drinker = null;
@@ -86,7 +83,6 @@ public class Patient implements Serializable {
         this.notes = "";
     }
 
-    
     public Patient(String name, String id, boolean accurateAge, int age, Gender gender, boolean overweight, Float systolicPressure, Float diastolicPressure, LevelUnknown tension, Level heartRate, BasicOptions smoker, BasicOptions drinker, BasicOptions diabetic, LevelUnknown chosterol, Event previousEvent, Family familyHistory, BasicOptions chestPressure, BasicOptions chestPain, BasicOptions NeckPain, BasicOptions armPain, BasicOptions backPain, boolean shortnessOfBreath, boolean sweating, BasicOptions nausea, BasicOptions vomiting, BasicOptions anxiety, BasicOptions cough, BasicOptions dizziness, String notes) {
         this.name = name;
         this.id = id;
@@ -120,45 +116,45 @@ public class Patient implements Serializable {
     }
 
     public void setBasicInformation(String name, String id, boolean approxAge, int age, Gender gender, boolean overweight) {
-        this.name=name;
-        this.id=id;
-        this.accurateAge=approxAge;
-        this.age=age;
-        this.gender=gender;
-        this.overweight=overweight;
+        this.name = name;
+        this.id = id;
+        this.accurateAge = approxAge;
+        this.age = age;
+        this.gender = gender;
+        this.overweight = overweight;
     }
 
-    public void setMedicalInformation(Float systolicPressure, Float diastolicPressure, LevelUnknown tension,  Level heartRate, BasicOptions smoker, BasicOptions drinker, BasicOptions diabetic, LevelUnknown chosterol, Event previousEvent, Family familyHistory) {
-        
-        this.systolicPressure=systolicPressure;
-        this.diastolicPressure=diastolicPressure;
-        this.tension=tension;
-        this.heartRate=heartRate;
-        this.smoker=smoker;
-        this.drinker=drinker;
-        this.diabetic=diabetic;
-        this.chosterol=chosterol;
-        this.previousEvent=previousEvent;
-        this.familyHistory=familyHistory;
-    
+    public void setMedicalInformation(Float systolicPressure, Float diastolicPressure, LevelUnknown tension, Level heartRate, BasicOptions smoker, BasicOptions drinker, BasicOptions diabetic, LevelUnknown chosterol, Event previousEvent, Family familyHistory) {
+
+        this.systolicPressure = systolicPressure;
+        this.diastolicPressure = diastolicPressure;
+        this.tension = tension;
+        this.heartRate = heartRate;
+        this.smoker = smoker;
+        this.drinker = drinker;
+        this.diabetic = diabetic;
+        this.chosterol = chosterol;
+        this.previousEvent = previousEvent;
+        this.familyHistory = familyHistory;
+
     }
 
     public void setMedicalInformation(BasicOptions chestPressure, BasicOptions chestPain, BasicOptions NeckPain, BasicOptions armPain, BasicOptions backPain, boolean shortnessOfBreath, boolean sweating, BasicOptions nausea, BasicOptions vomiting, BasicOptions anxiety, BasicOptions cough, BasicOptions dizziness, String notes) {
-        
-        this.chestPressure=chestPressure;
-        this.chestPain=chestPain;
-        this.NeckPain=NeckPain;
-        this.armPain=armPain;
-        this.smoker=smoker;
-        this.backPain=backPain;
-        this.shortnessOfBreath=shortnessOfBreath;
-        this.sweating=sweating;
-        this.nausea=nausea;
-        this.vomiting=vomiting;
-        this.anxiety=anxiety;
-        this.cough=cough;
-        this.dizziness=dizziness;
-        this.notes=notes;
+
+        this.chestPressure = chestPressure;
+        this.chestPain = chestPain;
+        this.NeckPain = NeckPain;
+        this.armPain = armPain;
+        this.smoker = smoker;
+        this.backPain = backPain;
+        this.shortnessOfBreath = shortnessOfBreath;
+        this.sweating = sweating;
+        this.nausea = nausea;
+        this.vomiting = vomiting;
+        this.anxiety = anxiety;
+        this.cough = cough;
+        this.dizziness = dizziness;
+        this.notes = notes;
 
     }
 
@@ -169,7 +165,11 @@ public class Patient implements Serializable {
     public Ambulance getAmbulance() {
         return ambulance;
     }
-    
+
+    public Date getDate() {
+        return date;
+    }
+
     public String getName() {
         return name;
     }
@@ -289,7 +289,11 @@ public class Patient implements Serializable {
     public void setAmbulance(Ambulance ambulance) {
         this.ambulance = ambulance;
     }
-    
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -407,45 +411,41 @@ public class Patient implements Serializable {
     }
 
     public String print() {
-        return  ambulance + "\n"
-                + name + "\n" 
-                + id + "\n" 
-                + accurateAge +"\n"
-                + age + "\n" 
-                + gender + "\n" 
-                + overweight + "\n" 
-                + systolicPressure + "\n" 
-                + diastolicPressure + "\n" 
+        return ambulance + "\n"
+                + name + "\n"
+                + id + "\n"
+                + accurateAge + "\n"
+                + age + "\n"
+                + gender + "\n"
+                + overweight + "\n"
+                + systolicPressure + "\n"
+                + diastolicPressure + "\n"
                 + tension + "\n"
-                + heartRate + "\n" 
-                + smoker + "\n" 
-                + drinker + "\n" 
-                + diabetic + "\n" 
-                + chosterol + "\n" 
-                + previousEvent + "\n" 
-                + familyHistory + "\n" 
-                + chestPressure + "\n" 
-                + chestPain + "\n" 
+                + heartRate + "\n"
+                + smoker + "\n"
+                + drinker + "\n"
+                + diabetic + "\n"
+                + chosterol + "\n"
+                + previousEvent + "\n"
+                + familyHistory + "\n"
+                + chestPressure + "\n"
+                + chestPain + "\n"
                 + NeckPain + "\n"
-                + armPain +"\n" 
-                + backPain + "\n" 
-                + shortnessOfBreath + "\n" 
-                + sweating + "\n" 
-                + nausea + "\n" 
-                + vomiting + "\n" 
-                + anxiety + "\n" 
-                + cough + "\n" 
-                + dizziness + "\n" 
-                + notes ;
+                + armPain + "\n"
+                + backPain + "\n"
+                + shortnessOfBreath + "\n"
+                + sweating + "\n"
+                + nausea + "\n"
+                + vomiting + "\n"
+                + anxiety + "\n"
+                + cough + "\n"
+                + dizziness + "\n"
+                + notes;
     }
 
-    
-    
     @Override
     public String toString() {
-        return "Patient{" + "ambulance="+ ambulance + ", name=" + name + ", id=" + id + ", accurateAge=" + accurateAge + ", age=" + age + ", gender=" + gender + ", overweight=" + overweight + ", systolicPressure=" + systolicPressure + ", diastolicPressure=" + diastolicPressure + ", tension=" + tension + ", heartRate=" + heartRate + ", smoker=" + smoker + ", drinker=" + drinker + ", diabetic=" + diabetic + ", chosterol=" + chosterol + ", previousEvent=" + previousEvent + ", familyHistory=" + familyHistory + ", chestPressure=" + chestPressure + ", chestPain=" + chestPain + ", NeckPain=" + NeckPain + ", armPain=" + armPain + ", backPain=" + backPain + ", shortnessOfBreath=" + shortnessOfBreath + ", sweating=" + sweating + ", nausea=" + nausea + ", vomiting=" + vomiting + ", anxiety=" + anxiety + ", cough=" + cough + ", dizziness=" + dizziness + ", notes=" + notes + '}';
+        return "Patient{" + "ambulance=" + ambulance + ", name=" + name + ", id=" + id + ", accurateAge=" + accurateAge + ", age=" + age + ", gender=" + gender + ", overweight=" + overweight + ", systolicPressure=" + systolicPressure + ", diastolicPressure=" + diastolicPressure + ", tension=" + tension + ", heartRate=" + heartRate + ", smoker=" + smoker + ", drinker=" + drinker + ", diabetic=" + diabetic + ", chosterol=" + chosterol + ", previousEvent=" + previousEvent + ", familyHistory=" + familyHistory + ", chestPressure=" + chestPressure + ", chestPain=" + chestPain + ", NeckPain=" + NeckPain + ", armPain=" + armPain + ", backPain=" + backPain + ", shortnessOfBreath=" + shortnessOfBreath + ", sweating=" + sweating + ", nausea=" + nausea + ", vomiting=" + vomiting + ", anxiety=" + anxiety + ", cough=" + cough + ", dizziness=" + dizziness + ", notes=" + notes + '}';
     }
 
-    
 }
-
