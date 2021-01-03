@@ -19,7 +19,7 @@
             </Label>
          </children>
       </Pane>
-      <Button layoutX="29.0" layoutY="101.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="118.0" text="Connections" />
+      <Button layoutX="29.0" layoutY="101.0" mnemonicParsing="false" onAction="#showConnections" prefHeight="27.0" prefWidth="118.0" text="Connections" />
       <Label layoutX="274.0" layoutY="77.0" text="messages">
          <font>
             <Font size="19.0" />

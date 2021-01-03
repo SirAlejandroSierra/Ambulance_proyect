@@ -5,6 +5,7 @@
  */
 package Server;
 
+import Patient.Ambulance;
 import Patient.Patient;
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,7 +22,10 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import Server.Server_Hospital;
 import Server.Server_two;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 /* Thread Class for each incoming client */
@@ -35,6 +39,8 @@ public class ClientThread implements Runnable {
 	private ObjectInputStream fromClient;
 	/* The name of the client */
 	private String clientName;
+        private String clientID;
+        private Ambulance clientAmbulance;
         private String received="";
 
 	public ClientThread(Socket clientSocket, Server_two baseServer, ServerOnWindowController window) {
@@ -56,25 +62,44 @@ public class ClientThread implements Runnable {
 
 	public void run() {
 		
-                try {
-                    Object tmp;
-                    tmp = fromClient.readObject();
-                    patient = (Patient) tmp;
-                    window.chatWindow.appendText(patient.getAmbulance()+":  connected \n");
-                    baseServer.patients.add(patient);
-                   
-                    System.out.println(patient.toString());
-                    
-                    while (true) {
-                        received = (String) fromClient.readObject();
-                        if (received.toLowerCase().contains("stop")) {
-                            System.out.println("---The ambulance stopped the connection");
-                            releaseResources(fromClient, clientSocket);
-                            break;
-                        }
+            try {
+                Object tmp;
+                tmp = fromClient.readObject();
+                patient = (Patient) tmp;
+                clientAmbulance = patient.getAmbulance();
+                clientID=patient.getId();
+                clientName=patient.getName();
 
-                        window.chatWindow.appendText(patient.getAmbulance() + ":  " + received + "\n");
-                        //System.out.println("    Ambulance: " + received);
+                window.chatWindow.appendText(patient.getAmbulance()+":  connected \n");
+                baseServer.patients.add(patient);
+
+
+                ObjectOutputStream output=null;
+                File file = new File("./Files/serverPatients.txt");
+
+                try {
+                    output = new ObjectOutputStream(new FileOutputStream("./Files/serverPatients.txt"));
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Pruebla.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                for(Patient p: baseServer.patients){
+                    output.writeObject(p);
+                }
+                output.close();
+
+                while (true) {
+                    received = (String) fromClient.readObject();
+                    if (received.toLowerCase().contains("stop")) {
+                        System.out.println("---The ambulance stopped the connection");
+                        releaseResources(fromClient, clientSocket);
+                        break;
+                    }
+
+                    window.chatWindow.appendText(patient.getAmbulance() + ":  " + received + "\n");
+                    //System.out.println("    Ambulance: " + received);
             }
                     
                 } catch (IOException ex) {
@@ -114,4 +139,10 @@ public class ClientThread implements Runnable {
             Logger.getLogger(Server_Hospital.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    @Override
+    public String toString() {
+        return "ClientThread{" + "clientName=" + clientName + '}';
+    }
+        
 }

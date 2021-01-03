@@ -109,6 +109,25 @@ public class ServerOnWindowController implements Initializable {
 
         secondStage.show();
     }
+    
+    public void showConnections(ActionEvent event) throws IOException{
+        
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("PatientsWindow.fxml"));
+        Parent ServerPatientsWindow = loader.load();
+
+        Scene secondScene = new Scene(ServerPatientsWindow);
+
+        PatientsWindowController controller= loader.getController();
+        controller.initData(server);
+
+        Stage secondStage = new Stage();
+        secondStage.setTitle("Connections");
+        secondStage.setScene(secondScene);
+
+        secondStage.show();
+    }
+    
     /**
      * Initializes the controller class.
      */
