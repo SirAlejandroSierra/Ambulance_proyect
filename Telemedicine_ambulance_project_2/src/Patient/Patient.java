@@ -12,7 +12,6 @@ import java.util.Date;
  *
  * @author AdriCortellucci
  */
-
 public class Patient implements Serializable {
 
     private static final long serialVersionUID = -6291904286218553733L;
@@ -52,6 +51,7 @@ public class Patient implements Serializable {
     private String notes;
 
     public Patient() {
+        this.date = null;
         this.name = "";
         this.id = "";
         this.accurateAge = false;

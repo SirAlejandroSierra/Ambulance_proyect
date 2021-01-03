@@ -6,10 +6,11 @@
 package Client;
 
 import Patient.Ambulance;
-import Patient.Patient;
 import Patient.Gender;
+import Patient.Patient;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +25,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
-import java.util.Date;
 
 /**
  *
@@ -36,6 +36,7 @@ public class PersonalInfoController implements Initializable {
     boolean overweithPat;
 
     Ambulance ambulance;
+    //Date date;
 
     Patient patient = new Patient();
 
@@ -76,6 +77,7 @@ public class PersonalInfoController implements Initializable {
 
     public void initData(Ambulance ambulance, Date date) {
         this.ambulance = ambulance;
+        //this.date = date;
         patient.setAmbulance(ambulance);
         patient.setDate(date);
         ambulnceNum.setText(patient.getAmbulance().toString());
