@@ -117,6 +117,8 @@ public class ServerWindowController implements Initializable {
 
                 window.setScene(MedicalInfoScene);
                 window.show();
+                
+                
         }
         
         

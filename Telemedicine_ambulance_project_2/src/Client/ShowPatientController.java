@@ -180,12 +180,13 @@ public class ShowPatientController implements Initializable {
         Scene clientChatScene = new Scene(clientChatParent);
         ChatClientController controller = loader.getController();
         
-        controller.initData(patient);
+        //This line gets the Stage information
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         
-            //This line gets the Stage information
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        controller.initData(patient, window);
 
             window.setScene(clientChatScene);
+            
             window.show();
         
     }
@@ -194,7 +195,8 @@ public class ShowPatientController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {  
-// TODO
+        
+        
     }    
     
 }

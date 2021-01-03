@@ -17,12 +17,17 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -41,7 +46,7 @@ public class ChatClientController extends Thread implements Initializable {
     //ObjectOutputStream oos;
     //PrintWriter writer;
     Socket socket;
-    Socket socketChat;
+    Stage stage;
     
     
     public void connectSocket() {
@@ -66,10 +71,32 @@ public class ChatClientController extends Thread implements Initializable {
     }
     
     
+    public void exit(ActionEvent event) throws IOException {
+        System.out.println("salir");
+        try {
+            toServer.writeObject("logout");
+        } catch (IOException ex) {
+            Logger.getLogger(ChatClientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        releaseResources(toServer, socket);
+        stage.close();
+    }
+    
     @FXML
-    public void initData(Patient paciente) {
+    public void initData(Patient paciente, Stage stage) {
         this.patient=paciente;
+        this.stage=stage;
         connectSocket();
+        stage.setOnCloseRequest((event) -> {
+            System.out.println("salir");
+            try {
+                toServer.writeObject("logout");
+            } catch (IOException ex) {
+                Logger.getLogger(ChatClientController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            releaseResources(toServer, socket);
+            stage.close();
+        });
         
     }
 
@@ -98,21 +125,10 @@ public class ChatClientController extends Thread implements Initializable {
         toServer.writeObject(msg);
         msgField.setText("");
         if(msg.equalsIgnoreCase("BYE") || (msg.equalsIgnoreCase("logout"))) {
-            releaseResources(toServer, socket, socketChat);
+            releaseResources(toServer, socket);
         }
     }
-    
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        //connectSocket();
-        //sendPatient();
-        //run();
-    }    
-    
-
-
-    private static void releaseResources(ObjectOutputStream oos, Socket socket, Socket socketChat) {
+    private static void releaseResources(ObjectOutputStream oos, Socket socket) {
         try {
             oos.close();
         } catch (IOException ex) {
@@ -123,12 +139,17 @@ public class ChatClientController extends Thread implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        try {
-            socketChat.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+       
         
 
     }
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+    
+    }    
+    
+
+
+    
 }
