@@ -25,20 +25,11 @@ public class NewPasswordWindowController implements Initializable {
 
     private Server_two server;
     
-    @FXML
-    private TextField current;
-
-    @FXML
-    private TextField newPass;
-
-    @FXML
-    private TextField newPassRepeat;
-
-    @FXML
-    private Label label;
-    
-    @FXML
-    private Button button;
+    @FXML private TextField current;
+    @FXML private TextField newPass;
+    @FXML private TextField newPassRepeat;
+    @FXML private Label label; 
+    @FXML private Button button;
 
     public void initData(Server_two server){
         this.server=server;
@@ -64,6 +55,7 @@ public class NewPasswordWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        label.setText("");
     }    
     
 }

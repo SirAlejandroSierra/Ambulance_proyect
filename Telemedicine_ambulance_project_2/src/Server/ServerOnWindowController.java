@@ -53,7 +53,7 @@ public class ServerOnWindowController implements Initializable {
     public void close(ActionEvent event) throws IOException{
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         
-        if(server.getClients().isEmpty()){
+        //if(server.getClients().isEmpty()){
             
             StackPane secondaryLayout = new StackPane();
 
@@ -70,12 +70,11 @@ public class ServerOnWindowController implements Initializable {
             secondStage.setTitle("Password");
             secondStage.setScene(secondScene);
             
-            window.close();
             secondStage.show();
 
             
             
-        }else{
+        /*}else{
         
             StackPane secondaryLayout2 = new StackPane();
 
@@ -90,13 +89,45 @@ public class ServerOnWindowController implements Initializable {
             secondStage.setScene(secondScene);
 
             secondStage.show();
-            closeServer();
-        }
+        }*/
     }
     
-    public void closeServer(){
+    public void changePassword(ActionEvent event) throws IOException{
         
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("NewPasswordWindow.fxml"));
+        Parent passwordWindow = loader.load();
+
+        Scene secondScene = new Scene(passwordWindow);
+
+        NewPasswordWindowController controller= loader.getController();
+        controller.initData(server);
+
+        Stage secondStage = new Stage();
+        secondStage.setTitle("New Password");
+        secondStage.setScene(secondScene);
+
+        secondStage.show();
     }
+    
+    public void showConnections(ActionEvent event) throws IOException{
+        
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("PatientsWindow.fxml"));
+        Parent ServerPatientsWindow = loader.load();
+
+        Scene secondScene = new Scene(ServerPatientsWindow);
+
+        PatientsWindowController controller= loader.getController();
+        controller.initData(server);
+
+        Stage secondStage = new Stage();
+        secondStage.setTitle("Connections");
+        secondStage.setScene(secondScene);
+
+        secondStage.show();
+    }
+    
     /**
      * Initializes the controller class.
      */

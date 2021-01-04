@@ -9,7 +9,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="324.0" prefWidth="474.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Server.ServerOnWindowController">
     <children>
-      <Button layoutX="48.0" layoutY="199.0" mnemonicParsing="false" onAction="#close" prefHeight="27.0" prefWidth="77.0" text="OFF" />
+      <Button layoutX="29.0" layoutY="268.0" mnemonicParsing="false" onAction="#close" prefHeight="27.0" prefWidth="118.0" text="OFF" textFill="#f84242" />
       <Pane layoutY="-1.0" prefHeight="71.0" prefWidth="474.0" style="-fx-background-color: grey;">
          <children>
             <Label layoutX="182.0" layoutY="17.0" text="SERVER" textFill="WHITE">
@@ -19,12 +19,14 @@
             </Label>
          </children>
       </Pane>
-      <Button layoutX="42.0" layoutY="141.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="89.0" text="Connections" />
+      <Button layoutX="29.0" layoutY="101.0" mnemonicParsing="false" onAction="#showConnections" prefHeight="27.0" prefWidth="118.0" text="Patients" />
       <Label layoutX="274.0" layoutY="77.0" text="messages">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
       <TextArea fx:id="chatWindow" layoutX="185.0" layoutY="101.0" prefHeight="194.0" prefWidth="272.0" />
+      <Button layoutX="29.0" layoutY="157.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="118.0" text="Connections" />
+      <Button layoutX="29.0" layoutY="211.0" mnemonicParsing="false" onAction="#changePassword" text="Change Password" />
    </children>
 </AnchorPane>

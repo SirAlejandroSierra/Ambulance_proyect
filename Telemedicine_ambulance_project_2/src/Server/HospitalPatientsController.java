@@ -5,17 +5,13 @@
  */
 package Server;
 
+import Patient.Ambulance;
 import Patient.Patient;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,11 +24,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -44,26 +38,26 @@ import javafx.stage.Stage;
  *
  * @author AdriCortellucci
  */
-public class ServerPatientsController implements Initializable {
+public class HospitalPatientsController implements Initializable {
 
     public ObservableList <Patient> patients_= FXCollections.observableArrayList();
     
     @FXML private TableView <Patient> tableView;
-    @FXML private TableColumn<Patient, String> patientName;
-    @FXML private TableColumn<Patient, String> ambulance;
     @FXML private TableColumn<Patient, Date> date;
+    @FXML private TableColumn<Patient, String> patientID;
+    @FXML private TableColumn<Patient, String> patientName;
     
     @FXML private Button detailedPersonViewButton;
     
     public ArrayList<Patient> patients= new ArrayList<Patient>();
-    private ArrayList<ClientThread> clientThreads= new ArrayList<ClientThread>();
     
     public Server_two server;
     
     public void initData(Server_two server){
         this.server=server;
         patients= this.server.getPatients();
-        clientThreads= this.server.getClientThreads();
+        fillPatients();
+
     }
     
     public void changeSceneToDetailedPersonView(ActionEvent event) throws IOException
@@ -85,27 +79,6 @@ public class ServerPatientsController implements Initializable {
         secondStage.setScene(secondScene);
             
         secondStage.show();
-        /*
-        
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ShowPatient_1.fxml"));
-        Parent tableViewParent = loader.load();
-        
-        Scene tableViewScene = new Scene(tableViewParent);
-        
-        //access the controller and call a method
-        ShowPatientController_1 controller = loader.getController();
-        controller.initData(tableView.getSelectionModel().getSelectedItem());
-        
-        //This line gets the Stage information
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        
-        window.setScene(tableViewScene);
-        window.show();*/
-    }
-    
-    public void refresh(ActionEvent event) throws IOException{
-        fillPatients();
     }
     
     public void userClickedOnTable()
@@ -116,24 +89,12 @@ public class ServerPatientsController implements Initializable {
     public void fillPatients() {
         patients_=FXCollections.observableArrayList(server.patients);
         tableView.setItems(patients_);
-         
-        try
-        {
-            FileOutputStream fos = new FileOutputStream("patients.txt");
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(server.patients);
-            oos.close();
-            fos.close();
-        } 
-        catch (IOException ioe) 
-        {
-            ioe.printStackTrace();
-        }
+        
     }
     
-    public void fillPatientsInitially() {
+    public void fillPatientsInitially() throws ClassNotFoundException {
         try{
-            File file = new File("patients.txt");
+            File file = new File("serverPatients.txt");
             ArrayList<Patient> namesList = new ArrayList<Patient>();
             // if file doesnt exists, then create it
             if (!file.exists()) {
@@ -141,7 +102,7 @@ public class ServerPatientsController implements Initializable {
             }
             if (file.length() != 0){
             
-                FileInputStream fis = new FileInputStream("patients.txt");
+                FileInputStream fis = new FileInputStream("serverPatients.txt");
                 
                 ObjectInputStream ois = new ObjectInputStream(fis);
  
@@ -153,30 +114,22 @@ public class ServerPatientsController implements Initializable {
             server.patients=namesList;
             patients_=FXCollections.observableArrayList(server.patients);
             tableView.setItems(patients_);
-            
-        }catch (FileNotFoundException ex) {
-            Logger.getLogger(ServerPatientsController.class.getName()).log(Level.SEVERE, null, ex);
+       
         } catch (IOException ex) {
-            Logger.getLogger(ServerPatientsController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ServerPatientsController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Logger.getLogger(HospitalPatientsController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {  
-// TODO
+
          //set up the columns in the table
         patientName.setCellValueFactory(new PropertyValueFactory<Patient, String>("name"));
-        //patientName.setCellValueFactory(new PropertyValueFactory<Patient, String>("id"));
+        patientID.setCellValueFactory(new PropertyValueFactory<Patient, String>("id"));
+        //date.setCellValueFactory(new PropertyValueFactory<Patient, Date>("data"));
         
-        //Disable the detailed person view button until a row is selected
         this.detailedPersonViewButton.setDisable(true);
- 
-        fillPatientsInitially();
-        
         
     }  
-    
 }
