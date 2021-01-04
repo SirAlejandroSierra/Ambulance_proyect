@@ -5,6 +5,7 @@
  */
 package Patient;
 
+import BITalino.Frame;
 import Patient.Gender;
 import Patient.Level;
 import Patient.Family;
@@ -53,6 +54,8 @@ public class Patient implements Serializable {
     private BasicOptions cough;
     private BasicOptions dizziness;
     private String notes;
+    
+    private Frame frame;
 
     public Patient() {
         this.name = "";
@@ -84,10 +87,11 @@ public class Patient implements Serializable {
         this.cough = null;
         this.dizziness = null;
         this.notes = "";
+        this.frame = null;
     }
 
     
-    public Patient(String name, String id, boolean accurateAge, int age, Gender gender, boolean overweight, Float systolicPressure, Float diastolicPressure, LevelUnknown tension, Level heartRate, BasicOptions smoker, BasicOptions drinker, BasicOptions diabetic, LevelUnknown chosterol, Event previousEvent, Family familyHistory, BasicOptions chestPressure, BasicOptions chestPain, BasicOptions NeckPain, BasicOptions armPain, BasicOptions backPain, boolean shortnessOfBreath, boolean sweating, BasicOptions nausea, BasicOptions vomiting, BasicOptions anxiety, BasicOptions cough, BasicOptions dizziness, String notes) {
+    public Patient(String name, String id, boolean accurateAge, int age, Gender gender, boolean overweight, Float systolicPressure, Float diastolicPressure, LevelUnknown tension, Level heartRate, BasicOptions smoker, BasicOptions drinker, BasicOptions diabetic, LevelUnknown chosterol, Event previousEvent, Family familyHistory, BasicOptions chestPressure, BasicOptions chestPain, BasicOptions NeckPain, BasicOptions armPain, BasicOptions backPain, boolean shortnessOfBreath, boolean sweating, BasicOptions nausea, BasicOptions vomiting, BasicOptions anxiety, BasicOptions cough, BasicOptions dizziness, String notes, Frame frame) {
         this.name = name;
         this.id = id;
         this.accurateAge = accurateAge;
@@ -117,6 +121,7 @@ public class Patient implements Serializable {
         this.cough = cough;
         this.dizziness = dizziness;
         this.notes = notes;
+        this.frame = frame;
     }
 
     public void setBasicInformation(String name, String id, boolean approxAge, int age, Gender gender, boolean overweight) {
@@ -160,6 +165,10 @@ public class Patient implements Serializable {
         this.dizziness=dizziness;
         this.notes=notes;
 
+    }
+    
+    public void setECG (Frame frame){
+        this.frame = frame;
     }
 
     public static long getSerialVersionUID() {
@@ -285,6 +294,10 @@ public class Patient implements Serializable {
     public String getNotes() {
         return notes;
     }
+    
+    public Frame getFrame(){
+        return frame;
+    }
 
     public void setAmbulance(Ambulance ambulance) {
         this.ambulance = ambulance;
@@ -404,6 +417,10 @@ public class Patient implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+    
+    public void setFrame (Frame frame){
+        this.frame = frame;
     }
 
     public String print() {
