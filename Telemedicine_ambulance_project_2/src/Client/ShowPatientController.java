@@ -20,6 +20,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,6 +42,9 @@ import javafx.stage.Stage;
 public class ShowPatientController implements Initializable {
     
     Patient patient= new Patient();
+    ObjectOutputStream toServer;
+    
+    Socket socket;
     
     @FXML private Label ambulanceLabel;
     @FXML private Label nameLabel;
@@ -178,16 +182,40 @@ public class ShowPatientController implements Initializable {
         Parent clientChatParent = loader.load();
         
         Scene clientChatScene = new Scene(clientChatParent);
+        
         ChatClientController controller = loader.getController();
         
         //This line gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        try{
+            socket = new Socket("localhost", 9000);
+            System.out.println("Socket is connected with server!");
+            toServer=new ObjectOutputStream(socket.getOutputStream());
+            
+             
+            toServer.writeObject(patient);//patient es un ojbejto de la clase creada por adri
+            toServer.flush();
+            
+            controller.initData(patient, window, socket, toServer);
         
-        controller.initData(patient, window);
 
             window.setScene(clientChatScene);
             
             window.show();
+            
+        }catch(Exception e){
+            FXMLLoader loader2 = new FXMLLoader();
+            loader2.setLocation(getClass().getResource("ErrorConnection.fxml"));
+            Parent tableViewParent = loader2.load();
+
+            Scene secondScene = new Scene(tableViewParent);
+
+            Stage secondStage = new Stage();
+            secondStage.setTitle("Error");
+            secondStage.setScene(secondScene);
+
+            secondStage.show();
+        }
         
     }
     

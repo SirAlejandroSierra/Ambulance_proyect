@@ -106,6 +106,9 @@ public class ServerWindowController implements Initializable {
                 
                 
                 System.out.println("connected");
+                
+           
+                
                 Thread serverThread = (new Thread(server));
                 serverThread.start();
                 //threads.add(serverThread);

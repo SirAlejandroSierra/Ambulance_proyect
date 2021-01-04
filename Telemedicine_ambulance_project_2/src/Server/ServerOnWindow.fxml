@@ -19,14 +19,14 @@
             </Label>
          </children>
       </Pane>
-      <Button layoutX="29.0" layoutY="101.0" mnemonicParsing="false" onAction="#showConnections" prefHeight="27.0" prefWidth="118.0" text="Connections" />
+      <Button layoutX="29.0" layoutY="101.0" mnemonicParsing="false" onAction="#showConnections" prefHeight="27.0" prefWidth="118.0" text="Patients" />
       <Label layoutX="274.0" layoutY="77.0" text="messages">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
       <TextArea fx:id="chatWindow" layoutX="185.0" layoutY="101.0" prefHeight="194.0" prefWidth="272.0" />
-      <Button layoutX="29.0" layoutY="157.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="118.0" text="Patients" />
+      <Button layoutX="29.0" layoutY="157.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="118.0" text="Connections" />
       <Button layoutX="29.0" layoutY="211.0" mnemonicParsing="false" onAction="#changePassword" text="Change Password" />
    </children>
 </AnchorPane>

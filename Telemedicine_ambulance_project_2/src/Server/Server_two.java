@@ -75,7 +75,7 @@ public class Server_two implements Runnable {
 
 
     public void run() {
-
+        
         while (socket.isClosed()==false) {
             Socket clientSocket=null;
             try{
@@ -93,14 +93,32 @@ public class Server_two implements Runnable {
             System.out.println("accepted");
             clientThread.start();
         }
+           
     }
 
     public void close(){
+        for(ClientThread client: clientThreads){
+            client.releaseResources();
+        }
+        
+        for(Socket sock: clients){
+            try {
+                sock.close();
+                System.out.println("close sockets");
+            } catch (IOException ex) {
+                Logger.getLogger(Server_two.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
+        
         try {
             socket.close();
+            System.out.println("close socket");
         } catch (IOException ex) {
             Logger.getLogger(Server_two.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
 
     public void clientDisconnected(Socket socket) {

@@ -8,9 +8,12 @@ package Client;
 import Client.Client_Patient_Ambulance;
 import Patient.Patient;
 import Patient.Patient;
+import com.sun.corba.se.impl.io.IIOPInputStream;
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -24,6 +27,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.NodeOrientation;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -38,6 +42,7 @@ public class ChatClientController extends Thread implements Initializable {
 
     @FXML public TextField msgField;
     @FXML public TextArea msgRoom;
+    @FXML public Button send;
     
     Patient patient;
     
@@ -48,7 +53,7 @@ public class ChatClientController extends Thread implements Initializable {
     Socket socket;
     Stage stage;
     
-    
+    /*
     public void connectSocket() {
         try {
             socket = new Socket("localhost", 9000);
@@ -69,7 +74,7 @@ public class ChatClientController extends Thread implements Initializable {
         
         
     }
-    
+    */
     
     public void exit(ActionEvent event) throws IOException {
         System.out.println("salir");
@@ -83,10 +88,12 @@ public class ChatClientController extends Thread implements Initializable {
     }
     
     @FXML
-    public void initData(Patient paciente, Stage stage) {
+    public void initData(Patient paciente, Stage stage, Socket socket, ObjectOutputStream output) {
         this.patient=paciente;
         this.stage=stage;
-        connectSocket();
+        this.socket=socket;
+        this.toServer=output;
+        
         stage.setOnCloseRequest((event) -> {
             System.out.println("salir");
             try {
@@ -97,13 +104,12 @@ public class ChatClientController extends Thread implements Initializable {
             releaseResources(toServer, socket);
             stage.close();
         });
-        
     }
 
     
     @Override
     public void run() {
-        sendPatient();
+        
 
     }
     
@@ -118,14 +124,42 @@ public class ChatClientController extends Thread implements Initializable {
         } 
     }
     
+    
     public void send() throws IOException {
-        String msg = msgField.getText();
-        msgRoom.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
-        msgRoom.appendText("Ambulance: " + msg + "\n");
-        toServer.writeObject(msg);
-        msgField.setText("");
-        if(msg.equalsIgnoreCase("BYE") || (msg.equalsIgnoreCase("logout"))) {
-            releaseResources(toServer, socket);
+        int read;
+        try{
+            read=socket.getInputStream().read();
+            System.out.println(read);
+            if(read == -1){
+                System.out.println("closed");
+                msgRoom.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+                msgRoom.appendText("Error in the connection\n");
+                
+            }else{
+                String msg = msgField.getText();
+
+                toServer.writeObject(msg);
+                read=socket.getInputStream().read();
+                if(read == -1){
+                    System.out.println("closed");
+                    msgRoom.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+                    msgRoom.appendText("Error in the connection\n");
+                }else{
+                    System.out.println(read);
+                    toServer.writeObject((String) "check");
+                    msgRoom.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+                    msgRoom.appendText("Ambulance: " + msg + "\n");
+
+                    msgField.setText("");
+                    if(msg.equalsIgnoreCase("BYE") || (msg.equalsIgnoreCase("logout"))) {
+                        releaseResources(toServer, socket);
+                    } 
+                }
+            }
+        }catch(Exception e){
+            msgRoom.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+            msgRoom.appendText("Error in the connection\n");
+            
         }
     }
     private static void releaseResources(ObjectOutputStream oos, Socket socket) {

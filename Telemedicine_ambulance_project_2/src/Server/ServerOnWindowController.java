@@ -53,7 +53,7 @@ public class ServerOnWindowController implements Initializable {
     public void close(ActionEvent event) throws IOException{
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         
-        if(server.getClients().isEmpty()){
+        //if(server.getClients().isEmpty()){
             
             StackPane secondaryLayout = new StackPane();
 
@@ -74,7 +74,7 @@ public class ServerOnWindowController implements Initializable {
 
             
             
-        }else{
+        /*}else{
         
             StackPane secondaryLayout2 = new StackPane();
 
@@ -89,7 +89,7 @@ public class ServerOnWindowController implements Initializable {
             secondStage.setScene(secondScene);
 
             secondStage.show();
-        }
+        }*/
     }
     
     public void changePassword(ActionEvent event) throws IOException{
