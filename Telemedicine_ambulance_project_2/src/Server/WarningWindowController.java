@@ -25,7 +25,7 @@ import javafx.stage.Stage;
  *
  * @author AdriCortellucci
  */
-public class ErrorWindowController implements Initializable {
+public class WarningWindowController implements Initializable {
     private Server_two server;
     /**
      * Initializes the controller class.
@@ -40,7 +40,7 @@ public class ErrorWindowController implements Initializable {
             try {
                 client.close();
             } catch (IOException ex) {
-                Logger.getLogger(ErrorWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(WarningWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         StackPane secondaryLayout = new StackPane();

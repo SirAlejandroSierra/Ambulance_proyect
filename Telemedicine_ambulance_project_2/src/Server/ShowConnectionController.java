@@ -3,38 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Client;
+package Server;
 
-import Client.PainInfoController;
-import Client.ChatClientController;
 import Patient.Patient;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
 /**
  *
  * @author AdriCortellucci
  */
-public class ShowPatientController implements Initializable {
+public class ShowConnectionController implements Initializable {
 
+    ClientThread client;
     Patient patient = new Patient();
-    ObjectOutputStream toServer;
 
-    Socket socket;
-
+    @FXML
+    private Label addressLabel;
+    @FXML
+    private Label portLabel;
+    
     @FXML
     private Label dateLabel;
     @FXML
@@ -100,12 +92,12 @@ public class ShowPatientController implements Initializable {
     @FXML
     private Label notesLabel;
 
-    @FXML
-    private Button SaveButton;
+    public void initData(ClientThread client) throws IOException {
+        this.client = client;
+        this.patient=client.getPatient();
 
-    public void initData(Patient paciente) throws IOException {
-        this.patient = paciente;
-
+        addressLabel.setText(client.getAddress().toString());
+        portLabel.setText(Integer.toString(client.getPort()));
         dateLabel.setText(patient.getDate().toString());
         ambulanceLabel.setText(patient.getAmbulance().toString());
         nameLabel.setText(patient.getName());
@@ -139,23 +131,6 @@ public class ShowPatientController implements Initializable {
         coughLabel.setText(patient.getCough().toString());
         dizzinessLabel.setText(patient.getDizziness().toString());
         notesLabel.setText(patient.getNotes());
-    }
-
-    public void backButtonPushed(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("PainInfo.fxml"));
-        Parent painInfoParent = loader.load();
-
-        Scene painInfoScene = new Scene(painInfoParent);
-        PainInfoController controller = loader.getController();
-        controller.initDataBack(patient);
-
-        //This line gets the Stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-        window.setScene(painInfoScene);
-        window.show();
-
     }
 
     /*
@@ -194,52 +169,9 @@ public class ShowPatientController implements Initializable {
             e.printStackTrace();}
 
     }*/
-    public void nextButtonPushed(ActionEvent event) throws IOException {
-
-        FXMLLoader loader = new FXMLLoader();
-
-        loader.setLocation(getClass().getResource("ChatClient.fxml"));
-        Parent clientChatParent = loader.load();
-
-        Scene clientChatScene = new Scene(clientChatParent);
-
-        ChatClientController controller = loader.getController();
-
-        //This line gets the Stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        try {
-            socket = new Socket("localhost", 9000);
-            System.out.println("Socket is connected with server!");
-            toServer = new ObjectOutputStream(socket.getOutputStream());
-
-            toServer.writeObject(patient);//patient es un ojbejto de la clase creada por adri
-            toServer.flush();
-
-            controller.initData(patient, window, socket, toServer);
-
-            window.setScene(clientChatScene);
-
-            window.show();
-
-        } catch (Exception e) {
-            FXMLLoader loader2 = new FXMLLoader();
-            loader2.setLocation(getClass().getResource("ErrorConnection.fxml"));
-            Parent tableViewParent = loader2.load();
-
-            Scene secondScene = new Scene(tableViewParent);
-
-            Stage secondStage = new Stage();
-            secondStage.setTitle("Error");
-            secondStage.setScene(secondScene);
-
-            secondStage.show();
-        }
-
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+// TODO
     }
 
 }

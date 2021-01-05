@@ -10,17 +10,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="221.0" prefWidth="255.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Server.PasswordWindowController">
+<AnchorPane id="AnchorPane" prefHeight="221.0" prefWidth="255.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Server.CloseWindowController">
    <children>
-      <Pane prefHeight="70.0" prefWidth="255.0" style="-fx-background-color: grey;">
-         <children>
-            <Label layoutX="84.0" layoutY="13.0" text="Close" textFill="WHITE">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
       <GridPane layoutX="14.0" layoutY="93.0" prefHeight="61.0" prefWidth="221.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="71.0" />
@@ -36,5 +27,14 @@
       </GridPane>
       <Label fx:id="labelPassword" layoutX="14.0" layoutY="149.0" text="Label" textFill="RED" />
       <Button fx:id="button" layoutX="205.0" layoutY="178.0" mnemonicParsing="false" onAction="#CheckPassword" text="OK" />
+      <Pane prefHeight="71.0" prefWidth="255.0" style="-fx-background-color: grey;">
+         <children>
+            <Label layoutX="80.0" layoutY="17.0" text="CLOSE" textFill="WHITE">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

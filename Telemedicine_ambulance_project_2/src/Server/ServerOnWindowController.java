@@ -11,6 +11,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,7 +35,8 @@ import javafx.stage.Stage;
  * @author AdriCortellucci
  */
 public class ServerOnWindowController implements Initializable {
-
+    private Stage window;
+    private Stage parent;
     public ObservableList <Patient> patients_= FXCollections.observableArrayList();
     @FXML private TableView <Patient> tableView;
     @FXML private TableColumn<Patient, String> patientName;
@@ -46,28 +49,39 @@ public class ServerOnWindowController implements Initializable {
     @FXML public TextArea chatWindow;
     
     
-    public void initData(Server_two server){
+    public void initData(Server_two server, Stage parent, Stage stage){
         this.server=server;
+        this.parent=parent;
+        this.window=stage;
+        
+        window.setOnCloseRequest((event) -> {
+            close();
+        });
+        
     }
     
-    public void close(ActionEvent event) throws IOException{
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    public void close() {
         
         //if(server.getClients().isEmpty()){
             
             StackPane secondaryLayout = new StackPane();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("PasswordWindow.fxml"));
-            Parent passwordWindow = loader.load();
+            loader.setLocation(getClass().getResource("CloseWindow.fxml"));
+            Parent passwordWindow=null;
+            try {
+                passwordWindow = loader.load();
+            } catch (IOException ex) {
+                Logger.getLogger(ServerOnWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             Scene secondScene = new Scene(passwordWindow);
             
-            PasswordWindowController controller= loader.getController();
-            controller.initData(server, window);
+            CloseWindowController controller= loader.getController();
+            controller.initData(server, parent, window);
             
             Stage secondStage = new Stage();
-            secondStage.setTitle("Password");
+            secondStage.setTitle("Close");
             secondStage.setScene(secondScene);
             
             secondStage.show();
@@ -122,6 +136,24 @@ public class ServerOnWindowController implements Initializable {
         controller.initData(server);
 
         Stage secondStage = new Stage();
+        secondStage.setTitle("Patients");
+        secondStage.setScene(secondScene);
+
+        secondStage.show();
+    }
+
+    public void showConnections(ActionEvent event) throws IOException{
+        
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ConnectionsWindow.fxml"));
+        Parent ServerPatientsWindow = loader.load();
+
+        Scene secondScene = new Scene(ServerPatientsWindow);
+
+        ConnectionsWindowController controller= loader.getController();
+        controller.initData(server);
+
+        Stage secondStage = new Stage();
         secondStage.setTitle("Connections");
         secondStage.setScene(secondScene);
 
@@ -133,7 +165,7 @@ public class ServerOnWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
     
 }

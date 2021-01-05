@@ -11,7 +11,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import Server.FXMLDocumentServerController;
 
 public class Client_Patient_Ambulance {
 
@@ -55,13 +54,9 @@ public class Client_Patient_Ambulance {
 
             oi.close();
 
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(FXMLDocumentServerController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FXMLDocumentServerController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FXMLDocumentServerController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(Level.SEVERE, null, ex);
+        } 
         //----------------------------
         
         /*Comunication coming from server*/

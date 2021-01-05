@@ -73,9 +73,9 @@
       <ChoiceBox fx:id="FamilyEvent" layoutX="188.0" layoutY="330.0" prefHeight="27.0" prefWidth="131.0" />
       <Button layoutX="540.0" layoutY="360.0" mnemonicParsing="false" onAction="#changeSceneToPainInfo" text="Next" />
       <Button layoutX="20.0" layoutY="360.0" mnemonicParsing="false" onAction="#backButtonPushed" text="Back" />
-      <Pane layoutX="-6.0" layoutY="-1.0" prefHeight="71.0" prefWidth="620.0" style="-fx-background-color: grey;">
+      <Pane prefHeight="71.0" prefWidth="614.0" style="-fx-background-color: grey;">
          <children>
-            <Label layoutX="142.0" layoutY="17.0" text="MEDICAL INFORMATION" textFill="WHITE">
+            <Label layoutX="136.0" layoutY="17.0" text="MEDICAL  INFORMATION" textFill="WHITE">
                <font>
                   <Font size="31.0" />
                </font>

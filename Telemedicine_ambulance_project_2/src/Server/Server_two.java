@@ -121,8 +121,9 @@ public class Server_two implements Runnable {
         
     }
 
-    public void clientDisconnected(Socket socket) {
+    public void clientDisconnected(Socket socket, ClientThread client) {
         clients.remove(socket);
+        clientThreads.remove(client);
     }
 
 }

@@ -56,16 +56,15 @@ public class ServerWindowController implements Initializable {
     
     @FXML private Label label;
     
-    public static ArrayList<Thread> threads=new ArrayList<Thread>();
     public Server_two server=null;    
     
     public void open(ActionEvent event) throws IOException, ClassNotFoundException{
         
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("ServerOnWindow.fxml"));
-        Parent serverOnParent = loader.load();
+        Parent parent = loader.load();
         
-        Scene MedicalInfoScene = new Scene(serverOnParent);
+        Scene scene = new Scene(parent);
         
         //access the controller and call a method
         ServerOnWindowController controller = loader.getController();
@@ -85,12 +84,8 @@ public class ServerWindowController implements Initializable {
                     file.createNewFile();
                 }
                 if (file.length() != 0){
-                    try {
-                        input = new ObjectInputStream(new FileInputStream("./Files/serverPatients.txt"));
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(Pruebla.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
+                    input = new ObjectInputStream(new FileInputStream("./Files/serverPatients.txt"));
+  
                     while(true){
                         try{
                             Object obj = input.readObject();
@@ -113,13 +108,17 @@ public class ServerWindowController implements Initializable {
                 serverThread.start();
                 //threads.add(serverThread);
 
-            controller.initData(server);
-
                 //This line gets the Stage information
                 Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-                window.setScene(MedicalInfoScene);
-                window.show();
+                Stage secondStage = new Stage();
+                secondStage.setTitle("New Password");
+                secondStage.setScene(scene);
+                
+                controller.initData(server, window, secondStage);
+
+                secondStage.show();
+                window.close();
                 
                 
         }

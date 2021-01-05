@@ -29,17 +29,19 @@ import javafx.stage.Stage;
  *
  * @author AdriCortellucci
  */
-public class PasswordWindowController implements Initializable {
+public class CloseWindowController implements Initializable {
     private String password;
     private Server_two server;
     private Stage prevWindow;
+    private Stage parent;
     @FXML private TextField passwordField;
     @FXML private Label labelPassword;
     @FXML private Button button;
     
-    public void initData (Server_two server, Stage window){
+    public void initData (Server_two server, Stage parent, Stage window){
         this.server=server;
         this.password=this.server.getPassword();
+        this.parent=parent;
         this.prevWindow=window;
     }
     
@@ -60,8 +62,10 @@ public class PasswordWindowController implements Initializable {
         
             //This line gets the Stage information
             
-            prevWindow.setScene(MedicalInfoScene);
-            prevWindow.show();
+            parent.setScene(MedicalInfoScene);
+            prevWindow.close();
+            parent.show();
+            
     
         } else {
             labelPassword.setText("Wrong password");
