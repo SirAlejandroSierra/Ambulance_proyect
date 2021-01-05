@@ -110,7 +110,7 @@ public class ServerOnWindowController implements Initializable {
         secondStage.show();
     }
     
-    public void showConnections(ActionEvent event) throws IOException{
+    public void showPatients(ActionEvent event) throws IOException{
         
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("PatientsWindow.fxml"));
