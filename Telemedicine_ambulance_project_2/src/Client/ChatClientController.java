@@ -53,33 +53,12 @@ public class ChatClientController extends Thread implements Initializable {
     Socket socket;
     Stage stage;
     
-    /*
-    public void connectSocket() {
-        try {
-            socket = new Socket("localhost", 9000);
-            System.out.println("Socket is connected with server!");
-            toServer= new ObjectOutputStream(socket.getOutputStream());
-            //os= socket.getOutputStream();
-            //oos = new ObjectOutputStream(os);
-            //sendPatient();
-            
-            //socket=new Socket("localhost", 9000);
-
-            //writer = new PrintWriter(socketChat.getOutputStream(), true);
-            
-            this.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        
-    }
-    */
-    
     public void exit(ActionEvent event) throws IOException {
         System.out.println("salir");
         try {
-            toServer.writeObject("logout");
+            if(!socket.isClosed()){
+                toServer.writeObject("logout");
+            }    
         } catch (IOException ex) {
             Logger.getLogger(ChatClientController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -107,6 +86,7 @@ public class ChatClientController extends Thread implements Initializable {
     }
 
     
+    
     @Override
     public void run() {
         
@@ -119,8 +99,7 @@ public class ChatClientController extends Thread implements Initializable {
             toServer.flush();
             
         } catch (IOException ex) {
-            System.out.println("----Unable to write the object on the server.");
-            Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(ChatClientController.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
     
@@ -163,17 +142,19 @@ public class ChatClientController extends Thread implements Initializable {
         }
     }
     private static void releaseResources(ObjectOutputStream oos, Socket socket) {
-        try {
-            oos.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        try {
-            socket.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Client_Patient_Ambulance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+        if(!socket.isClosed()){    
+            try {
+                oos.close();
+            } catch (IOException ex) { 
+                Logger.getLogger(ChatClientController.class.getName()).log(Level.SEVERE, null, ex);
+            }
        
+            try {
+                socket.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ChatClientController.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+        }
         
 
     }

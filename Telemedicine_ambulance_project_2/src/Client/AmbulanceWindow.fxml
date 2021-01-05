@@ -10,15 +10,6 @@
 
 <AnchorPane id="AnchorPane" prefHeight="321.0" prefWidth="486.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.AmbulanceWindowController">
    <children>
-      <Pane prefHeight="90.0" prefWidth="486.0" style="-fx-background-color: grey;">
-         <children>
-            <Label layoutX="160.0" layoutY="24.0" text="Ambulance" textFill="WHITE">
-               <font>
-                  <Font size="35.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
       <Button fx:id="ambulance1" layoutX="47.0" layoutY="111.0" mnemonicParsing="false" onAction="#changeSceneToMedicalInfo" prefHeight="53.0" prefWidth="61.0">
          <graphic>
             <ImageView fitHeight="66.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
@@ -67,5 +58,14 @@
                </image>
             </ImageView>
          </graphic></Button>
+      <Pane layoutX="-2.0" prefHeight="71.0" prefWidth="489.0" style="-fx-background-color: grey;">
+         <children>
+            <Label layoutX="154.0" layoutY="17.0" text="AMBULANCE" textFill="WHITE">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

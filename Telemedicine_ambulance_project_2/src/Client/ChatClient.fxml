@@ -14,10 +14,10 @@
       <TextField fx:id="msgField" layoutX="20.0" layoutY="315.0" prefHeight="27.0" prefWidth="291.0" />
       <Button layoutX="264.0" layoutY="352.0" mnemonicParsing="false" onAction="#send" text="Send" />
       <Label layoutX="20.0" layoutY="291.0" text="Type your message" />
-      <Button layoutX="265.0" layoutY="84.0" mnemonicParsing="false" text="EXIT" textFill="RED" />
-      <Pane prefHeight="71.0" prefWidth="333.0" style="-fx-background-color: grey;">
+      <Button layoutX="265.0" layoutY="84.0" mnemonicParsing="false" onAction="#exit" text="EXIT" textFill="RED" />
+      <Pane prefHeight="71.0" prefWidth="339.0" style="-fx-background-color: grey;">
          <children>
-            <Label layoutX="126.0" layoutY="17.0" text="CHAT" textFill="WHITE">
+            <Label layoutX="129.0" layoutY="17.0" text="CHAT" textFill="WHITE">
                <font>
                   <Font size="31.0" />
                </font>

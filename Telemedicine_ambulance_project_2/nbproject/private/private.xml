@@ -3,25 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Client/PersonalInfoController.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Patient/Family.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Server/Server_Hospital.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/BITalino/Frame.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Client/MedicalInfoController.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Patient/Level.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/BITalino/BitalinoDemo.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Client/PainInfoController.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Client/Client.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Client/ECG.fxml</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Client/choiceBoxTryBitalino.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Patient/Patient.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Client/AmbulanceWindowController.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/BITalino/BITalino.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/nbproject/build-impl.xml</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Client/ECGController.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Client/BitalinoRecordingDataController.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Patient/LevelUnknown.java</file>
-            <file>file:/Users/hecyebesdelpino/NetBeansProjects/AmbulanceProject/ultimointento/Telemedicine_ambulance_project_2/src/Server/Server_Hospital_Chat_Client_Server.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ErrorConnection.fxml</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ServerOnWindowController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ErrorConnectionController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ChatClientController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ClientThread.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ShowPatientController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ShowPatient.fxml</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ShowPatient_1.fxml</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ErrorWindow.fxml</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ErrorWindowController.java</file>
         </group>
     </open-files>
 </project-private>

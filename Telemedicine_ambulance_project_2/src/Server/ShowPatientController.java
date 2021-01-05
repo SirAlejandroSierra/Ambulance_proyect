@@ -17,7 +17,7 @@ import javafx.scene.control.Label;
  *
  * @author AdriCortellucci
  */
-public class ShowPatientController_1 implements Initializable {
+public class ShowPatientController implements Initializable {
 
     Patient patient = new Patient();
 

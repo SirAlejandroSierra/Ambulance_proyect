@@ -112,9 +112,9 @@
       <Button layoutX="23.0" layoutY="550.0" mnemonicParsing="false" onAction="#backButtonPushed" text="Back" />
       <Label layoutX="23.0" layoutY="479.0" text="Notes:" />
       <TextField fx:id="notesField" layoutX="69.0" layoutY="474.0" prefHeight="67.0" prefWidth="289.0" />
-      <Pane layoutY="-1.0" prefHeight="71.0" prefWidth="402.0" style="-fx-background-color: grey;">
+      <Pane prefHeight="71.0" prefWidth="402.0" style="-fx-background-color: grey;">
          <children>
-            <Label layoutX="64.0" layoutY="17.0" text="PAIN INFORMATION" textFill="WHITE">
+            <Label layoutX="61.0" layoutY="17.0" text="PAIN  INFORMATION" textFill="WHITE">
                <font>
                   <Font size="31.0" />
                </font>

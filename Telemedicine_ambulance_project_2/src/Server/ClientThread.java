@@ -25,143 +25,157 @@ import Server.Server_two;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
 /* Thread Class for each incoming client */
 public class ClientThread implements Runnable {
-        private ServerOnWindowController window;
-        private Patient patient;
-	/* The socket of the client */
-	private Socket clientSocket;
-	/* Server class from which thread was called */
-	private Server_two baseServer;
-	private ObjectInputStream fromClient;
-        private ObjectOutputStream toClient;
-	/* The name of the client */
-	private String clientName;
-        private String clientID;
-        private Ambulance clientAmbulance;
-        private String received="";
+    private ServerOnWindowController window;
+    private Patient patient;
+    /* The socket of the client */
+    private Socket clientSocket;
+    /* Server class from which thread was called */
+    private Server_two baseServer;
+    private ObjectInputStream fromClient;
+    /* The name of the client */
+    private String clientID;
+    private Ambulance clientAmbulance;
+    private String received="";
 
-	public ClientThread(Socket clientSocket, Server_two baseServer, ServerOnWindowController window) {
-		this.clientSocket=clientSocket;
-		this.baseServer = baseServer;
-                this.window = window;
-		try {
-                    /*
-                     * Reader to get all incoming messages that the client passes to the
-                     * server
-                     */
-                    fromClient = new ObjectInputStream(clientSocket.getInputStream());
+    private SocketAddress address;
+    private int port;
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void run() {
-            
-                try {
-                    Object tmp;
-                    tmp = fromClient.readObject();
-                    patient = (Patient) tmp;
-                    clientAmbulance = patient.getAmbulance();
-                    clientID=patient.getId();
-                    clientName=patient.getName();
-
-                    window.chatWindow.appendText(patient.getAmbulance()+":  connected \n");
-                    baseServer.patients.add(patient);
-
-
-                    ObjectOutputStream output=null;
-                    File file = new File("./Files/serverPatients.txt");
-
-                    try {
-                        output = new ObjectOutputStream(new FileOutputStream("./Files/serverPatients.txt"));
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(Pruebla.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                    Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                    for(Patient p: baseServer.patients){
-                        output.writeObject(p);
-                    }
-                    try{
-                        output.close();
-                    } catch (IOException ex) {
-                    Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    
-                            
-                    while (true) {
-                            clientSocket.getOutputStream().flush();
-                            clientSocket.getOutputStream().write(1);
-                            clientSocket.getOutputStream().flush();
-                            
-                            received = (String) fromClient.readObject();
-                            if(received.equals("check")){
-                                continue;
-                            }
-                            if (received.toLowerCase().contains("logout") || received=="-1") {
-                                window.chatWindow.appendText(patient.getAmbulance()+":  disconnected \n");
-                                baseServer.clientDisconnected(clientSocket);
-                                releaseResources();
-                                break;
-                            }
-                            window.chatWindow.appendText(patient.getAmbulance() + ":  " + received + "\n");
-                            //System.out.println("    Ambulance: " + received);
-                        
-                    }
-
-                } catch (IOException ex) {
-                    window.chatWindow.appendText(patient.getAmbulance()+":  disconnected \n");
-                    baseServer.clientDisconnected(clientSocket);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            
-        }
-        
-	public String getClientName() {
-		return this.clientName;
-	}
-
-	public Socket getClientSocket() {
-		return clientSocket;
-	}
-        
-        public Patient getPatient() {
-		return patient;
-	}
-
-        public ObjectInputStream getFromClient() {
-            return fromClient;
-        }
-
-	public void setClientSocket(Socket clientSocket) {
-		this.clientSocket = clientSocket;
-	}
-   
-        public void releaseResources() {
+    public ClientThread(Socket clientSocket, Server_two baseServer, ServerOnWindowController window) {
+            this.clientSocket=clientSocket;
+            this.address=clientSocket.getRemoteSocketAddress();
+            this.port=clientSocket.getPort();
+            this.baseServer = baseServer;
+            this.window = window;
             try {
-                fromClient.close();
-            } catch (IOException ex) {
-                Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+                /*
+                 * Reader to get all incoming messages that the client passes to the
+                 * server
+                 */
+                fromClient = new ObjectInputStream(clientSocket.getInputStream());
+
+            } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
             }
+    }
+
+    public void run() {
+
+        try {
+            Object tmp;
+            tmp = fromClient.readObject();
+            patient = (Patient) tmp;
+            clientAmbulance = patient.getAmbulance();
+            clientID=patient.getId();
+
+            window.chatWindow.appendText(patient.getAmbulance()+":  connected \n");
+            baseServer.patients.add(patient);
+
+
+            ObjectOutputStream output=null;
+            File file = new File("./Files/serverPatients.txt");
+
             try {
-                clientSocket.close();
+                output = new ObjectOutputStream(new FileOutputStream("./Files/serverPatients.txt"));
             } catch (IOException ex) {
-                Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            for(Patient p: baseServer.patients){
+                output.writeObject(p);
+            }
+            try{
+                output.close();
+            } catch (IOException ex) {
+            Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+
+            while (true) {
+                    clientSocket.getOutputStream().flush();
+                    clientSocket.getOutputStream().write(1);
+                    clientSocket.getOutputStream().flush();
+
+                    received = (String) fromClient.readObject();
+                    if(received.equals("check")){
+                        continue;
+                    }
+                    if (received.toLowerCase().contains("logout") || received=="-1") {
+                        window.chatWindow.appendText(patient.getAmbulance()+":  disconnected \n");
+                        baseServer.clientDisconnected(clientSocket, this);
+                        releaseResources();
+                        break;
+                    }
+                    window.chatWindow.appendText(patient.getAmbulance() + ":  " + received + "\n");
+                    //System.out.println("    Ambulance: " + received);
+
+            }
+
+        } catch (IOException ex) {
+            window.chatWindow.appendText(patient.getAmbulance()+":  disconnected \n");
+            baseServer.clientDisconnected(clientSocket, this);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+    }
+
+    public String getClientID() {
+            return this.clientID;
+    }
+    
+    public Ambulance getClientAmbulance() {
+            return this.clientAmbulance;
+    }
+    
+    public Socket getClientSocket() {
+            return clientSocket;
+    }
+
+    public Patient getPatient() {
+            return patient;
+    }
+
+    public SocketAddress getAddress() {
+        return address;
+    }
+
+    public int getPort() {
+        return port;
+    }    
+        
+    public ObjectInputStream getFromClient() {
+        return fromClient;
+    }
+
+    public void setClientSocket(Socket clientSocket) {
+            this.clientSocket = clientSocket;
+    }
+
+    public void releaseResources() {
+        try {
+            fromClient.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            clientSocket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
             
     }
 
     @Override
     public String toString() {
-        return "ClientThread{" + "clientName=" + clientName + '}';
+        return "ClientThread{" + "clientID=" + clientID + '}';
     }
         
 }
