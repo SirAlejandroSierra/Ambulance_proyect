@@ -62,8 +62,7 @@ public class ECGController implements Initializable {
         ecgGraphics.setTitle(""+lead);
         ecgGraphics.getData().addAll(series);
     }
-
-    }
+}
     
 
         /*

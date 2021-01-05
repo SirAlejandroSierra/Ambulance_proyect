@@ -13,6 +13,7 @@ import Patient.LevelUnknown;
 import Patient.Event;
 import Patient.BasicOptions;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -57,7 +58,7 @@ public class Patient implements Serializable {
     private BasicOptions dizziness;
     private String notes;
     
-    private Frame frame;
+    private ArrayList<Integer> recordedECG;
 
     public Patient() {
         this.date = null;
@@ -90,11 +91,11 @@ public class Patient implements Serializable {
         this.cough = null;
         this.dizziness = null;
         this.notes = "";
-        this.frame = null;
+        this.recordedECG = null;
     }
 
     
-    public Patient(String name, String id, boolean accurateAge, int age, Gender gender, boolean overweight, Float systolicPressure, Float diastolicPressure, LevelUnknown tension, Level heartRate, BasicOptions smoker, BasicOptions drinker, BasicOptions diabetic, LevelUnknown chosterol, Event previousEvent, Family familyHistory, BasicOptions chestPressure, BasicOptions chestPain, BasicOptions NeckPain, BasicOptions armPain, BasicOptions backPain, boolean shortnessOfBreath, boolean sweating, BasicOptions nausea, BasicOptions vomiting, BasicOptions anxiety, BasicOptions cough, BasicOptions dizziness, String notes, Frame frame) {
+    public Patient(String name, String id, boolean accurateAge, int age, Gender gender, boolean overweight, Float systolicPressure, Float diastolicPressure, LevelUnknown tension, Level heartRate, BasicOptions smoker, BasicOptions drinker, BasicOptions diabetic, LevelUnknown chosterol, Event previousEvent, Family familyHistory, BasicOptions chestPressure, BasicOptions chestPain, BasicOptions NeckPain, BasicOptions armPain, BasicOptions backPain, boolean shortnessOfBreath, boolean sweating, BasicOptions nausea, BasicOptions vomiting, BasicOptions anxiety, BasicOptions cough, BasicOptions dizziness, String notes, ArrayList<Integer> recordedECG) {
         this.name = name;
         this.id = id;
         this.accurateAge = accurateAge;
@@ -124,7 +125,7 @@ public class Patient implements Serializable {
         this.cough = cough;
         this.dizziness = dizziness;
         this.notes = notes;
-        this.frame = frame;
+        this.recordedECG = recordedECG;
     }
 
     public void setBasicInformation(String name, String id, boolean approxAge, int age, Gender gender, boolean overweight) {
@@ -170,8 +171,11 @@ public class Patient implements Serializable {
 
     }
     
-    public void setECG (Frame frame){
-        this.frame = frame;
+    public void setECG (ArrayList<Integer> ecgValues){
+        this.recordedECG = ecgValues;
+    }
+    public ArrayList getRecordedECG(){
+        return recordedECG;
     }
 
     public static long getSerialVersionUID() {
@@ -302,9 +306,6 @@ public class Patient implements Serializable {
         return notes;
     }
     
-    public Frame getFrame(){
-        return frame;
-    }
 
     public void setAmbulance(Ambulance ambulance) {
         this.ambulance = ambulance;
@@ -430,9 +431,7 @@ public class Patient implements Serializable {
         this.notes = notes;
     }
     
-    public void setFrame (Frame frame){
-        this.frame = frame;
-    }
+
 
     public String print() {
         return ambulance + "\n"

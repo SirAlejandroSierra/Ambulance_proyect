@@ -6,7 +6,6 @@
 package Client;
 
 import BITalino.BITalino;
-import BITalino.BITalinoException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,10 +25,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import BITalino.BitalinoDemo;
-import static BITalino.BitalinoDemo.frame;
+import Patient.Patient;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * FXML Controller class
@@ -57,15 +54,13 @@ public class BitalinoRecordingDataController implements Initializable {
     
     BITalino bitalino = null;
     ArrayList<Integer> ecgValues3 = new ArrayList();
+    Patient patient = new Patient();
     
     @Override
     public void initialize(URL url, ResourceBundle rb)  {
       loadData();
-      
-        System.out.println("Estoy aquí");
         //BitalinoDemo.startECGvalues();
-        ecgValues3 = BitalinoDemo.ecgValues;
-      
+        ecgValues3 = BitalinoDemo.ecgValues;  
     }    
     
     @FXML
@@ -78,6 +73,7 @@ public class BitalinoRecordingDataController implements Initializable {
             screen.setText("                RECORDING...");
             setLead();
             BitalinoDemo.startECGvalues();
+            bitalinoSetting();
         }
     }
     
@@ -112,6 +108,9 @@ public class BitalinoRecordingDataController implements Initializable {
         return true;
     }
 
+    public void bitalinoSetting(){
+        patient.setECG(ecgValues3);
+    }
 
     
     
