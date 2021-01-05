@@ -10,9 +10,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.BitalinoRecordingDataController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.BitalinoRecordingDataController">
    <children>
-      <Button fx:id="next" layoutX="535.0" layoutY="359.0" mnemonicParsing="false" onAction="#startBitalino" text="NEXT" />
+      <Button fx:id="next" layoutX="535.0" layoutY="359.0" mnemonicParsing="false" onAction="#changeSceneToECG" text="NEXT" />
       <Label layoutX="258.0" prefHeight="66.0" prefWidth="85.0" text="ECG">
          <font>
             <Font name="Baghdad Regular" size="36.0" />

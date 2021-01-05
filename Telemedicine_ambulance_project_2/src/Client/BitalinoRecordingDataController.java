@@ -38,6 +38,7 @@ import java.util.logging.Logger;
  */
 public class BitalinoRecordingDataController implements Initializable {
  
+    public static String lead;
     ObservableList list = FXCollections.observableArrayList();
     BitalinoDemo bitalinodemo = new BitalinoDemo();
     @FXML
@@ -62,25 +63,8 @@ public class BitalinoRecordingDataController implements Initializable {
       loadData();
       
         System.out.println("Estoy aquí");
-        ecgValues3 = BitalinoDemo.getECGValues();
-        //try{
-        //bitalinodemo.startECGvalues();
-        //}catch (Exception e){
-          //  e.printStackTrace();
-            //System.out.println(e);
-        //}
         //BitalinoDemo.startECGvalues();
-        
-        
-        //starBitalino();
-        //ArrayList<Integer> ecgValues = new ArrayList();
-        /*ecgValues.add(14);
-        ecgValues.add(12);
-        ecgValues.add(9);   
-        */
-        System.out.println(ecgValues3.get(0));
-        System.out.println(ecgValues3.get(1));
-        System.out.println(ecgValues3.get(2));
+        ecgValues3 = BitalinoDemo.ecgValues;
       
     }    
     
@@ -90,9 +74,11 @@ public class BitalinoRecordingDataController implements Initializable {
         if (ecg == null){
             screen.setText("  PLEASE SELECT THE LEAD");
         }
-        else 
+        else {
             screen.setText("                RECORDING...");
-       
+            setLead();
+            BitalinoDemo.startECGvalues();
+        }
     }
     
     
@@ -108,20 +94,30 @@ public class BitalinoRecordingDataController implements Initializable {
        choicebox.getItems().addAll(list);
     }
     
+    private void setLead(){
+        String l;
+        l = choicebox.getValue();
+        boolean check = checkString(l);
+        if (check){
+            this.lead = l;
+        }
+    }
+    public static String getLead(){
+        return lead;
+    }
+        boolean checkString(String s) {
+        if(s == null) { // checks if the String is null
+            return false;
+        }
+        return true;
+    }
+
 
     
+    
+    
+    
     @FXML
-    public void startBitalino(ActionEvent event)throws IOException {
-       
-      //  BitalinoDemo.startECGvalues();
-       // ArrayList<Integer> ecgValues = BitalinoDemo.getECGValues();
-        //System.out.println(ecgValues.get(0));
-        
-    }
-    
-    
-    
-    
     public void changeSceneToECG(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("ECG.fxml"));
@@ -140,60 +136,6 @@ public class BitalinoRecordingDataController implements Initializable {
         
     }
     
-    public void starBitalino(){
-        
-        //ArrayList<Integer> ecgValues = new ArrayList<Integer>();
-        try {
-            bitalino = new BITalino();
-            //find devices
-            //Only works on some OS
-            // Vector<RemoteDevice> devices = bitalino.findDevices();
-            // System.out.println(devices);
-
-            String macAddress = "98:D3:91:FD:69:70";
-            int SamplingRate = 10;
-            bitalino.open(macAddress, SamplingRate);
-
-            // start acquisition on analog channels A2 and A6
-            //If you want A1, A3 and A4 you should use {0,2,3}
-            int[] channelsToAcquire = {1};
-            bitalino.start(channelsToAcquire);
-
-            //read 10000 samples
-            for (int j = 0; j < 10; j++) {
-
-                //Read a block of 10 samples 
-                frame = bitalino.read(10);
-                
-
-                System.out.println("size block: " + frame.length);
-
-                //Print the samples
-                for (int i = 0; i < frame.length; i++) {
-                    System.out.println((j * 10 + i) + " seq: " + frame[i].seq + " --> "
-                            + frame[i].analog[0]+ " ");
-                    ecgValues3.add(frame[i].analog[0]);
-                    System.out.println(ecgValues3.get(j * 10 + i));
-                    
-                }
-            }
-            //stop acquisition
-            bitalino.stop();
-        } catch (BITalinoException ex) {
-            Logger.getLogger(BitalinoDemo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Throwable ex) {
-            Logger.getLogger(BitalinoDemo.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                //close bluetooth connection
-                if (bitalino != null) {
-                    bitalino.close();
-                }
-            } catch (BITalinoException ex) {
-                Logger.getLogger(BitalinoDemo.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-   }
+   
     }
 

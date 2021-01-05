@@ -10,11 +10,12 @@ import java.util.logging.Logger;
 public class BitalinoDemo {
 
     public static Frame[] frame;
-    static ArrayList<Integer> ecgValues = new ArrayList();
+    public static ArrayList<Integer> ecgValues = new ArrayList();
 
-    
+    /*
     public static ArrayList<Integer> getECGValues(){
         BITalino bitalino = null;
+        ArrayList<Integer> ecgValues = new ArrayList();
         ecgValues =null;
         //ArrayList<Integer> ecgValues = new ArrayList();
         //ArrayList<Integer> ecgValues = new ArrayList<Integer>();
@@ -79,18 +80,23 @@ public class BitalinoDemo {
         System.out.println(ecgValues.get(99));
        
         return ecgValues;
-    }
-/*
+    }*/
+
     public static void main(String[] args) {
         startECGvalues();
-    }*/
+    }
+
+    public static void setEcgValues(ArrayList<Integer> ecgValues) {
+        BitalinoDemo.ecgValues = ecgValues;
+    }
+    
     public ArrayList<Integer> getEcgValues() {
         return ecgValues;
     }
     
    public static void startECGvalues(){
         BITalino bitalino = null;
-        ArrayList<Integer> ecgValues2 = new ArrayList();
+        //ArrayList<Integer> ecgValues2 = new ArrayList();
         //ArrayList<Integer> ecgValues = new ArrayList<Integer>();
         try {
             bitalino = new BITalino();
@@ -100,7 +106,7 @@ public class BitalinoDemo {
             // System.out.println(devices);
 
             String macAddress = "98:D3:91:FD:69:70";
-            int SamplingRate = 10;
+            int SamplingRate = 100;
             bitalino.open(macAddress, SamplingRate);
 
             // start acquisition on analog channels A2 and A6
@@ -109,9 +115,9 @@ public class BitalinoDemo {
             bitalino.start(channelsToAcquire);
 
             //read 10000 samples
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 3; j++) {
 
-                //Read a block of 10 samples 
+                //Read a block of 100 samples 
                 frame = bitalino.read(10);
                 
 
@@ -121,11 +127,13 @@ public class BitalinoDemo {
                 for (int i = 0; i < frame.length; i++) {
                     System.out.println((j * 10 + i) + " seq: " + frame[i].seq + " --> "
                             + frame[i].analog[0]+ " ");
-                    ecgValues2.add(frame[i].analog[0]);
-                    System.out.println(ecgValues2.get(j * 10 + i));
+                    ecgValues.add(frame[i].analog[0]);
+                    System.out.println(ecgValues.get(j * 10 + i));
                     
                 }
+                
             }
+            setEcgValues(ecgValues);
             //stop acquisition
             bitalino.stop();
         } catch (BITalinoException ex) {
