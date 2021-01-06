@@ -102,6 +102,8 @@ public class ShowPatientController implements Initializable {
 
     @FXML
     private Button SaveButton;
+    @FXML
+    private Button recordECG;
 
     public void initData(Patient paciente) throws IOException {
         this.patient = paciente;
@@ -141,6 +143,7 @@ public class ShowPatientController implements Initializable {
         notesLabel.setText(patient.getNotes());
     }
 
+    @FXML
     public void backButtonPushed(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("PainInfo.fxml"));
@@ -194,6 +197,28 @@ public class ShowPatientController implements Initializable {
             e.printStackTrace();}
 
     }*/
+    
+    @FXML
+    public void recordECGButtonPushed(ActionEvent event)throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+
+        loader.setLocation(getClass().getResource("BitalinoRecordingData.fxml"));
+        Parent bitalinoParent = loader.load();
+
+        Scene bitalinoScene = new Scene(bitalinoParent);
+
+        BitalinoRecordingDataController controller = loader.getController();
+        controller.loadData();
+        
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        
+
+        window.setScene(bitalinoScene);
+        window.show();
+        
+    }
+    
+    @FXML
     public void nextButtonPushed(ActionEvent event) throws IOException {
 
         FXMLLoader loader = new FXMLLoader();
@@ -212,7 +237,7 @@ public class ShowPatientController implements Initializable {
             System.out.println("Socket is connected with server!");
             toServer = new ObjectOutputStream(socket.getOutputStream());
 
-            toServer.writeObject(patient);//patient es un ojbejto de la clase creada por adri
+            toServer.writeObject(patient);//patient es un objeto de la clase creada por adri
             toServer.flush();
 
             controller.initData(patient, window, socket, toServer);
@@ -222,9 +247,9 @@ public class ShowPatientController implements Initializable {
             window.show();
 
         } catch (Exception e) {
-            FXMLLoader loader2 = new FXMLLoader();
-            loader2.setLocation(getClass().getResource("ErrorConnection.fxml"));
-            Parent tableViewParent = loader2.load();
+            FXMLLoader loader3 = new FXMLLoader();
+            loader3.setLocation(getClass().getResource("ErrorConnection.fxml"));
+            Parent tableViewParent = loader3.load();
 
             Scene secondScene = new Scene(tableViewParent);
 

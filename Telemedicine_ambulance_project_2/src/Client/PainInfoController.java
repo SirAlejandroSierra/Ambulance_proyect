@@ -230,6 +230,7 @@ public class PainInfoController implements Initializable {
         this.patient= paciente;
     }
     
+    @FXML
     public void chestPainSetting(){
         if(this.chestPain.getSelectedToggle().equals(this.YesCPn)){
             patient.setChestPain(BasicOptions.YES);
@@ -242,6 +243,7 @@ public class PainInfoController implements Initializable {
         }
     }
     
+    @FXML
     public void chestPresureSetting(){
         if(this.chestPresure.getSelectedToggle().equals(this.YesCPrs)){
             patient.setChestPressure(BasicOptions.YES);
@@ -254,6 +256,7 @@ public class PainInfoController implements Initializable {
         }
     }
     
+    @FXML
     public void neckPainSetting(){
         if(this.neckPain.getSelectedToggle().equals(this.YesNP)){
             patient.setNeckPain(BasicOptions.YES);
@@ -266,6 +269,7 @@ public class PainInfoController implements Initializable {
         }
     }
     
+    @FXML
     public void armPainSetting(){
         if(this.armPain.getSelectedToggle().equals(this.YesAP)){
             patient.setArmPain(BasicOptions.YES);
@@ -278,6 +282,7 @@ public class PainInfoController implements Initializable {
         }
     }
     
+    @FXML
     public void backPainSetting(){
         if(this.backPain.getSelectedToggle().equals(this.YesBP)){
             patient.setBackPain(BasicOptions.YES);
@@ -290,6 +295,7 @@ public class PainInfoController implements Initializable {
         }
     }
     
+    @FXML
     public void shortnessSetting(){
         if(this.shortBreath.getSelectedToggle().equals(this.YesSB)){
             patient.setShortnessOfBreath(true);
@@ -299,6 +305,7 @@ public class PainInfoController implements Initializable {
         }
     }
     
+    @FXML
     public void sweatingSetting(){
         if(this.sweating.getSelectedToggle().equals(this.yesSw)){
             patient.setSweating(true);
@@ -308,6 +315,7 @@ public class PainInfoController implements Initializable {
         }
     }
     
+    @FXML
     public void nauseasSetting(){
         if(this.nauseas.getSelectedToggle().equals(this.YesNa)){
             patient.setNausea(BasicOptions.YES);
@@ -320,6 +328,7 @@ public class PainInfoController implements Initializable {
         }
     }
     
+    @FXML
     public void vomitingSetting(){
         if(this.vomiting.getSelectedToggle().equals(this.YesVo)){
             patient.setVomiting(BasicOptions.YES);
@@ -332,6 +341,7 @@ public class PainInfoController implements Initializable {
         }   
     }
     
+    @FXML
     public void anxietySetting(){
         if(this.anxiety.getSelectedToggle().equals(this.YesAnx)){
             patient.setAnxiety(BasicOptions.YES);
@@ -344,6 +354,7 @@ public class PainInfoController implements Initializable {
         }
     }
     
+    @FXML
     public void coughSetting(){
         if(this.cough.getSelectedToggle().equals(this.YesCo)){
             patient.setCough(BasicOptions.YES);
@@ -356,6 +367,7 @@ public class PainInfoController implements Initializable {
         }
     }
     
+    @FXML
     public void dizzinessSetting(){
         if(this.dizziness.getSelectedToggle().equals(this.YesDizz)){
             patient.setDizziness(BasicOptions.YES);
@@ -394,21 +406,31 @@ public class PainInfoController implements Initializable {
         setNotes();
         
         FXMLLoader loader = new FXMLLoader();
+        //FXMLLoader loader2 = new FXMLLoader();
         loader.setLocation(getClass().getResource("ShowPatient.fxml"));
+        //loader2.setLocation(getClass().getResource("BitalinoRecordingDataController.fxml"));
         Parent showPatientParent = loader.load();
+        //Parent bitalinoRecordingParent = loader2.load();
         
         Scene painInfoScene = new Scene(showPatientParent);
+        //Scene bitalinoRecordingScene = new Scene(bitalinoRecordingParent);
+        
         ShowPatientController controller = loader.getController();
+        //BitalinoRecordingDataController controller2 = loader2.getController();
+        
         controller.initData(patient);
+        //controller2.init();
             //This line gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
             window.setScene(painInfoScene);
+            //window.setScene(bitalinoRecordingScene);
             window.show();
         
     }
     
     
+    @FXML
     public void backButtonPushed(ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("MedicalInfo.fxml"));

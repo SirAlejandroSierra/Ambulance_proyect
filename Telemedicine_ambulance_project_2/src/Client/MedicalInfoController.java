@@ -403,6 +403,8 @@ public class MedicalInfoController implements Initializable {
     }
     
     
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tensionCond = new ToggleGroup();

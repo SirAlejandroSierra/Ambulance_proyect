@@ -56,12 +56,13 @@ public class BitalinoRecordingDataController implements Initializable {
     ArrayList<Integer> ecgValues3 = new ArrayList();
     Patient patient = new Patient();
     
-    @Override
-    public void initialize(URL url, ResourceBundle rb)  {
+
+    /*
+    public void init()  {
       loadData();
         //BitalinoDemo.startECGvalues();
-        ecgValues3 = BitalinoDemo.ecgValues;  
-    }    
+        //ecgValues3 = BitalinoDemo.ecgValues;  
+    }    */
     
     @FXML
     private void displayValue(ActionEvent event){
@@ -78,7 +79,7 @@ public class BitalinoRecordingDataController implements Initializable {
     }
     
     
-    private void loadData(){
+    public void loadData(){
        list.removeAll(list);
        String a = "Lead I";
        String b = "Lead II";
@@ -126,13 +127,18 @@ public class BitalinoRecordingDataController implements Initializable {
         //access the controller and call a method
         ECGController controller = loader.getController();
       
- 
+        
             //This line gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
             window.setScene(ecgScene);
             window.show();
         
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
    

@@ -26,6 +26,6 @@
       </ImageView>
       <ChoiceBox fx:id="choicebox" layoutX="436.0" layoutY="147.0" prefWidth="150.0" />
       <Text fx:id="screen" layoutX="487.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="screen" layoutX="432.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="159.0" />
+      <Text fx:id="screen2" layoutX="432.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="159.0" />
    </children>
 </AnchorPane>

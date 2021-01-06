@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="610.0" prefWidth="643.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ShowPatientController">
@@ -61,7 +63,7 @@
             </GridPane>
          </children>
       </VBox>
-        <Button fx:id="SaveButton" layoutX="583.0" layoutY="569.0" onAction="#nextButtonPushed" text="Save" />
+        <Button fx:id="SaveButton" layoutX="494.0" layoutY="569.0" onAction="#nextButtonPushed" text="Save and record ECG" />
       <VBox layoutX="33.0" layoutY="88.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="197.0" prefWidth="285.0" spacing="10.0">
          <children>
             <Label text="Basic Information">
@@ -175,5 +177,15 @@
             </Label>
          </children>
       </Pane>
+      <Button fx:id="recordECG" layoutX="502.0" layoutY="530.0" mnemonicParsing="false" onAction="#recordECGButtonPushed" text="ECG RECORDING">
+         <textFill>
+            <RadialGradient centerX="0.4943977591036415" centerY="0.5143884892086331" radius="0.8431952662721893">
+               <stops>
+                  <Stop color="#ff2600" />
+                  <Stop color="#dabb64" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
     </children>
 </AnchorPane>
