@@ -201,14 +201,13 @@ public class ShowPatientController implements Initializable {
     @FXML
     public void recordECGButtonPushed(ActionEvent event)throws IOException {
         FXMLLoader loader = new FXMLLoader();
-
         loader.setLocation(getClass().getResource("BitalinoRecordingData.fxml"));
         Parent bitalinoParent = loader.load();
 
         Scene bitalinoScene = new Scene(bitalinoParent);
 
-        BitalinoRecordingDataController controller = loader.getController();
-        controller.loadData();
+        //BitalinoRecordingDataController controller = loader.getController();
+        //controller.loadData();
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         

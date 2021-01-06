@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import BITalino.BitalinoDemo;
 import Patient.Patient;
 import java.util.ArrayList;
+import javafx.scene.control.Label;
 
 /**
  * FXML Controller class
@@ -35,16 +36,19 @@ import java.util.ArrayList;
  */
 public class BitalinoRecordingDataController implements Initializable {
  
-    public static String lead;
+    public String lead;
     ObservableList list = FXCollections.observableArrayList();
     BitalinoDemo bitalinodemo = new BitalinoDemo();
+    
     @FXML
-    private ChoiceBox<String> choicebox;
+    private ChoiceBox choicebox;
+    
+    @FXML Label label1;
+    
     
     @FXML
     private Text screen;
-    @FXML
-    private TextField screen2;
+
     @FXML
     private Button next;
     @FXML
@@ -66,40 +70,27 @@ public class BitalinoRecordingDataController implements Initializable {
     
     @FXML
     private void displayValue(ActionEvent event){
-        String ecg = choicebox.getValue();
+        String ecg = choicebox.getValue().toString();
         if (ecg == null){
-            screen.setText("  PLEASE SELECT THE LEAD");
+            label1.setText("  PLEASE SELECT THE LEAD");
         }
         else {
-            screen.setText("                RECORDING...");
+            label1.setText("                RECORDING...");
             setLead();
             BitalinoDemo.startECGvalues();
             bitalinoSetting();
         }
     }
     
-    
-    public void loadData(){
-       list.removeAll(list);
-       String a = "Lead I";
-       String b = "Lead II";
-       String c = "Lead III";
-       String d = "Lead aVR";
-       String e = "Lead aVL";
-       String f = "Lead aVF";
-       list.addAll(a,b,c,d,e,f);
-       choicebox.getItems().addAll(list);
-    }
-    
     private void setLead(){
         String l;
-        l = choicebox.getValue();
+        l = choicebox.getValue().toString();
         boolean check = checkString(l);
         if (check){
             this.lead = l;
         }
     }
-    public static String getLead(){
+    public  String getLead(){
         return lead;
     }
         boolean checkString(String s) {
@@ -126,7 +117,7 @@ public class BitalinoRecordingDataController implements Initializable {
         Scene ecgScene = new Scene(ecgLoad);             
         //access the controller and call a method
         ECGController controller = loader.getController();
-      
+        controller.initData(lead);
         
             //This line gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -137,8 +128,11 @@ public class BitalinoRecordingDataController implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void initialize(URL url, ResourceBundle rb) {
+        choicebox.getItems().addAll("Lead I","Lead II","Lead III","Lead aVR","Lead aVL","Lead aVF");
+        choicebox.setValue("Lead I");
+        
+        label1.setText("");
     }
     
    

@@ -49,6 +49,10 @@ public class ECGController implements Initializable {
      * Initializes the controller class.
      */
  
+    @FXML
+    public void initData(String lead){
+        this.lead=lead;
+    }
 
   
     @Override
@@ -58,7 +62,6 @@ public class ECGController implements Initializable {
         for (int i = 0; i < ecgValues.size() ; i++) {
            series.getData().add(new XYChart.Data(""+i,ecgValues.get(i)));  
         }
-        lead = BitalinoRecordingDataController.getLead();
         ecgGraphics.setTitle(""+lead);
         ecgGraphics.getData().addAll(series);
     }
