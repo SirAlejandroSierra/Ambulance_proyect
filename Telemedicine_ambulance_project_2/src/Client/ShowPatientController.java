@@ -105,6 +105,10 @@ public class ShowPatientController implements Initializable {
     private Button SaveButton;
     @FXML
     private Button recordECG;
+    @FXML
+    private Label labelECGRecorded;
+    @FXML
+    private Label labelECG;
 
     public void initData(Patient paciente, Socket socket) throws IOException {
         this.patient = paciente;
@@ -143,6 +147,7 @@ public class ShowPatientController implements Initializable {
         coughLabel.setText(patient.getCough().toString());
         dizzinessLabel.setText(patient.getDizziness().toString());
         notesLabel.setText(patient.getNotes());
+        labelECG.setText("");
     }
 
     @FXML
@@ -203,9 +208,10 @@ public class ShowPatientController implements Initializable {
     public void ECGnextButton(Patient patient, Socket socket){
         this.socket=socket;
         if(patient.getRecordedECG().isEmpty()){
-            recordECG.setText("ECG not recorded yet");
+           // recordECG.setText("ECG not recorded yet");
+            labelECG.setText("ECG not recorded yet");
         }else{
-            recordECG.setText("ECG succesfully recorded ");
+            labelECG.setText("ECG succesfully recorded ");
         }
         this.patient = patient;
     }

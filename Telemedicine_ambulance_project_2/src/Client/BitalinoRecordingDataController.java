@@ -64,18 +64,20 @@ public class BitalinoRecordingDataController implements Initializable {
     public void init(Patient patient, Socket socket)  {
       this.patient = patient;
       this.socket = socket;
+      this.patient.setECG(new ArrayList());
     }    
     
     @FXML
     private void displayValue(ActionEvent event){
         String ecg = choicebox.getValue().toString();
-        if (ecg == null){
-            label1.setText("  PLEASE SELECT THE LEAD");
+        if (ecg.equalsIgnoreCase("")){
+            label1.setText(" PLEASE SELECT THE LEAD");
         }
         else {
             label1.setText("                RECORDING...");
             setLead();
             BitalinoDemo.startECGvalues();
+            this.ecgValues3 = BitalinoDemo.ecgValues;
             bitalinoSetting();
         }
     }
@@ -101,6 +103,8 @@ public class BitalinoRecordingDataController implements Initializable {
     }
 
     public void bitalinoSetting(){
+        patient.setECGToZero();
+        
         patient.setECG(ecgValues3);
         label1.setText("     DONE");
         next.setDisable(false);
@@ -150,8 +154,9 @@ public class BitalinoRecordingDataController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         choicebox.getItems().addAll("Lead I","Lead II","Lead III","Lead aVR","Lead aVL","Lead aVF");
         //choicebox.setValue("Lead I");
+        choicebox.setValue("");
         
-        label1.setText("");
+        label1.setText(" ");
         next.setDisable(true);
     }
     

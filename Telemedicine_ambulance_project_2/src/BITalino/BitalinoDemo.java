@@ -96,6 +96,7 @@ public class BitalinoDemo {
     
    public static void startECGvalues(){
         BITalino bitalino = null;
+        
         //ArrayList<Integer> ecgValues2 = new ArrayList();
         //ArrayList<Integer> ecgValues = new ArrayList<Integer>();
         try {
@@ -133,6 +134,7 @@ public class BitalinoDemo {
                 }
                 
             }
+            
             setEcgValues(ecgValues);
             //stop acquisition
             bitalino.stop();

@@ -115,7 +115,7 @@ public class ECGController implements Initializable {
     @FXML
     public void recordAgain(ActionEvent event)throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("BitalinoRecordingDataController.fxml"));
+        loader.setLocation(getClass().getResource("BitalinoRecordingData.fxml"));
         Parent bitalinoRecordinParent = loader.load();
 
         Scene bitalinoScene = new Scene(bitalinoRecordinParent);

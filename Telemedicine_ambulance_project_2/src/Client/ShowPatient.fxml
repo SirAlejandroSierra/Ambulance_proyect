@@ -12,7 +12,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="610.0" prefWidth="643.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ShowPatientController">
+<AnchorPane id="AnchorPane" prefHeight="610.0" prefWidth="643.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ShowPatientController">
     <children>
       <VBox layoutX="33.0" layoutY="317.0" prefHeight="240.0" prefWidth="302.0" spacing="10.0">
          <children>
@@ -188,5 +188,6 @@
          </textFill>
       </Button>
       <Label fx:id="labelECGRecorded" layoutX="353.0" layoutY="569.0" prefHeight="27.0" prefWidth="86.0" textFill="#1f9058" />
+      <Label fx:id="labelECG" layoutX="498.0" layoutY="535.0" text="Label" />
     </children>
 </AnchorPane>

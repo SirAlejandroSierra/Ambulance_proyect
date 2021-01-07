@@ -91,7 +91,7 @@ public class Patient implements Serializable {
         this.cough = null;
         this.dizziness = null;
         this.notes = "";
-        this.recordedECG = new ArrayList<Integer>();
+        this.recordedECG = new ArrayList();
     }
 
     
@@ -173,6 +173,9 @@ public class Patient implements Serializable {
     
     public void setECG (ArrayList<Integer> ecgValues){
         this.recordedECG = ecgValues;
+    }
+    public void setECGToZero(){
+        this.recordedECG.clear();
     }
     public ArrayList getRecordedECG(){
         return recordedECG;
