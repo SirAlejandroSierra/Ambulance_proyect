@@ -229,6 +229,8 @@ public class ShowPatientController implements Initializable {
     
     @FXML
     public void nextButtonPushed(ActionEvent event) throws IOException {
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        
         if(patient.getRecordedECG().isEmpty()){
     
             FXMLLoader loader = new FXMLLoader();
@@ -237,6 +239,9 @@ public class ShowPatientController implements Initializable {
 
             Scene secondScene = new Scene(saveWithoutECG);
 
+            SaveWithoutECGController controller = loader.getController();
+            controller.initData(patient, window);
+            
             Stage secondStage = new Stage();
             secondStage.setTitle("Save without ECG");
             secondStage.setScene(secondScene);
@@ -244,46 +249,45 @@ public class ShowPatientController implements Initializable {
             secondStage.show();
             
         }else{
-        FXMLLoader loader = new FXMLLoader();
+            FXMLLoader loader = new FXMLLoader();
 
-        loader.setLocation(getClass().getResource("ChatClient.fxml"));
-        Parent clientChatParent = loader.load();
+            loader.setLocation(getClass().getResource("ChatClient.fxml"));
+            Parent clientChatParent = loader.load();
 
-        Scene clientChatScene = new Scene(clientChatParent);
+            Scene clientChatScene = new Scene(clientChatParent);
 
-        ChatClientController controller = loader.getController();
+            ChatClientController controller = loader.getController();
 
-        //This line gets the Stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        try {
-            socket = new Socket("localhost", 9000);
-            System.out.println("Socket is connected with server!");
-            toServer = new ObjectOutputStream(socket.getOutputStream());
+            //This line gets the Stage information
+            
+            try {
+                socket = new Socket("localhost", 9000);
+                System.out.println("Socket is connected with server!");
+                toServer = new ObjectOutputStream(socket.getOutputStream());
 
-            toServer.writeObject(patient);//patient es un objeto de la clase creada por adri
-            toServer.flush();
+                toServer.writeObject(patient);//patient es un objeto de la clase creada por adri
+                toServer.flush();
 
-            controller.initData(patient, window, socket, toServer);
+                controller.initData(patient, window, socket, toServer);
 
-            window.setScene(clientChatScene);
+                window.setScene(clientChatScene);
 
-            window.show();
+                window.show();
 
-        } catch (Exception e) {
-            FXMLLoader loader3 = new FXMLLoader();
-            loader3.setLocation(getClass().getResource("ErrorConnection.fxml"));
-            Parent tableViewParent = loader3.load();
+            } catch (Exception e) {
+                FXMLLoader loader3 = new FXMLLoader();
+                loader3.setLocation(getClass().getResource("ErrorConnection.fxml"));
+                Parent tableViewParent = loader3.load();
 
-            Scene secondScene = new Scene(tableViewParent);
+                Scene secondScene = new Scene(tableViewParent);
 
-            Stage secondStage = new Stage();
-            secondStage.setTitle("Error");
-            secondStage.setScene(secondScene);
+                Stage secondStage = new Stage();
+                secondStage.setTitle("Error");
+                secondStage.setScene(secondScene);
 
-            secondStage.show();
+                secondStage.show();
+            }
         }
-        }
-
     }
 
     @Override

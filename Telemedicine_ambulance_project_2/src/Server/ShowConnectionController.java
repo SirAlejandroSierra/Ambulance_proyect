@@ -9,9 +9,14 @@ import Patient.Patient;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 /**
  *
@@ -132,43 +137,26 @@ public class ShowConnectionController implements Initializable {
         dizzinessLabel.setText(patient.getDizziness().toString());
         notesLabel.setText(patient.getNotes());
     }
-
-    /*
-    public void savePatientButtonPushed(ActionEvent event) throws IOException{
-        /*
+    
+    @FXML 
+    public void showECG(ActionEvent event) throws IOException{
+        
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("FXMLDocument_2.fxml"));
-        Parent painInfoParent = loader.load();
+        loader.setLocation(getClass().getResource("ECG.fxml"));
+        Parent parent = loader.load();
 
-        Scene painInfoScene = new Scene(painInfoParent);
-        PainInfoController controller = loader.getController();
-        controller.initDataBack(patient);
+        Scene secondScene = new Scene(parent);
 
+        ECGController controller = loader.getController();
+        controller.initData(patient);
+            
+        Stage secondStage = new Stage();
+        secondStage.setTitle("ECG");
+        secondStage.setScene(secondScene);
 
-            //This line gets the Stage information
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        secondStage.show();
+    }
 
-        window.setScene(painInfoScene);
-        window.show();
-
-        try{
-            FileOutputStream f = new FileOutputStream(new File("Objects.txt"));
-            ObjectOutputStream o = new ObjectOutputStream(f);
-
-                // Write objects to file
-
-            o.writeObject(patient);
-
-            o.close();
-            f.close();
-
-            Stage stage = (Stage) SaveButton.getScene().getWindow();
-            stage.close();
-
-        }catch(IOException e){
-            e.printStackTrace();}
-
-    }*/
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 // TODO

@@ -31,6 +31,7 @@ public class SaveWithoutECGController implements Initializable {
     Patient patient = new Patient();
     ObjectOutputStream toServer;
     Socket socket;
+    Stage stage;
     
     @FXML
     private Button yes;
@@ -45,10 +46,17 @@ public class SaveWithoutECGController implements Initializable {
         // TODO
     }    
     
+    @FXML 
+    public void initData (Patient p, Stage s){
+        this.patient=p;
+        this.stage=s;
+    }
+    
     
     @FXML
     public void yesButtonPushed(ActionEvent event) throws IOException {
-    FXMLLoader loader = new FXMLLoader();
+        
+        FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("ChatClient.fxml"));
         Parent clientChatParent = loader.load();
         Scene clientChatScene = new Scene(clientChatParent);
@@ -68,6 +76,7 @@ public class SaveWithoutECGController implements Initializable {
             window.setScene(clientChatScene);
 
             window.show();
+            stage.close();
 
         } catch (Exception e) {
             FXMLLoader loader3 = new FXMLLoader();
@@ -86,6 +95,8 @@ public class SaveWithoutECGController implements Initializable {
 
     @FXML
     public void noButtonPushed(ActionEvent event) throws IOException {
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.close();
         //CERRAR LA SEGUNDA PANTALLA QUE APARECE
         //ABRIR DE NUEVO LA OTRA CON INIT
         

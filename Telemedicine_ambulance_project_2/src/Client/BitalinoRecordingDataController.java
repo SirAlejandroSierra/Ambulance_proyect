@@ -86,10 +86,12 @@ public class BitalinoRecordingDataController implements Initializable {
             this.lead = l;
         }
     }
+    
     public  String getLead(){
         return lead;
     }
-        boolean checkString(String s) {
+    
+    boolean checkString(String s) {
         if(s == null) { // checks if the String is null
             return false;
         }
@@ -98,11 +100,9 @@ public class BitalinoRecordingDataController implements Initializable {
 
     public void bitalinoSetting(){
         patient.setECG(ecgValues3);
+        label1.setText("     DONE");
+        next.setDisable(true);
     }
-
-    
-    
-    
     
     @FXML
     public void changeSceneToECG(ActionEvent event) throws IOException {
@@ -133,6 +133,7 @@ public class BitalinoRecordingDataController implements Initializable {
         //access the controller and call a method
         ShowPatientController controller = loader.getController();
         //controller.initData(lead, patient);
+        controller.initData(patient);
         
             //This line gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -148,8 +149,9 @@ public class BitalinoRecordingDataController implements Initializable {
         //choicebox.setValue("Lead I");
         
         label1.setText("");
+        next.setDisable(true);
     }
     
    
-    }
+}
 

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Client;
+package Server;
 
 import BITalino.BITalino;
 import BITalino.BITalinoException;
@@ -41,7 +41,6 @@ import javafx.stage.Stage;
 public class ECGController implements Initializable {
 
     //Frame frame = new Frame();
-    String lead;
     @FXML
     private NumberAxis y;
     @FXML
@@ -49,84 +48,33 @@ public class ECGController implements Initializable {
     @FXML
     private LineChart<?, ?> ecgGraphics;
     
-    ArrayList<Integer> ecgValues = new ArrayList();
+    ArrayList<Integer> ecgValues = new ArrayList<Integer>();
    // XYChart.Series series = new XYChart.Series();
     Patient patient;
-    @FXML
-    private Button exit;
-    @FXML
-    private Button recordAgain;
     XYChart.Series series;
 
-    
- 
-    
-    public void initData(String lead, Patient patient){
-        this.lead=lead;
+   
+    public void initData(Patient patient){
         this.patient =patient;
         
+        //ecgValues = BitalinoDemo.ecgValues;
         ecgValues = patient.getRecordedECG();
-        
         if(!ecgValues.isEmpty()){
             for (int i = 0; i < ecgValues.size() ; i++) {
                series.getData().add(new XYChart.Data(""+i,ecgValues.get(i)));  
             }
-            ecgGraphics.setTitle(""+lead);
             ecgGraphics.getData().addAll(series);
         }
     }
 
-  
     /**
      * Initializes the controller class.
      */
     
+  
     @Override
     public  void initialize(URL url, ResourceBundle rb) {
         series = new XYChart.Series();
-        //ecgValues = BitalinoDemo.ecgValues;
-        
-        
-    }
-    
-    
-    
-    @FXML
-    public void closeButton(ActionEvent event)throws IOException {
-        
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ShowPatient.fxml"));
-        Parent showParent = loader.load();
-
-        Scene bitalinoScene = new Scene(showParent);
-
-        ShowPatientController controller = loader.getController();
-        controller.ECGnextButton(patient);
-        
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        
-
-        window.setScene(bitalinoScene);
-        window.show();
-        
-    }
-    @FXML
-    public void recordAgain(ActionEvent event)throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("BitalinoRecordingDataController.fxml"));
-        Parent bitalinoRecordinParent = loader.load();
-
-        Scene bitalinoScene = new Scene(bitalinoRecordinParent);
-
-        BitalinoRecordingDataController controller = loader.getController();
-        
-        controller.init(patient);
-        
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        
-
-        window.setScene(bitalinoScene);
-        window.show();
         
     }
 }
