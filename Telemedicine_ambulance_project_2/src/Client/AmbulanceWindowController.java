@@ -7,6 +7,7 @@ package Client;
 
 import Patient.Ambulance;
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -40,6 +41,12 @@ public class AmbulanceWindowController implements Initializable {
     private Button ambulance5;
     @FXML
     private Button ambulance6;
+    
+   private Socket socket;
+    
+    public void initData(Socket socket){
+        this.socket=socket;
+    }
 
     public void changeSceneToMedicalInfo(ActionEvent event) throws IOException {
         Button buttonAmbulance = (Button) event.getSource();
@@ -73,7 +80,7 @@ public class AmbulanceWindowController implements Initializable {
 
         PersonalInfoController controller = loader.getController();
         Date date = new Date();
-        controller.initData(ambulance, date);
+        controller.initData(ambulance, date, socket);
         //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 

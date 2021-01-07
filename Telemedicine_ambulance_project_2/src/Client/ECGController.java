@@ -12,6 +12,7 @@ import BITalino.BitalinoDemo;
 import BITalino.Frame;
 import Patient.Patient;
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -39,7 +40,7 @@ import javafx.stage.Stage;
  * @author hecyebesdelpino
  */
 public class ECGController implements Initializable {
-
+    private Socket socket;
     //Frame frame = new Frame();
     String lead;
     @FXML
@@ -61,9 +62,10 @@ public class ECGController implements Initializable {
     
  
     
-    public void initData(String lead, Patient patient){
+    public void initData(String lead, Patient patient, Socket socket){
         this.lead=lead;
         this.patient =patient;
+        this.socket=socket;
         
         ecgValues = patient.getRecordedECG();
         
@@ -101,7 +103,7 @@ public class ECGController implements Initializable {
         Scene bitalinoScene = new Scene(showParent);
 
         ShowPatientController controller = loader.getController();
-        controller.ECGnextButton(patient);
+        controller.ECGnextButton(patient, socket);
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
@@ -120,7 +122,7 @@ public class ECGController implements Initializable {
 
         BitalinoRecordingDataController controller = loader.getController();
         
-        controller.init(patient);
+        controller.init(patient, socket);
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         

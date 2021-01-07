@@ -47,9 +47,10 @@ public class SaveWithoutECGController implements Initializable {
     }    
     
     @FXML 
-    public void initData (Patient p, Stage s){
+    public void initData (Patient p, Stage s, Socket socket){
         this.patient=p;
         this.stage=s;
+        this.socket=socket;
     }
     
     
@@ -64,8 +65,6 @@ public class SaveWithoutECGController implements Initializable {
         //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
-            socket = new Socket("localhost", 9000);
-            System.out.println("Socket is connected with server!");
             toServer = new ObjectOutputStream(socket.getOutputStream());
 
             toServer.writeObject(patient);//patient es un objeto de la clase creada por adri

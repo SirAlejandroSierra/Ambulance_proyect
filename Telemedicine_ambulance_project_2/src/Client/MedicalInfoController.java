@@ -75,11 +75,14 @@ public class MedicalInfoController implements Initializable {
     @FXML private ChoiceBox CardiacEvent;
 
     @FXML private ChoiceBox FamilyEvent;
+    
+    private Socket socket;
     /**
      * Initializes the controller class.
      */
     
-    public void initDataBack(Patient paciente){
+    public void initDataBack(Patient paciente, Socket socket){
+        this.socket=socket;
         this.patient= paciente;
         systolic.setText(Float.toString(patient.getSystolicPressure()));
         diastolic.setText(Float.toString(patient.getDiastolicPressure()));
@@ -192,8 +195,9 @@ public class MedicalInfoController implements Initializable {
         
     }
     
-    public void initData(Patient paciente){
+    public void initData(Patient paciente, Socket socket){
         this.patient= paciente;
+        this.socket=socket;
     }
     
     public void settingTension(){
@@ -374,7 +378,7 @@ public class MedicalInfoController implements Initializable {
         
         if((systolicIsGood==true)&&(diastolicIsGood==true)){
 
-            controller.initData(patient);
+            controller.initData(patient, socket);
             //This line gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
@@ -391,7 +395,7 @@ public class MedicalInfoController implements Initializable {
         
         Scene painInfoScene = new Scene(painInfoParent);
         PersonalInfoController controller = loader.getController();
-        controller.initDataBack(patient);
+        controller.initDataBack(patient, socket);
                 
                 
             //This line gets the Stage information

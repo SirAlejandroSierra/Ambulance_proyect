@@ -26,6 +26,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import BITalino.BitalinoDemo;
 import Patient.Patient;
+import java.net.Socket;
 import java.util.ArrayList;
 import javafx.scene.control.Label;
 
@@ -35,7 +36,7 @@ import javafx.scene.control.Label;
  * @author hecyebesdelpino
  */
 public class BitalinoRecordingDataController implements Initializable {
- 
+    private Socket socket;
     public String lead;
     ObservableList list = FXCollections.observableArrayList();
     BitalinoDemo bitalinodemo = new BitalinoDemo();
@@ -60,8 +61,9 @@ public class BitalinoRecordingDataController implements Initializable {
     
 
     
-    public void init(Patient patient)  {
+    public void init(Patient patient, Socket socket)  {
       this.patient = patient;
+      this.socket = socket;
     }    
     
     @FXML
@@ -101,7 +103,7 @@ public class BitalinoRecordingDataController implements Initializable {
     public void bitalinoSetting(){
         patient.setECG(ecgValues3);
         label1.setText("     DONE");
-        next.setDisable(true);
+        next.setDisable(false);
     }
     
     @FXML
@@ -110,10 +112,11 @@ public class BitalinoRecordingDataController implements Initializable {
         loader.setLocation(getClass().getResource("ECG.fxml"));
         Parent ecgLoad = loader.load();
         
-        Scene ecgScene = new Scene(ecgLoad);             
+        Scene ecgScene = new Scene(ecgLoad);  
+        
         //access the controller and call a method
         ECGController controller = loader.getController();
-        controller.initData(lead, patient);
+        controller.initData(lead, patient, socket);
         
             //This line gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -133,7 +136,7 @@ public class BitalinoRecordingDataController implements Initializable {
         //access the controller and call a method
         ShowPatientController controller = loader.getController();
         //controller.initData(lead, patient);
-        controller.initData(patient);
+        controller.initData(patient, socket);
         
             //This line gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();

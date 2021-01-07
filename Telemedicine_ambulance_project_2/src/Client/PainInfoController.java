@@ -30,7 +30,7 @@ import javafx.stage.Stage;
  * @author AdriCortellucci
  */
 public class PainInfoController implements Initializable {
-    
+    private Socket socket;
     Patient patient= new Patient();
 
     @FXML private RadioButton YesCPn;
@@ -94,7 +94,8 @@ public class PainInfoController implements Initializable {
     @FXML TextField notesField;
 
     
-    public void initDataBack(Patient paciente){
+    public void initDataBack(Patient paciente, Socket socket){
+        this.socket=socket;
         this.patient= paciente;
         
         BasicOptions CPr= patient.getChestPressure();
@@ -226,8 +227,9 @@ public class PainInfoController implements Initializable {
         notesField.setText(patient.getNotes());
     }
     
-    public void initData(Patient paciente){
+    public void initData(Patient paciente, Socket socket){
         this.patient= paciente;
+        this.socket= socket;
     }
     
     @FXML
@@ -418,7 +420,7 @@ public class PainInfoController implements Initializable {
         ShowPatientController controller = loader.getController();
         //BitalinoRecordingDataController controller2 = loader2.getController();
         
-        controller.initData(patient);
+        controller.initData(patient, socket);
         //controller2.init();
             //This line gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -438,7 +440,7 @@ public class PainInfoController implements Initializable {
         
         Scene painInfoScene = new Scene(painInfoParent);
         MedicalInfoController controller = loader.getController();
-        controller.initDataBack(patient);
+        controller.initDataBack(patient, socket);
                 
                 
             //This line gets the Stage information

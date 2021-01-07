@@ -34,7 +34,7 @@ public class ShowPatientController implements Initializable {
     Patient patient = new Patient();
     ObjectOutputStream toServer;
 
-    Socket socket;
+    private Socket socket;
 
     @FXML
     private Label dateLabel;
@@ -106,9 +106,10 @@ public class ShowPatientController implements Initializable {
     @FXML
     private Button recordECG;
 
-    public void initData(Patient paciente) throws IOException {
+    public void initData(Patient paciente, Socket socket) throws IOException {
         this.patient = paciente;
-
+        this.socket=socket;
+        
         dateLabel.setText(patient.getDate().toString());
         ambulanceLabel.setText(patient.getAmbulance().toString());
         nameLabel.setText(patient.getName());
@@ -152,7 +153,7 @@ public class ShowPatientController implements Initializable {
 
         Scene painInfoScene = new Scene(painInfoParent);
         PainInfoController controller = loader.getController();
-        controller.initDataBack(patient);
+        controller.initDataBack(patient, socket);
 
         //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -199,7 +200,8 @@ public class ShowPatientController implements Initializable {
 
     }*/
     
-    public void ECGnextButton(Patient patient){
+    public void ECGnextButton(Patient patient, Socket socket){
+        this.socket=socket;
         if(patient.getRecordedECG().isEmpty()){
             recordECG.setText("ECG not recorded yet");
         }else{
@@ -217,7 +219,7 @@ public class ShowPatientController implements Initializable {
         Scene bitalinoScene = new Scene(bitalinoParent);
 
         BitalinoRecordingDataController controller = loader.getController();
-        controller.init(patient);
+        controller.init(patient, socket);
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
@@ -240,7 +242,7 @@ public class ShowPatientController implements Initializable {
             Scene secondScene = new Scene(saveWithoutECG);
 
             SaveWithoutECGController controller = loader.getController();
-            controller.initData(patient, window);
+            controller.initData(patient, window, socket);
             
             Stage secondStage = new Stage();
             secondStage.setTitle("Save without ECG");
@@ -261,8 +263,6 @@ public class ShowPatientController implements Initializable {
             //This line gets the Stage information
             
             try {
-                socket = new Socket("localhost", 9000);
-                System.out.println("Socket is connected with server!");
                 toServer = new ObjectOutputStream(socket.getOutputStream());
 
                 toServer.writeObject(patient);//patient es un objeto de la clase creada por adri

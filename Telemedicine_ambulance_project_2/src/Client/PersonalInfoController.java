@@ -9,6 +9,7 @@ import Patient.Ambulance;
 import Patient.Gender;
 import Patient.Patient;
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -74,17 +75,21 @@ public class PersonalInfoController implements Initializable {
     @FXML
     private RadioButton FemaleBtn;
     private ToggleGroup genderSelect;
+    private Socket socket;
+    
 
-    public void initData(Ambulance ambulance, Date date) {
+    public void initData(Ambulance ambulance, Date date, Socket socket) {
         this.ambulance = ambulance;
         //this.date = date;
         patient.setAmbulance(ambulance);
         patient.setDate(date);
         ambulnceNum.setText(patient.getAmbulance().toString());
         datee.setText(patient.getDate().toString());
+        this.socket=socket;
     }
 
-    public void initDataBack(Patient paciente) {
+    public void initDataBack(Patient paciente, Socket socket) {
+        this.socket=socket;
         this.patient = paciente;
         textField.setText(patient.getName());
         ageField.setText(Integer.toString(patient.getAge()));
@@ -252,7 +257,7 @@ public class PersonalInfoController implements Initializable {
         setAccuracy();
 
         if ((nameIsGood == true) && (ageIsGood == true) && (idIsGood == true)) {
-            controller.initData(patient);
+            controller.initData(patient, socket);
 
             //This line gets the Stage information
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
