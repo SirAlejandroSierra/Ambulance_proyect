@@ -18,12 +18,13 @@
       </Label>
       <Button fx:id="startrecording" layoutX="447.0" layoutY="228.0" mnemonicParsing="false" onAction="#displayValue" text="START RECORDING" />
       <Label layoutX="428.0" layoutY="115.0" text="SELECT THE LEAD POSITION" />
-      <ImageView fx:id="leadImage" fitHeight="300.0" fitWidth="431.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="leadImage" fitHeight="300.0" fitWidth="431.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Images/ECG.png" />
          </image>
       </ImageView>
       <ChoiceBox fx:id="choicebox" layoutX="436.0" layoutY="147.0" prefWidth="150.0" />
       <Label fx:id="label1" layoutX="447.0" layoutY="269.0" text="Label" />
+      <Button fx:id="back" layoutX="14.0" layoutY="359.0" mnemonicParsing="false" onAction="#changeSceneToShowPatient" text="BACK" />
    </children>
 </AnchorPane>

@@ -22,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -198,6 +199,15 @@ public class ShowPatientController implements Initializable {
 
     }*/
     
+    public void ECGnextButton(Patient patient){
+        if(patient.getRecordedECG().isEmpty()){
+            recordECG.setText("ECG not recorded yet");
+        }else{
+            recordECG.setText("ECG succesfully recorded ");
+        }
+        this.patient = patient;
+    }
+    
     @FXML
     public void recordECGButtonPushed(ActionEvent event)throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -206,8 +216,8 @@ public class ShowPatientController implements Initializable {
 
         Scene bitalinoScene = new Scene(bitalinoParent);
 
-        //BitalinoRecordingDataController controller = loader.getController();
-        //controller.loadData();
+        BitalinoRecordingDataController controller = loader.getController();
+        controller.init(patient);
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
@@ -219,7 +229,21 @@ public class ShowPatientController implements Initializable {
     
     @FXML
     public void nextButtonPushed(ActionEvent event) throws IOException {
+        if(patient.getRecordedECG().isEmpty()){
+    
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("SaveWithoutECG.fxml"));
+            Parent saveWithoutECG = loader.load();
 
+            Scene secondScene = new Scene(saveWithoutECG);
+
+            Stage secondStage = new Stage();
+            secondStage.setTitle("Save without ECG");
+            secondStage.setScene(secondScene);
+
+            secondStage.show();
+            
+        }else{
         FXMLLoader loader = new FXMLLoader();
 
         loader.setLocation(getClass().getResource("ChatClient.fxml"));
@@ -257,6 +281,7 @@ public class ShowPatientController implements Initializable {
             secondStage.setScene(secondScene);
 
             secondStage.show();
+        }
         }
 
     }

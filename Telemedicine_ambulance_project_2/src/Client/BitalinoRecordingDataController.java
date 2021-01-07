@@ -46,8 +46,6 @@ public class BitalinoRecordingDataController implements Initializable {
     @FXML Label label1;
     
     
-    @FXML
-    private Text screen;
 
     @FXML
     private Button next;
@@ -61,12 +59,10 @@ public class BitalinoRecordingDataController implements Initializable {
     Patient patient = new Patient();
     
 
-    /*
-    public void init()  {
-      loadData();
-        //BitalinoDemo.startECGvalues();
-        //ecgValues3 = BitalinoDemo.ecgValues;  
-    }    */
+    
+    public void init(Patient patient)  {
+      this.patient = patient;
+    }    
     
     @FXML
     private void displayValue(ActionEvent event){
@@ -117,7 +113,26 @@ public class BitalinoRecordingDataController implements Initializable {
         Scene ecgScene = new Scene(ecgLoad);             
         //access the controller and call a method
         ECGController controller = loader.getController();
-        controller.initData(lead);
+        controller.initData(lead, patient);
+        
+            //This line gets the Stage information
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            window.setScene(ecgScene);
+            window.show();
+        
+    }
+    
+    @FXML
+    public void changeSceneToShowPatient(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ShowPatient.fxml"));
+        Parent showPatientParent = loader.load();
+        
+        Scene ecgScene = new Scene(showPatientParent);             
+        //access the controller and call a method
+        ShowPatientController controller = loader.getController();
+        //controller.initData(lead, patient);
         
             //This line gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -130,7 +145,7 @@ public class BitalinoRecordingDataController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         choicebox.getItems().addAll("Lead I","Lead II","Lead III","Lead aVR","Lead aVL","Lead aVF");
-        choicebox.setValue("Lead I");
+        //choicebox.setValue("Lead I");
         
         label1.setText("");
     }
