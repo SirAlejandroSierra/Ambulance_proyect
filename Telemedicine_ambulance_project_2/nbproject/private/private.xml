@@ -3,11 +3,34 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ChatClientController.java</file>
-            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ShowPatientController.java</file>
-            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/BitalinoRecordingDataController.java</file>
-            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/MedicalInfoController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ServerOnWindowController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ClientThread.java</file>
             <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/BitalinoRecordingData.fxml</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/Server.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/PersonalInfoController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/Client.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/SaveWithoutECGController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Patient/Patient.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ServerWindowController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ChatClientController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ConnectToServerController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/Server_Hospital.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ShowPatientController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ECG.fxml</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ServerWindow.fxml</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/Server_two.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ConnectToServer.fxml</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/PatientsWindowController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ECG.fxml</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/BITalino/BitalinoDemo.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/AmbulanceWindowController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/BitalinoRecordingDataController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/PainInfoController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ECGController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/MedicalInfoController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Client/ECGController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ShowConnectionController.java</file>
+            <file>file:/Users/AdriCortellucci/Documents/Ambulance_proyect/Telemedicine_ambulance_project_2/src/Server/ShowPatientController.java</file>
         </group>
     </open-files>
 </project-private>

@@ -37,45 +37,7 @@ public class ConnectToServerController implements Initializable {
     @FXML private TextField port;
     @FXML private Label label;
     
-    
-    boolean checkNumericAndPoint(String s) {
-        if (s == null) { // checks if the String is null
-            return false;
-        }
-        if (s.equals("")) { // checks if the String is null
-            return false;
-        }
-        int len = s.length();
-        for (int i = 0; i < s.length(); i++) {
-            // checks whether the character is not a letter
-            // if it is not a letter ,it will return false
-           
-            if (!Character.isDigit(s.charAt(i))) {
-                int comparison= Character.compare(s.charAt(i), '.');
-                if (comparison != 0 ) {
-                    return false;
-                }
-
-            }
-        }
-        return true;
-    }
-    
-    boolean checkInteger(String s) {
-        if (s == null) { // checks if the String is null
-            return false;
-        }
-        if (s.equals("")) { // checks if the String is null
-            return false;
-        }
-        try {
-            int ageNumber = Integer.parseInt(s);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-    
+        
     public void connectServer(InetAddress addressServer, int portServer, ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader();
 
@@ -119,7 +81,7 @@ public class ConnectToServerController implements Initializable {
     @FXML
     public void connect(ActionEvent event) throws IOException{
         label.setText("");
-        if(address.getText().equals("")||port.getText().equals("") || checkNumericAndPoint(address.getText()) || checkInteger(port.getText())){
+        if(address.getText().equals("")||port.getText().equals("") ){
             label.setText("ERROR! Check the data again");  
         } else{
             
