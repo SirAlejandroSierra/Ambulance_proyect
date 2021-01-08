@@ -7,6 +7,7 @@ package Client;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,6 +18,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
@@ -26,11 +29,54 @@ import javafx.stage.Stage;
  */
 public class ConnectToServerController implements Initializable {
     Socket socket;
-    /**
-     * Initializes the controller class.
-     */
-    @FXML
-    public void connect(ActionEvent event) throws IOException{
+    InetAddress serverAddress;
+    int serverPort;
+    
+    
+    @FXML private TextField address;
+    @FXML private TextField port;
+    @FXML private Label label;
+    
+    
+    boolean checkNumericAndPoint(String s) {
+        if (s == null) { // checks if the String is null
+            return false;
+        }
+        if (s.equals("")) { // checks if the String is null
+            return false;
+        }
+        int len = s.length();
+        for (int i = 0; i < s.length(); i++) {
+            // checks whether the character is not a letter
+            // if it is not a letter ,it will return false
+           
+            if (!Character.isDigit(s.charAt(i))) {
+                int comparison= Character.compare(s.charAt(i), '.');
+                if (comparison != 0 ) {
+                    return false;
+                }
+
+            }
+        }
+        return true;
+    }
+    
+    boolean checkInteger(String s) {
+        if (s == null) { // checks if the String is null
+            return false;
+        }
+        if (s.equals("")) { // checks if the String is null
+            return false;
+        }
+        try {
+            int ageNumber = Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
+    public void connectServer(InetAddress addressServer, int portServer, ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader();
 
         loader.setLocation(getClass().getResource("AmbulanceWindow.fxml"));
@@ -40,17 +86,16 @@ public class ConnectToServerController implements Initializable {
 
         AmbulanceWindowController controller = loader.getController();
 
-            //This line gets the Stage information
-            
+
         try {
-            socket = new Socket("localhost", 9000);
+            socket = new Socket(addressServer, portServer);
             System.out.println("Socket is connected with server!");
-            
-                
+
+
             controller.initData(socket);
-            
+
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            
+
             window.setScene(scene);
 
             window.show();
@@ -68,11 +113,40 @@ public class ConnectToServerController implements Initializable {
 
             secondStage.show();
         }
+    
     }
+    
+    @FXML
+    public void connect(ActionEvent event) throws IOException{
+        label.setText("");
+        if(address.getText().equals("")||port.getText().equals("") || checkNumericAndPoint(address.getText()) || checkInteger(port.getText())){
+            label.setText("ERROR! Check the data again");  
+        } else{
+            
+            try{
+            
+            
+                serverAddress= InetAddress.getByName(address.getText());
+                
+                serverPort= Integer.parseInt(port.getText());
+                
+                connectServer(serverAddress, serverPort, event);
+
+                
+            }catch(Exception e){
+                label.setText("ERROR! Check the data again");
+            }
+            
+        } 
+    }
+    
+    /**
+     * Initializes the controller class.
+     */
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        label.setText("");
     }    
     
 }

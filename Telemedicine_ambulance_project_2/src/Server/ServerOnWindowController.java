@@ -7,7 +7,9 @@ package Server;
 
 import Patient.Patient;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -22,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -46,13 +49,19 @@ public class ServerOnWindowController implements Initializable {
     public static ArrayList<Thread> threads=new ArrayList<Thread>();
     public Server_two server; 
     
+    @FXML private Label address;
+    @FXML private Label port;
+    
     @FXML public TextArea chatWindow;
     
     
-    public void initData(Server_two server, Stage parent, Stage stage){
+    public void initData(Server_two server, Stage parent, Stage stage) throws UnknownHostException{
         this.server=server;
         this.parent=parent;
         this.window=stage;
+        
+        address.setText(InetAddress.getLocalHost().getHostAddress());
+        port.setText(String.valueOf(this.server.getSocket().getLocalPort()));
         
         window.setOnCloseRequest((event) -> {
             close();

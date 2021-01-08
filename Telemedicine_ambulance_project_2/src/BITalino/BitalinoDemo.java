@@ -95,6 +95,9 @@ public class BitalinoDemo {
     }
     
    public static void startECGvalues(){
+       
+       ecgValues = new ArrayList();
+       
         BITalino bitalino = null;
         
         //ArrayList<Integer> ecgValues2 = new ArrayList();
