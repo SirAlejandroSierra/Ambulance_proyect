@@ -60,7 +60,7 @@ public class ChatClientController extends Thread implements Initializable {
                 toServer.writeObject("logout");
             }    
         } catch (IOException ex) {
-            Logger.getLogger(ChatClientController.class.getName()).log(Level.SEVERE, null, ex);
+            //System.out.println(" error closed");
         }
         releaseResources(toServer, socket);
         stage.close();
@@ -75,10 +75,12 @@ public class ChatClientController extends Thread implements Initializable {
         
         stage.setOnCloseRequest((event) -> {
             System.out.println("salir");
+            
             try {
-                toServer.writeObject("logout");
+                if(socket.isClosed()){
+                    toServer.writeObject("logout");}
             } catch (IOException ex) {
-                Logger.getLogger(ChatClientController.class.getName()).log(Level.SEVERE, null, ex);
+                //System.out.println(" error closed");
             }
             releaseResources(toServer, socket);
             stage.close();
@@ -110,7 +112,6 @@ public class ChatClientController extends Thread implements Initializable {
             read=socket.getInputStream().read();
             System.out.println(read);
             if(read == -1){
-                System.out.println("closed");
                 msgRoom.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
                 msgRoom.appendText("Error in the connection\n");
                 
@@ -120,11 +121,9 @@ public class ChatClientController extends Thread implements Initializable {
                 toServer.writeObject(msg);
                 read=socket.getInputStream().read();
                 if(read == -1){
-                    System.out.println("closed");
                     msgRoom.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
                     msgRoom.appendText("Error in the connection\n");
                 }else{
-                    System.out.println(read);
                     toServer.writeObject((String) "check");
                     msgRoom.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
                     msgRoom.appendText("Ambulance: " + msg + "\n");

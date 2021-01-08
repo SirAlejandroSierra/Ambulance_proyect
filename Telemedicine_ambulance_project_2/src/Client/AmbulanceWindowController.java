@@ -59,6 +59,19 @@ public class AmbulanceWindowController implements Initializable {
         });
         
     }
+    
+    public void backToConnection(ActionEvent event) throws IOException {
+        
+        releaseResources(socket);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ConnectToServer.fxml"));
+        Parent parent = loader.load();
+
+        Scene scene = new Scene(parent);
+
+        window.setScene(scene);
+        window.show();
+    }
 
     
     

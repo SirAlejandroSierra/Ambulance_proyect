@@ -252,6 +252,21 @@ public class PersonalInfoController implements Initializable {
         }
         return isID;
     }
+    
+    public void backToAmbulance(ActionEvent event) throws IOException {
+        
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AmbulanceWindow.fxml"));
+        Parent parent = loader.load();
+
+        Scene scene = new Scene(parent);
+
+        AmbulanceWindowController controller=loader.getController();
+        controller.initData(socket, window);
+
+        window.setScene(scene);
+        window.show();
+    }
 
     public void changeSceneToMedicalInfo(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();

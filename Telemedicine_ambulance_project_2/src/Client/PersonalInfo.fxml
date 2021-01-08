@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="362.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.PersonalInfoController">
+<AnchorPane id="AnchorPane" prefHeight="387.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.PersonalInfoController">
     <children>
-        <Button fx:id="next" layoutX="298.0" layoutY="316.0" onAction="#changeSceneToMedicalInfo" text="Next" />
+        <Button fx:id="next" layoutX="298.0" layoutY="347.0" onAction="#changeSceneToMedicalInfo" text="Next" />
       <Label layoutX="50.0" layoutY="152.0" text="Name: " />
       <TextField fx:id="textField" layoutX="98.0" layoutY="147.0" prefHeight="27.0" prefWidth="254.0" />
       <Label layoutX="54.0" layoutY="187.0" text="Age:" />
@@ -38,5 +38,6 @@
             </Label>
          </children>
       </Pane>
+      <Button layoutX="42.0" layoutY="347.0" mnemonicParsing="false" onAction="#backToAmbulance" text="Back" />
     </children>
 </AnchorPane>
