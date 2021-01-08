@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,6 +32,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -63,9 +65,12 @@ public class ServerOnWindowController implements Initializable {
         address.setText(InetAddress.getLocalHost().getHostAddress());
         port.setText(String.valueOf(this.server.getSocket().getLocalPort()));
         
-        window.setOnCloseRequest((event) -> {
-            close();
-        });
+        window.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    event.consume();
+                }
+            });
         
     }
     

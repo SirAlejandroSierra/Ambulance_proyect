@@ -47,16 +47,18 @@ public class ConnectToServerController implements Initializable {
         Scene scene = new Scene(parent);
 
         AmbulanceWindowController controller = loader.getController();
-
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         try {
             socket = new Socket(addressServer, portServer);
             System.out.println("Socket is connected with server!");
 
-
-            controller.initData(socket);
-
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            try{
+                controller.initData(socket, window);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            
 
             window.setScene(scene);
 

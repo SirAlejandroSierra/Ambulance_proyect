@@ -12,6 +12,7 @@ import BITalino.BitalinoDemo;
 import BITalino.Frame;
 import Patient.Patient;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
@@ -58,14 +59,22 @@ public class ECGController implements Initializable {
     @FXML
     private Button recordAgain;
     XYChart.Series series;
+    
+    private Stage window;
+    private ObjectOutputStream toServer;
 
     
  
     
-    public void initData(String lead, Patient patient, Socket socket){
+    public void initData(String lead, Patient patient, Socket socket, Stage stage){
         this.lead=lead;
         this.patient =patient;
         this.socket=socket;
+        
+        this.window=stage;
+        window.setOnCloseRequest((event) -> {
+            releaseResources(this.socket);
+        });
         
         ecgValues = patient.getRecordedECG();
         
@@ -122,7 +131,7 @@ public class ECGController implements Initializable {
 
         BitalinoRecordingDataController controller = loader.getController();
         
-        controller.init(patient, socket);
+        controller.init(patient, socket, window);
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
@@ -130,6 +139,26 @@ public class ECGController implements Initializable {
         window.setScene(bitalinoScene);
         window.show();
         
+    }
+    
+    private void releaseResources(Socket socket)  {
+        try {
+            toServer = new ObjectOutputStream(socket.getOutputStream());
+            toServer.writeObject("logout");
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            toServer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        try {
+            socket.close();
+            System.out.println("socket closed");
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 }
     

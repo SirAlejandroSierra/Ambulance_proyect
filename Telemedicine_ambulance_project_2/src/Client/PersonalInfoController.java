@@ -9,10 +9,13 @@ import Patient.Ambulance;
 import Patient.Gender;
 import Patient.Patient;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -76,9 +79,11 @@ public class PersonalInfoController implements Initializable {
     private RadioButton FemaleBtn;
     private ToggleGroup genderSelect;
     private Socket socket;
+    private ObjectOutputStream toServer;
+    private Stage window;
     
 
-    public void initData(Ambulance ambulance, Date date, Socket socket) {
+    public void initData(Ambulance ambulance, Date date, Socket socket, Stage stage) {
         this.ambulance = ambulance;
         //this.date = date;
         patient.setAmbulance(ambulance);
@@ -86,9 +91,13 @@ public class PersonalInfoController implements Initializable {
         ambulnceNum.setText(patient.getAmbulance().toString());
         datee.setText(patient.getDate().toString());
         this.socket=socket;
+        this.window=stage;
+        window.setOnCloseRequest((event) -> {
+            releaseResources(this.socket);
+        });
     }
 
-    public void initDataBack(Patient paciente, Socket socket) {
+    public void initDataBack(Patient paciente, Socket socket, Stage stage) {
         this.socket=socket;
         this.patient = paciente;
         textField.setText(patient.getName());
@@ -118,6 +127,10 @@ public class PersonalInfoController implements Initializable {
         if (overweighted == false) {
             overweight.selectToggle(NoBtn);
         }
+        this.window=stage;
+        window.setOnCloseRequest((event) -> {
+            releaseResources(this.socket);
+        });
     }
 
     public void setOverweight() {
@@ -257,7 +270,7 @@ public class PersonalInfoController implements Initializable {
         setAccuracy();
 
         if ((nameIsGood == true) && (ageIsGood == true) && (idIsGood == true)) {
-            controller.initData(patient, socket);
+            controller.initData(patient, socket, window);
 
             //This line gets the Stage information
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -287,5 +300,24 @@ public class PersonalInfoController implements Initializable {
 
 // TODO
     }
-
+    
+    private void releaseResources(Socket socket)  {
+        try {
+            toServer = new ObjectOutputStream(socket.getOutputStream());
+            toServer.writeObject("logout");
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            toServer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        try {
+            socket.close();
+            System.out.println("socket closed");
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
 }

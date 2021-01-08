@@ -12,9 +12,11 @@ import Patient.LevelUnknown;
 import Patient.Event;
 import Patient.BasicOptions;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -77,15 +79,21 @@ public class MedicalInfoController implements Initializable {
     @FXML private ChoiceBox FamilyEvent;
     
     private Socket socket;
+    private ObjectOutputStream toServer;
+    private Stage window;
     /**
      * Initializes the controller class.
      */
     
-    public void initDataBack(Patient paciente, Socket socket){
+    public void initDataBack(Patient paciente, Socket socket, Stage stage){
         this.socket=socket;
         this.patient= paciente;
         systolic.setText(Float.toString(patient.getSystolicPressure()));
         diastolic.setText(Float.toString(patient.getDiastolicPressure()));
+        this.window=stage;
+        window.setOnCloseRequest((event) -> {
+            releaseResources(this.socket);
+        });
         
         LevelUnknown BP= patient.getTension();
         if(BP.equals(LevelUnknown.HIGH)){
@@ -195,9 +203,13 @@ public class MedicalInfoController implements Initializable {
         
     }
     
-    public void initData(Patient paciente, Socket socket){
+    public void initData(Patient paciente, Socket socket, Stage stage){
         this.patient= paciente;
         this.socket=socket;
+        this.window=stage;
+        window.setOnCloseRequest((event) -> {
+            releaseResources(this.socket);
+        });
     }
     
     public void settingTension(){
@@ -378,7 +390,7 @@ public class MedicalInfoController implements Initializable {
         
         if((systolicIsGood==true)&&(diastolicIsGood==true)){
 
-            controller.initData(patient, socket);
+            controller.initData(patient, socket, window);
             //This line gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
@@ -395,7 +407,7 @@ public class MedicalInfoController implements Initializable {
         
         Scene painInfoScene = new Scene(painInfoParent);
         PersonalInfoController controller = loader.getController();
-        controller.initDataBack(patient, socket);
+        controller.initDataBack(patient, socket, window);
                 
                 
             //This line gets the Stage information
@@ -455,5 +467,25 @@ public class MedicalInfoController implements Initializable {
         FamilyEvent.getItems().addAll("Mother", "Father", "Sibling","Other","None");
         FamilyEvent.setValue("None");
     }    
+    
+    private void releaseResources(Socket socket)  {
+        try {
+            toServer = new ObjectOutputStream(socket.getOutputStream());
+            toServer.writeObject("logout");
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        try {
+            toServer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+        try {
+            socket.close();
+            System.out.println("socket closed");
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+    }
     
 }

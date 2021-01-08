@@ -7,10 +7,13 @@ package Client;
 
 import Patient.Ambulance;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,11 +46,22 @@ public class AmbulanceWindowController implements Initializable {
     private Button ambulance6;
     
    private Socket socket;
-    
-    public void initData(Socket socket){
+   ObjectOutputStream toServer;
+   Stage window;
+   
+ 
+   
+    public void initData(Socket socket, Stage stage){
         this.socket=socket;
+        this.window=stage;
+        window.setOnCloseRequest((event) -> {
+            releaseResources(this.socket);
+        });
+        
     }
 
+    
+    
     public void changeSceneToMedicalInfo(ActionEvent event) throws IOException {
         Button buttonAmbulance = (Button) event.getSource();
 
@@ -80,13 +94,36 @@ public class AmbulanceWindowController implements Initializable {
 
         PersonalInfoController controller = loader.getController();
         Date date = new Date();
-        controller.initData(ambulance, date, socket);
+        controller.initData(ambulance, date, socket, window);
         //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         window.setScene(PersonalInfo);
         window.show();
     }
+    
+    private void releaseResources(Socket socket)  {
+        try {
+            toServer = new ObjectOutputStream(socket.getOutputStream());
+            toServer.writeObject("logout");
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            toServer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        try {
+            socket.close();
+            System.out.println("socket closed");
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+        
+
+    
 
     /**
      * Initializes the controller class.

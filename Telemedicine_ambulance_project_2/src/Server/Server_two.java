@@ -81,6 +81,7 @@ public class Server_two implements Runnable {
             try{
                 clientSocket = socket.accept();
             }catch(Exception e){
+                System.out.println("exception");
                 break;
             }
 

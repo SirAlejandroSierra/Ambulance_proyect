@@ -66,7 +66,7 @@ public class SaveWithoutECGController implements Initializable {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
             toServer = new ObjectOutputStream(socket.getOutputStream());
-
+            toServer.writeObject("check");
             toServer.writeObject(patient);//patient es un objeto de la clase creada por adri
             toServer.flush();
 

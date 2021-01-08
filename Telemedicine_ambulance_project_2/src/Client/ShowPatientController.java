@@ -13,6 +13,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -109,10 +111,17 @@ public class ShowPatientController implements Initializable {
     private Label labelECGRecorded;
     @FXML
     private Label labelECG;
+    
+    private Stage window;
 
-    public void initData(Patient paciente, Socket socket) throws IOException {
+    public void initData(Patient paciente, Socket socket, Stage stage) throws IOException {
         this.patient = paciente;
         this.socket=socket;
+        
+        this.window=stage;
+        window.setOnCloseRequest((event) -> {
+            releaseResources(this.socket);
+        });
         
         dateLabel.setText(patient.getDate().toString());
         ambulanceLabel.setText(patient.getAmbulance().toString());
@@ -158,7 +167,7 @@ public class ShowPatientController implements Initializable {
 
         Scene painInfoScene = new Scene(painInfoParent);
         PainInfoController controller = loader.getController();
-        controller.initDataBack(patient, socket);
+        controller.initDataBack(patient, socket, window);
 
         //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -225,7 +234,7 @@ public class ShowPatientController implements Initializable {
         Scene bitalinoScene = new Scene(bitalinoParent);
 
         BitalinoRecordingDataController controller = loader.getController();
-        controller.init(patient, socket);
+        controller.init(patient, socket, window);
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
@@ -270,7 +279,7 @@ public class ShowPatientController implements Initializable {
             
             try {
                 toServer = new ObjectOutputStream(socket.getOutputStream());
-
+                toServer.writeObject("check");
                 toServer.writeObject(patient);//patient es un objeto de la clase creada por adri
                 toServer.flush();
 
@@ -299,6 +308,26 @@ public class ShowPatientController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+    }
+    
+    private void releaseResources(Socket socket)  {
+        try {
+            toServer = new ObjectOutputStream(socket.getOutputStream());
+            toServer.writeObject("logout");
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            toServer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        try {
+            socket.close();
+            System.out.println("socket closed");
+        } catch (IOException ex) {
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 
 }
