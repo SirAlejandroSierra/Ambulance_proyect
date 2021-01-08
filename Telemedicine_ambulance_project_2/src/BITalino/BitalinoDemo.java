@@ -95,10 +95,9 @@ public class BitalinoDemo {
     }
     
    public static void startECGvalues(){
+       ecgValues = new ArrayList(); 
        
-       ecgValues = new ArrayList();
-       
-        BITalino bitalino = null;
+       BITalino bitalino = null;
         
         //ArrayList<Integer> ecgValues2 = new ArrayList();
         //ArrayList<Integer> ecgValues = new ArrayList<Integer>();
@@ -107,7 +106,7 @@ public class BitalinoDemo {
             //find devices
             //Only works on some OS
             // Vector<RemoteDevice> devices = bitalino.findDevices();
-            // System.out.println(devices);
+            // System.out.println(devices); 
 
             String macAddress = "98:D3:91:FD:69:70";
             int SamplingRate = 100;
