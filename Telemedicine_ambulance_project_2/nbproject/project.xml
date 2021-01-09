@@ -6,7 +6,6 @@
             <name>Telemedicine_ambulance_project_2</name>
             <source-roots>
                 <root id="src.dir"/>
-                <root id="src.Files.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>
