@@ -113,10 +113,10 @@ public class Users implements Serializable {
         final Users other = (Users) obj;
         if (!Objects.equals(this.user, other.user)) {
             return false;
-        }
+        }/*
         if (!Objects.equals(this.password, other.password)) {
             return false;
-        }
+        }*/
         return true;
     }
 
