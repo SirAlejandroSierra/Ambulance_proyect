@@ -5,7 +5,6 @@
  */
 package Client;
 
-import Client.Client_Patient_Ambulance;
 import Patient.Patient;
 import Patient.Patient;
 import com.sun.corba.se.impl.io.IIOPInputStream;
@@ -53,7 +52,6 @@ public class ChatClientController extends Thread implements Initializable {
     private Stage stage;
     
     public void exit(ActionEvent event) throws IOException {
-        System.out.println("salir");
         try {
             if(!socket.isClosed()){
                 toServer.writeObject("logout");
@@ -72,9 +70,7 @@ public class ChatClientController extends Thread implements Initializable {
         this.toServer=oo;
         this.fromServer= oi;
         
-        stage.setOnCloseRequest((event) -> {
-            System.out.println("salir");
-            
+        stage.setOnCloseRequest((event) -> {            
             try {
                 if(socket.isClosed()){
                     toServer.writeObject("logout");}

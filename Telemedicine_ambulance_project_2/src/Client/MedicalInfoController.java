@@ -11,11 +11,13 @@ import Patient.Family;
 import Patient.LevelUnknown;
 import Patient.Event;
 import Patient.BasicOptions;
+import Patient.Users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -83,13 +85,15 @@ public class MedicalInfoController implements Initializable {
     private ObjectOutputStream toServer;
     private ObjectInputStream fromServer;
     private Stage window;
+    private ArrayList<Users> users = new ArrayList<Users>();
     
     
-    public void initDataBack(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo){
+    public void initDataBack(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo, ArrayList<Users> users){
         this.socket=socket;
         this.patient= paciente;
         this.fromServer=oi;
         this.toServer=oo;
+        this.users=users;
         systolic.setText(Float.toString(patient.getSystolicPressure()));
         diastolic.setText(Float.toString(patient.getDiastolicPressure()));
         this.window=stage;
@@ -205,12 +209,13 @@ public class MedicalInfoController implements Initializable {
         
     }
     
-    public void initData(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo){
+    public void initData(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo,  ArrayList<Users> users){
         this.patient= paciente;
         this.socket=socket;
         this.fromServer=oi;
         this.toServer=oo;
         this.window=stage;
+        this.users=users;
         window.setOnCloseRequest((event) -> {
             releaseResources();
         });
@@ -393,7 +398,7 @@ public class MedicalInfoController implements Initializable {
         
         if((systolicIsGood==true)&&(diastolicIsGood==true)){
 
-            controller.initData(patient, socket, window, fromServer, toServer);
+            controller.initData(patient, socket, window, fromServer, toServer, users);
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
             window.setScene(scene);
@@ -409,7 +414,7 @@ public class MedicalInfoController implements Initializable {
         
         Scene scene = new Scene(parent);
         PersonalInfoController controller = loader.getController();
-        controller.initDataBack(patient, socket, window, fromServer, toServer);
+        controller.initDataBack(patient, socket, window, fromServer, toServer, users);
                 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
@@ -486,7 +491,6 @@ public class MedicalInfoController implements Initializable {
         }
         try {
             socket.close();
-            System.out.println("socket closed");
         } catch (IOException ex) {
             Logger.getLogger(MedicalInfoController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } 

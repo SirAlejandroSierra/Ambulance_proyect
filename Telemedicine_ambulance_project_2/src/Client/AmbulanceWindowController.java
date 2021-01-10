@@ -6,11 +6,13 @@
 package Client;
 
 import Patient.Ambulance;
+import Patient.Users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -50,14 +52,15 @@ public class AmbulanceWindowController implements Initializable {
    private ObjectOutputStream toServer;
    private ObjectInputStream fromServer;
    private Stage window;
+   private ArrayList<Users> users = new ArrayList<Users>();
    
  
-   
-    public void initData(Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo){
+   public void initData(Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo, ArrayList<Users> users ){
         this.socket=socket;
         this.window=stage;
         this.fromServer= oi;
         this.toServer= oo;
+        this.users=users;
         
         window.setOnCloseRequest((event) -> {
             releaseResources();
@@ -65,15 +68,16 @@ public class AmbulanceWindowController implements Initializable {
         
     }
     
+    
     public void backToUser(ActionEvent event) throws IOException {
         
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("UserController.fxml"));
+        loader.setLocation(getClass().getResource("User.fxml"));
         Parent parent = loader.load();
 
         Scene scene = new Scene(parent);
         UserController controller=loader.getController();
-        controller.initData(socket, window, fromServer, toServer);
+        controller.initDataBack(socket, window, fromServer, toServer, users);
 
         window.setScene(scene);
         window.show();
@@ -113,7 +117,7 @@ public class AmbulanceWindowController implements Initializable {
 
         PersonalInfoController controller = loader.getController();
         Date date = new Date();
-        controller.initData(ambulance, date, socket, window, fromServer, toServer);
+        controller.initData(ambulance, date, socket, window, fromServer, toServer, users);
         //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -139,7 +143,6 @@ public class AmbulanceWindowController implements Initializable {
         } 
         try {
             socket.close();
-            System.out.println("socket closed");
         } catch (IOException ex) {
             Logger.getLogger(AmbulanceWindowController.class.getName()).log(Level.SEVERE, null, ex);
         } 

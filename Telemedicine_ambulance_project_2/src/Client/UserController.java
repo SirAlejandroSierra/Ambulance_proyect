@@ -53,7 +53,23 @@ public class UserController implements Initializable {
         this.window = stage;
         this.fromServer = oi;
         this.toServer = oo;
-
+        try {
+            users = (ArrayList<Users>) fromServer.readObject();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        window.setOnCloseRequest((event) -> {
+            releaseResources();
+        });
+    }
+    
+    public void initDataBack(Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo, ArrayList<Users> users) throws IOException {
+        this.socket = socket;
+        this.window = stage;
+        this.fromServer = oi;
+        this.toServer = oo;
+        this.users=users;
+        
         window.setOnCloseRequest((event) -> {
             releaseResources();
         });
@@ -72,11 +88,7 @@ public class UserController implements Initializable {
     public void next(ActionEvent event) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         String pintroduced = password.getText();
         Users u = new Users(userName.getText(), password.getText());
-        try {
-            users = (ArrayList<Users>) fromServer.readObject();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         if (!checkUser(u, pintroduced)) {
             error.setText("Wrong user or password");
         } else {
@@ -93,7 +105,7 @@ public class UserController implements Initializable {
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             try {
-                controller.initData(socket, window, fromServer, toServer);
+                controller.initData(socket, window, fromServer, toServer, users);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -134,7 +146,6 @@ public class UserController implements Initializable {
         }
         try {
             socket.close();
-            System.out.println("socket closed");
         } catch (IOException ex) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -145,7 +156,7 @@ public class UserController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        error.setText("");
     }
 
 }

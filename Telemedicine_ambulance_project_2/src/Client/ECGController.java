@@ -10,6 +10,7 @@ import BITalino.BITalinoException;
 import BITalino.BitalinoDemo;
 import BITalino.Frame;
 import Patient.Patient;
+import Patient.Users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -58,14 +59,15 @@ public class ECGController implements Initializable {
     private Stage window;
     private ObjectOutputStream toServer;
     private ObjectInputStream fromServer;
+    private ArrayList<Users> users = new ArrayList<Users>();
  
-    public void initData(String lead, Patient patient, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo){
+    public void initData(String lead, Patient patient, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo,  ArrayList<Users> users){
         this.lead=lead;
         this.patient =patient;
         this.socket=socket;
         this.fromServer=oi;
         this.toServer=oo;
-        
+        this.users=users;
         this.window=stage;
         window.setOnCloseRequest((event) -> {
             releaseResources();
@@ -102,7 +104,7 @@ public class ECGController implements Initializable {
         Scene bitalinoScene = new Scene(showParent);
 
         ShowPatientController controller = loader.getController();
-        controller.ECGnextButton(patient, socket, fromServer, toServer);
+        controller.ECGnextButton(patient, socket, fromServer, toServer, users);
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
@@ -121,7 +123,7 @@ public class ECGController implements Initializable {
 
         BitalinoRecordingDataController controller = loader.getController();
         
-        controller.init(patient, socket, window,fromServer, toServer);
+        controller.init(patient, socket, window,fromServer, toServer, users);
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
@@ -149,7 +151,6 @@ public class ECGController implements Initializable {
         }
         try {
             socket.close();
-            System.out.println("socket closed");
         } catch (IOException ex) {
             Logger.getLogger(ECGController.class.getName()).log(Level.SEVERE, null, ex);
         } 

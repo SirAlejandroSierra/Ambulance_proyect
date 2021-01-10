@@ -7,11 +7,13 @@ package Client;
 
 import Patient.Patient;
 import Patient.BasicOptions;
+import Patient.Users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,14 +101,16 @@ public class PainInfoController implements Initializable {
     private Stage window;
     
     @FXML private TextField notesField;
+    private ArrayList<Users> users = new ArrayList<Users>();
 
     
-    public void initDataBack(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo){
+    public void initDataBack(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo,  ArrayList<Users> users){
         this.socket=socket;
         this.patient= paciente;
         this.fromServer= oi;
         this.toServer= oo;
         this.window=stage;
+        this.users=users;
         window.setOnCloseRequest((event) -> {
             releaseResources();
         });
@@ -241,11 +245,12 @@ public class PainInfoController implements Initializable {
         notesField.setText(patient.getNotes());
     }
     
-    public void initData(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo){
+    public void initData(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo,  ArrayList<Users> users){
         this.patient= paciente;
         this.socket= socket;
         this.fromServer= oi;
         this.toServer= oo;
+        this.users=users;
         this.window=stage;
         window.setOnCloseRequest((event) -> {
             releaseResources();
@@ -435,7 +440,7 @@ public class PainInfoController implements Initializable {
         
         ShowPatientController controller = loader.getController();
         
-        controller.initData(patient, socket, window, fromServer, toServer);
+        controller.initData(patient, socket, window, fromServer, toServer, users);
         
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
@@ -451,7 +456,7 @@ public class PainInfoController implements Initializable {
         
         Scene scene = new Scene(parent);
         MedicalInfoController controller = loader.getController();
-        controller.initDataBack(patient, socket, window, fromServer, toServer);
+        controller.initDataBack(patient, socket, window, fromServer, toServer, users);
                 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
@@ -555,7 +560,6 @@ public class PainInfoController implements Initializable {
         }
         try {
             socket.close();
-            System.out.println("socket closed");
         } catch (IOException ex) {
             Logger.getLogger(PainInfoController.class.getName()).log(Level.SEVERE, null, ex);
         } 

@@ -8,11 +8,13 @@ package Client;
 import Patient.Ambulance;
 import Patient.Gender;
 import Patient.Patient;
+import Patient.Users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -81,9 +83,10 @@ public class PersonalInfoController implements Initializable {
     private ObjectOutputStream toServer;
     private ObjectInputStream fromServer;
     private Stage window;
+    private ArrayList<Users> users = new ArrayList<Users>();
     
 
-    public void initData(Ambulance ambulance, Date date, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo) {
+    public void initData(Ambulance ambulance, Date date, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo,  ArrayList<Users> users) {
         this.ambulance = ambulance;
         //this.date = date;
         patient.setAmbulance(ambulance);
@@ -94,16 +97,18 @@ public class PersonalInfoController implements Initializable {
         this.window=stage;
         this.fromServer=oi;
         this.toServer=oo;
+        this.users=users;
         window.setOnCloseRequest((event) -> {
             releaseResources();
         });
     }
 
-    public void initDataBack(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo) {
+    public void initDataBack(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo,  ArrayList<Users> users) {
         this.socket=socket;
         this.patient = paciente;
         this.fromServer=oi;
         this.toServer=oo;
+        this.users=users;
         textField.setText(patient.getName());
         ageField.setText(Integer.toString(patient.getAge()));
         boolean accuracyB = patient.isAccurateAge();
@@ -267,7 +272,7 @@ public class PersonalInfoController implements Initializable {
         Scene scene = new Scene(parent);
 
         AmbulanceWindowController controller=loader.getController();
-        controller.initData(socket, window, fromServer, toServer);
+        controller.initData(socket, window, fromServer, toServer, users);
 
         window.setScene(scene);
         window.show();
@@ -288,7 +293,7 @@ public class PersonalInfoController implements Initializable {
         setAccuracy();
 
         if ((nameIsGood == true) && (ageIsGood == true) && (idIsGood == true)) {
-            controller.initData(patient, socket, window, fromServer, toServer);
+            controller.initData(patient, socket, window, fromServer, toServer, users);
 
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -334,7 +339,6 @@ public class PersonalInfoController implements Initializable {
         } 
         try {
             socket.close();
-            System.out.println("socket closed");
         } catch (IOException ex) {
             Logger.getLogger(PersonalInfoController.class.getName()).log(Level.SEVERE, null, ex);
         } 

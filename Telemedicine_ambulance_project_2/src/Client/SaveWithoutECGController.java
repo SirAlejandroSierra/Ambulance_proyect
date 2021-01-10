@@ -6,11 +6,13 @@
 package Client;
 
 import Patient.Patient;
+import Patient.Users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -37,6 +39,7 @@ public class SaveWithoutECGController implements Initializable {
     private Socket socket;
     private Stage stage;
     private Stage thisStage;
+    private ArrayList<Users> users = new ArrayList<Users>();
     
     @FXML
     private Button yes;
@@ -52,14 +55,14 @@ public class SaveWithoutECGController implements Initializable {
     }    
     
     @FXML 
-    public void initData (Patient p, Stage s, Stage thisStage, Socket socket, ObjectInputStream oi, ObjectOutputStream oo){
+    public void initData (Patient p, Stage s, Stage thisStage, Socket socket, ObjectInputStream oi, ObjectOutputStream oo, ArrayList<Users> users){
         this.patient=p;
         this.stage=s;
         this.thisStage=thisStage;
         this.socket=socket;
         this.fromServer=oi;
         this.toServer=oo;
-        
+        this.users=users;
         this.thisStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent event) {

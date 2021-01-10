@@ -26,6 +26,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import BITalino.BitalinoDemo;
 import Patient.Patient;
+import Patient.Users;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -59,15 +60,17 @@ public class BitalinoRecordingDataController implements Initializable {
     private ArrayList<Integer> ecgValues3 = new ArrayList();
     private Patient patient = new Patient();
     private Stage window;
+    private ArrayList<Users> users = new ArrayList<Users>();
     
 
-    public void init(Patient patient, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo)  {
+    public void init(Patient patient, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo,  ArrayList<Users> users)  {
       this.patient = patient;
       this.socket = socket;
       this.fromServer=oi;
       this.toServer=oo;
       this.patient.setECG(new ArrayList());
       this.window=stage;
+      this.users=users;
         window.setOnCloseRequest((event) -> {
             releaseResources();
         });
@@ -125,7 +128,7 @@ public class BitalinoRecordingDataController implements Initializable {
         Scene ecgScene = new Scene(ecgLoad);  
         
         ECGController controller = loader.getController();
-        controller.initData(lead, patient, socket, window, fromServer, toServer);
+        controller.initData(lead, patient, socket, window, fromServer, toServer, users);
         
             
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -143,7 +146,7 @@ public class BitalinoRecordingDataController implements Initializable {
         
         Scene scene = new Scene(parent);             
         ShowPatientController controller = loader.getController();
-        controller.initData(patient, socket, window, fromServer, toServer);
+        controller.initData(patient, socket, window, fromServer, toServer, users);
         
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
@@ -155,7 +158,6 @@ public class BitalinoRecordingDataController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         choicebox.getItems().addAll("Lead I","Lead II","Lead III","Lead aVR","Lead aVL","Lead aVF");
-        //choicebox.setValue("Lead I");
         choicebox.setValue("");
         
         label1.setText(" ");
@@ -180,7 +182,6 @@ public class BitalinoRecordingDataController implements Initializable {
         }
         try {
             socket.close();
-            System.out.println("socket closed");
         } catch (IOException ex) {
             Logger.getLogger(BitalinoRecordingDataController.class.getName()).log(Level.SEVERE, null, ex);
         } 

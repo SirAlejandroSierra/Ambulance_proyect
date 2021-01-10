@@ -8,11 +8,13 @@ package Client;
 import Client.PainInfoController;
 import Client.ChatClientController;
 import Patient.Patient;
+import Patient.Users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -115,13 +117,15 @@ public class ShowPatientController implements Initializable {
     private Label labelECG;
     
     private Stage window;
+    private ArrayList<Users> users = new ArrayList<Users>();
 
-    public void initData(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo) throws IOException {
+    public void initData(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo,  ArrayList<Users> users) throws IOException {
         this.patient = paciente;
         this.socket=socket;
         this.fromServer=oi;
         this.toServer= oo;
         this.window=stage;
+        this.users=users;
         window.setOnCloseRequest((event) -> {
             releaseResources();
         });
@@ -170,7 +174,7 @@ public class ShowPatientController implements Initializable {
 
         Scene scene = new Scene(parent);
         PainInfoController controller = loader.getController();
-        controller.initDataBack(patient, socket, window, fromServer, toServer);
+        controller.initDataBack(patient, socket, window, fromServer, toServer, users);
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -179,7 +183,7 @@ public class ShowPatientController implements Initializable {
 
     }
 
-    public void ECGnextButton(Patient patient, Socket socket, ObjectInputStream oi, ObjectOutputStream oo){
+    public void ECGnextButton(Patient patient, Socket socket, ObjectInputStream oi, ObjectOutputStream oo, ArrayList<Users> users){
         this.socket=socket;
         this.fromServer=oi;
         this.toServer=oo;
@@ -201,7 +205,7 @@ public class ShowPatientController implements Initializable {
         Scene bitalinoScene = new Scene(bitalinoParent);
 
         BitalinoRecordingDataController controller = loader.getController();
-        controller.init(patient, socket, window, fromServer, toServer);
+        controller.init(patient, socket, window, fromServer, toServer, users);
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
@@ -225,7 +229,7 @@ public class ShowPatientController implements Initializable {
             Stage secondStage = new Stage();
             
             SaveWithoutECGController controller = loader.getController();
-            controller.initData(patient, window, secondStage, socket, fromServer, toServer);
+            controller.initData(patient, window, secondStage, socket, fromServer, toServer, users);
             
             
             secondStage.setTitle("Save without ECG");
@@ -296,7 +300,6 @@ public class ShowPatientController implements Initializable {
         
         try {
             socket.close();
-            System.out.println("socket closed");
         } catch (IOException ex) {
             Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
         } 
