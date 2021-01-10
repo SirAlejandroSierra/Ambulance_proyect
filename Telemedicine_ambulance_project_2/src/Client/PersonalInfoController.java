@@ -9,6 +9,7 @@ import Patient.Ambulance;
 import Patient.Gender;
 import Patient.Patient;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
@@ -36,13 +37,12 @@ import javafx.stage.Stage;
  */
 public class PersonalInfoController implements Initializable {
 
-    boolean accurateAge;
-    boolean overweithPat;
+    private boolean accurateAge;
+    private boolean overweithPat;
 
-    Ambulance ambulance;
-    //Date date;
+    private Ambulance ambulance;
 
-    Patient patient = new Patient();
+    private Patient patient = new Patient();
 
     @FXML
     private Label ambulnceNum;
@@ -62,7 +62,6 @@ public class PersonalInfoController implements Initializable {
     @FXML
     private RadioButton approximate;
     private ToggleGroup ageAccuracy;
-    //@FXML private Label accuracy;
 
     @FXML
     private TextField idField;
@@ -80,10 +79,11 @@ public class PersonalInfoController implements Initializable {
     private ToggleGroup genderSelect;
     private Socket socket;
     private ObjectOutputStream toServer;
+    private ObjectInputStream fromServer;
     private Stage window;
     
 
-    public void initData(Ambulance ambulance, Date date, Socket socket, Stage stage) {
+    public void initData(Ambulance ambulance, Date date, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo) {
         this.ambulance = ambulance;
         //this.date = date;
         patient.setAmbulance(ambulance);
@@ -92,14 +92,18 @@ public class PersonalInfoController implements Initializable {
         datee.setText(patient.getDate().toString());
         this.socket=socket;
         this.window=stage;
+        this.fromServer=oi;
+        this.toServer=oo;
         window.setOnCloseRequest((event) -> {
-            releaseResources(this.socket);
+            releaseResources();
         });
     }
 
-    public void initDataBack(Patient paciente, Socket socket, Stage stage) {
+    public void initDataBack(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo) {
         this.socket=socket;
         this.patient = paciente;
+        this.fromServer=oi;
+        this.toServer=oo;
         textField.setText(patient.getName());
         ageField.setText(Integer.toString(patient.getAge()));
         boolean accuracyB = patient.isAccurateAge();
@@ -127,9 +131,10 @@ public class PersonalInfoController implements Initializable {
         if (overweighted == false) {
             overweight.selectToggle(NoBtn);
         }
+        
         this.window=stage;
         window.setOnCloseRequest((event) -> {
-            releaseResources(this.socket);
+            releaseResources();
         });
     }
 
@@ -165,7 +170,7 @@ public class PersonalInfoController implements Initializable {
         if (s == null) { // checks if the String is null
             return false;
         }
-        if (s.equals("")) { // checks if the String is null
+        if (s.equals("")) { 
             return false;
         }
         int len = s.length();
@@ -262,7 +267,7 @@ public class PersonalInfoController implements Initializable {
         Scene scene = new Scene(parent);
 
         AmbulanceWindowController controller=loader.getController();
-        controller.initData(socket, window);
+        controller.initData(socket, window, fromServer, toServer);
 
         window.setScene(scene);
         window.show();
@@ -271,11 +276,9 @@ public class PersonalInfoController implements Initializable {
     public void changeSceneToMedicalInfo(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("MedicalInfo.fxml"));
-        Parent medicalInfoParent = loader.load();
+        Parent parent = loader.load();
 
-        Scene MedicalInfoScene = new Scene(medicalInfoParent);
-
-        //access the controller and call a method
+        Scene scene = new Scene(parent);
         MedicalInfoController controller = loader.getController();
         boolean nameIsGood = setName();
         boolean ageIsGood = setAge();
@@ -285,12 +288,11 @@ public class PersonalInfoController implements Initializable {
         setAccuracy();
 
         if ((nameIsGood == true) && (ageIsGood == true) && (idIsGood == true)) {
-            controller.initData(patient, socket, window);
+            controller.initData(patient, socket, window, fromServer, toServer);
 
-            //This line gets the Stage information
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-            window.setScene(MedicalInfoScene);
+            window.setScene(scene);
             window.show();
         }
     }
@@ -302,7 +304,6 @@ public class PersonalInfoController implements Initializable {
         this.YesBtn.setToggleGroup(overweight);
         overweight.selectToggle(NoBtn);
 
-        //accuracy.setText("");
         ageAccuracy = new ToggleGroup();
         this.accurate.setToggleGroup(ageAccuracy);
         this.approximate.setToggleGroup(ageAccuracy);
@@ -313,26 +314,29 @@ public class PersonalInfoController implements Initializable {
         this.FemaleBtn.setToggleGroup(genderSelect);
         genderSelect.selectToggle(FemaleBtn);
 
-// TODO
     }
     
-    private void releaseResources(Socket socket)  {
+    private void releaseResources()  {
         try {
-            toServer = new ObjectOutputStream(socket.getOutputStream());
             toServer.writeObject("logout");
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PersonalInfoController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             toServer.close();
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PersonalInfoController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        try {
+            fromServer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(PersonalInfoController.class.getName()).log(Level.SEVERE, null, ex);
         } 
         try {
             socket.close();
             System.out.println("socket closed");
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PersonalInfoController.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
 }

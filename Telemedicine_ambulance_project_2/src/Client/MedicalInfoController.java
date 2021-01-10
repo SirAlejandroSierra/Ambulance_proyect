@@ -12,6 +12,7 @@ import Patient.LevelUnknown;
 import Patient.Event;
 import Patient.BasicOptions;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
@@ -80,19 +81,20 @@ public class MedicalInfoController implements Initializable {
     
     private Socket socket;
     private ObjectOutputStream toServer;
+    private ObjectInputStream fromServer;
     private Stage window;
-    /**
-     * Initializes the controller class.
-     */
     
-    public void initDataBack(Patient paciente, Socket socket, Stage stage){
+    
+    public void initDataBack(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo){
         this.socket=socket;
         this.patient= paciente;
+        this.fromServer=oi;
+        this.toServer=oo;
         systolic.setText(Float.toString(patient.getSystolicPressure()));
         diastolic.setText(Float.toString(patient.getDiastolicPressure()));
         this.window=stage;
         window.setOnCloseRequest((event) -> {
-            releaseResources(this.socket);
+            releaseResources();
         });
         
         LevelUnknown BP= patient.getTension();
@@ -203,12 +205,14 @@ public class MedicalInfoController implements Initializable {
         
     }
     
-    public void initData(Patient paciente, Socket socket, Stage stage){
+    public void initData(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo){
         this.patient= paciente;
         this.socket=socket;
+        this.fromServer=oi;
+        this.toServer=oo;
         this.window=stage;
         window.setOnCloseRequest((event) -> {
-            releaseResources(this.socket);
+            releaseResources();
         });
     }
     
@@ -329,7 +333,7 @@ public class MedicalInfoController implements Initializable {
     boolean checkFloat(String s) {
         if (s == null){ // checks if the String is null 
             return false;}
-        if (s.equals("")){ // checks if the String is null 
+        if (s.equals("")){ 
          return false;}
         try{
             float floatNumber= Float.parseFloat(s);
@@ -370,11 +374,10 @@ public class MedicalInfoController implements Initializable {
     public void changeSceneToPainInfo(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("PainInfo.fxml"));
-        Parent painInfoParent = loader.load();
+        Parent parent = loader.load();
         
-        Scene painInfoScene = new Scene(painInfoParent);
+        Scene scene = new Scene(parent);
         
-        //access the controller and call a method
         PainInfoController controller = loader.getController();
         settingTension();
         settingHeartRate();
@@ -390,11 +393,10 @@ public class MedicalInfoController implements Initializable {
         
         if((systolicIsGood==true)&&(diastolicIsGood==true)){
 
-            controller.initData(patient, socket, window);
-            //This line gets the Stage information
+            controller.initData(patient, socket, window, fromServer, toServer);
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-            window.setScene(painInfoScene);
+            window.setScene(scene);
             window.show();
         }
     }
@@ -403,24 +405,22 @@ public class MedicalInfoController implements Initializable {
     {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("PersonalInfo.fxml"));
-        Parent painInfoParent = loader.load();
+        Parent parent = loader.load();
         
-        Scene painInfoScene = new Scene(painInfoParent);
+        Scene scene = new Scene(parent);
         PersonalInfoController controller = loader.getController();
-        controller.initDataBack(patient, socket, window);
+        controller.initDataBack(patient, socket, window, fromServer, toServer);
                 
-                
-            //This line gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-        window.setScene(painInfoScene);
+        window.setScene(scene);
         window.show();
         
     }
     
-    
-    
-    
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tensionCond = new ToggleGroup();
@@ -468,23 +468,27 @@ public class MedicalInfoController implements Initializable {
         FamilyEvent.setValue("None");
     }    
     
-    private void releaseResources(Socket socket)  {
+    private void releaseResources()  {
         try {
-            toServer = new ObjectOutputStream(socket.getOutputStream());
             toServer.writeObject("logout");
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(MedicalInfoController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         try {
             toServer.close();
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(MedicalInfoController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } 
+        try {
+            fromServer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MedicalInfoController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
         try {
             socket.close();
             System.out.println("socket closed");
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(MedicalInfoController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } 
     }
     

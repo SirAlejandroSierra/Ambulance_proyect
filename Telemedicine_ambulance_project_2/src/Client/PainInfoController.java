@@ -8,6 +8,7 @@ package Client;
 import Patient.Patient;
 import Patient.BasicOptions;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
@@ -35,7 +36,8 @@ import javafx.stage.Stage;
 public class PainInfoController implements Initializable {
     private Socket socket;
     private ObjectOutputStream toServer;
-    Patient patient= new Patient();
+    private ObjectInputStream fromServer;
+    private Patient patient= new Patient();
 
     @FXML private RadioButton YesCPn;
     @FXML private RadioButton NoCPn;
@@ -96,15 +98,17 @@ public class PainInfoController implements Initializable {
     private ToggleGroup dizziness;
     private Stage window;
     
-    @FXML TextField notesField;
+    @FXML private TextField notesField;
 
     
-    public void initDataBack(Patient paciente, Socket socket, Stage stage){
+    public void initDataBack(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo){
         this.socket=socket;
         this.patient= paciente;
+        this.fromServer= oi;
+        this.toServer= oo;
         this.window=stage;
         window.setOnCloseRequest((event) -> {
-            releaseResources(this.socket);
+            releaseResources();
         });
         
         
@@ -237,12 +241,14 @@ public class PainInfoController implements Initializable {
         notesField.setText(patient.getNotes());
     }
     
-    public void initData(Patient paciente, Socket socket, Stage stage){
+    public void initData(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo){
         this.patient= paciente;
         this.socket= socket;
+        this.fromServer= oi;
+        this.toServer= oo;
         this.window=stage;
         window.setOnCloseRequest((event) -> {
-            releaseResources(this.socket);
+            releaseResources();
         });
     }
     
@@ -422,52 +428,43 @@ public class PainInfoController implements Initializable {
         setNotes();
         
         FXMLLoader loader = new FXMLLoader();
-        //FXMLLoader loader2 = new FXMLLoader();
         loader.setLocation(getClass().getResource("ShowPatient.fxml"));
-        //loader2.setLocation(getClass().getResource("BitalinoRecordingDataController.fxml"));
-        Parent showPatientParent = loader.load();
-        //Parent bitalinoRecordingParent = loader2.load();
+        Parent parent = loader.load();
         
-        Scene painInfoScene = new Scene(showPatientParent);
-        //Scene bitalinoRecordingScene = new Scene(bitalinoRecordingParent);
+        Scene scene = new Scene(parent);
         
         ShowPatientController controller = loader.getController();
-        //BitalinoRecordingDataController controller2 = loader2.getController();
         
-        controller.initData(patient, socket, window);
-        //controller2.init();
-            //This line gets the Stage information
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        controller.initData(patient, socket, window, fromServer, toServer);
+        
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-            window.setScene(painInfoScene);
-            //window.setScene(bitalinoRecordingScene);
-            window.show();
-        
+        window.setScene(scene);
+        window.show();
     }
-    
     
     @FXML
     public void backButtonPushed(ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("MedicalInfo.fxml"));
-        Parent painInfoParent = loader.load();
+        Parent parent = loader.load();
         
-        Scene painInfoScene = new Scene(painInfoParent);
+        Scene scene = new Scene(parent);
         MedicalInfoController controller = loader.getController();
-        controller.initDataBack(patient, socket, window);
+        controller.initDataBack(patient, socket, window, fromServer, toServer);
                 
-                
-            //This line gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-        window.setScene(painInfoScene);
+        window.setScene(scene);
         window.show();
         
     }
     
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-// TODO
         chestPain = new ToggleGroup();
         this.YesCPn.setToggleGroup(chestPain);
         this.NoCPn.setToggleGroup(chestPain);
@@ -540,23 +537,27 @@ public class PainInfoController implements Initializable {
 
     }
 
-    private void releaseResources(Socket socket)  {
+    private void releaseResources()  {
         try {
-            toServer = new ObjectOutputStream(socket.getOutputStream());
             toServer.writeObject("logout");
-        } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) { 
+            Logger.getLogger(PainInfoController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             toServer.close();
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+            Logger.getLogger(PainInfoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            fromServer.close();
+        } catch (IOException ex) { 
+            Logger.getLogger(PainInfoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
             socket.close();
             System.out.println("socket closed");
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PainInfoController.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
     

@@ -9,6 +9,7 @@ import Client.PainInfoController;
 import Client.ChatClientController;
 import Patient.Patient;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
@@ -33,8 +34,9 @@ import javafx.stage.Stage;
  */
 public class ShowPatientController implements Initializable {
 
-    Patient patient = new Patient();
-    ObjectOutputStream toServer;
+    private Patient patient = new Patient();
+    private ObjectOutputStream toServer;
+    private ObjectInputStream fromServer;
 
     private Socket socket;
 
@@ -114,13 +116,14 @@ public class ShowPatientController implements Initializable {
     
     private Stage window;
 
-    public void initData(Patient paciente, Socket socket, Stage stage) throws IOException {
+    public void initData(Patient paciente, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo) throws IOException {
         this.patient = paciente;
         this.socket=socket;
-        
+        this.fromServer=oi;
+        this.toServer= oo;
         this.window=stage;
         window.setOnCloseRequest((event) -> {
-            releaseResources(this.socket);
+            releaseResources();
         });
         
         dateLabel.setText(patient.getDate().toString());
@@ -163,59 +166,23 @@ public class ShowPatientController implements Initializable {
     public void backButtonPushed(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("PainInfo.fxml"));
-        Parent painInfoParent = loader.load();
+        Parent parent = loader.load();
 
-        Scene painInfoScene = new Scene(painInfoParent);
+        Scene scene = new Scene(parent);
         PainInfoController controller = loader.getController();
-        controller.initDataBack(patient, socket, window);
+        controller.initDataBack(patient, socket, window, fromServer, toServer);
 
-        //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        window.setScene(painInfoScene);
+        window.setScene(scene);
         window.show();
 
     }
 
-    /*
-    public void savePatientButtonPushed(ActionEvent event) throws IOException{
-        /*
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("FXMLDocument_2.fxml"));
-        Parent painInfoParent = loader.load();
-
-        Scene painInfoScene = new Scene(painInfoParent);
-        PainInfoController controller = loader.getController();
-        controller.initDataBack(patient);
-
-
-            //This line gets the Stage information
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-        window.setScene(painInfoScene);
-        window.show();
-
-        try{
-            FileOutputStream f = new FileOutputStream(new File("Objects.txt"));
-            ObjectOutputStream o = new ObjectOutputStream(f);
-
-                // Write objects to file
-
-            o.writeObject(patient);
-
-            o.close();
-            f.close();
-
-            Stage stage = (Stage) SaveButton.getScene().getWindow();
-            stage.close();
-
-        }catch(IOException e){
-            e.printStackTrace();}
-
-    }*/
-    
-    public void ECGnextButton(Patient patient, Socket socket){
+    public void ECGnextButton(Patient patient, Socket socket, ObjectInputStream oi, ObjectOutputStream oo){
         this.socket=socket;
+        this.fromServer=oi;
+        this.toServer=oo;
         if(patient.getRecordedECG().isEmpty()){
            // recordECG.setText("ECG not recorded yet");
             labelECG.setText("ECG not recorded yet");
@@ -234,7 +201,7 @@ public class ShowPatientController implements Initializable {
         Scene bitalinoScene = new Scene(bitalinoParent);
 
         BitalinoRecordingDataController controller = loader.getController();
-        controller.init(patient, socket, window);
+        controller.init(patient, socket, window, fromServer, toServer);
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
@@ -255,11 +222,12 @@ public class ShowPatientController implements Initializable {
             Parent saveWithoutECG = loader.load();
 
             Scene secondScene = new Scene(saveWithoutECG);
-
-            SaveWithoutECGController controller = loader.getController();
-            controller.initData(patient, window, socket);
-            
             Stage secondStage = new Stage();
+            
+            SaveWithoutECGController controller = loader.getController();
+            controller.initData(patient, window, secondStage, socket, fromServer, toServer);
+            
+            
             secondStage.setTitle("Save without ECG");
             secondStage.setScene(secondScene);
 
@@ -275,15 +243,13 @@ public class ShowPatientController implements Initializable {
 
             ChatClientController controller = loader.getController();
 
-            //This line gets the Stage information
             
             try {
-                toServer = new ObjectOutputStream(socket.getOutputStream());
                 toServer.writeObject("check");
-                toServer.writeObject(patient);//patient es un objeto de la clase creada por adri
+                toServer.writeObject(patient);
                 toServer.flush();
 
-                controller.initData(patient, window, socket, toServer);
+                controller.initData(patient, window, socket, fromServer, toServer);
 
                 window.setScene(clientChatScene);
 
@@ -310,18 +276,24 @@ public class ShowPatientController implements Initializable {
 
     }
     
-    private void releaseResources(Socket socket)  {
+    private void releaseResources()  {
         try {
-            toServer = new ObjectOutputStream(socket.getOutputStream());
             toServer.writeObject("logout");
-        } catch (IOException ex) {
+        } catch (IOException ex) { 
             Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             toServer.close();
+        } catch (IOException ex) { 
+            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            fromServer.close();
         } catch (IOException ex) {
             Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
+        
         try {
             socket.close();
             System.out.println("socket closed");

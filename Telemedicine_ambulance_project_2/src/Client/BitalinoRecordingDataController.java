@@ -26,6 +26,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import BITalino.BitalinoDemo;
 import Patient.Patient;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -41,39 +42,34 @@ import javafx.scene.control.Label;
 public class BitalinoRecordingDataController implements Initializable {
     private Socket socket;
     private ObjectOutputStream toServer;
-    public String lead;
-    ObservableList list = FXCollections.observableArrayList();
-    BitalinoDemo bitalinodemo = new BitalinoDemo();
+    private ObjectInputStream fromServer;
+    private String lead;
+    private ObservableList list = FXCollections.observableArrayList();
+    private BitalinoDemo bitalinodemo = new BitalinoDemo();
     
-    @FXML
-    private ChoiceBox choicebox;
+    @FXML private ChoiceBox choicebox;
     
-    @FXML Label label1;
+    @FXML private Label label1;
+   
+    @FXML private Button next;
+    @FXML private Button startrecording;
+    @FXML private ImageView leadImage;
     
-    
-
-    @FXML
-    private Button next;
-    @FXML
-    private Button startrecording;
-    @FXML
-    private ImageView leadImage;
-    
-    BITalino bitalino = null;
-    ArrayList<Integer> ecgValues3 = new ArrayList();
-    Patient patient = new Patient();
-    
+    private BITalino bitalino = null;
+    private ArrayList<Integer> ecgValues3 = new ArrayList();
+    private Patient patient = new Patient();
     private Stage window;
     
 
-    
-    public void init(Patient patient, Socket socket, Stage stage)  {
+    public void init(Patient patient, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo)  {
       this.patient = patient;
       this.socket = socket;
+      this.fromServer=oi;
+      this.toServer=oo;
       this.patient.setECG(new ArrayList());
       this.window=stage;
         window.setOnCloseRequest((event) -> {
-            releaseResources(this.socket);
+            releaseResources();
         });
     }    
     
@@ -128,15 +124,14 @@ public class BitalinoRecordingDataController implements Initializable {
         
         Scene ecgScene = new Scene(ecgLoad);  
         
-        //access the controller and call a method
         ECGController controller = loader.getController();
-        controller.initData(lead, patient, socket, window);
+        controller.initData(lead, patient, socket, window, fromServer, toServer);
         
-            //This line gets the Stage information
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-            window.setScene(ecgScene);
-            window.show();
+        window.setScene(ecgScene);
+        window.show();
         
     }
     
@@ -144,19 +139,16 @@ public class BitalinoRecordingDataController implements Initializable {
     public void changeSceneToShowPatient(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("ShowPatient.fxml"));
-        Parent showPatientParent = loader.load();
+        Parent parent = loader.load();
         
-        Scene ecgScene = new Scene(showPatientParent);             
-        //access the controller and call a method
+        Scene scene = new Scene(parent);             
         ShowPatientController controller = loader.getController();
-        //controller.initData(lead, patient);
-        controller.initData(patient, socket, window);
+        controller.initData(patient, socket, window, fromServer, toServer);
         
-            //This line gets the Stage information
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-            window.setScene(ecgScene);
-            window.show();
+        window.setScene(scene);
+        window.show();
         
     }
 
@@ -170,23 +162,27 @@ public class BitalinoRecordingDataController implements Initializable {
         next.setDisable(true);
     }
     
-    private void releaseResources(Socket socket)  {
+    private void releaseResources()  {
         try {
-            toServer = new ObjectOutputStream(socket.getOutputStream());
             toServer.writeObject("logout");
-        } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) { 
+            Logger.getLogger(BitalinoRecordingDataController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             toServer.close();
+        } catch (IOException ex) { 
+            Logger.getLogger(BitalinoRecordingDataController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            fromServer.close();
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+            Logger.getLogger(BitalinoRecordingDataController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
             socket.close();
             System.out.println("socket closed");
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BitalinoRecordingDataController.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
     

@@ -6,6 +6,8 @@
 package Client;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -28,9 +30,9 @@ import javafx.stage.Stage;
  * @author AdriCortellucci
  */
 public class ConnectToServerController implements Initializable {
-    Socket socket;
-    InetAddress serverAddress;
-    int serverPort;
+    private Socket socket;
+    private InetAddress serverAddress;
+    private int serverPort;
     
     
     @FXML private TextField address;
@@ -41,27 +43,26 @@ public class ConnectToServerController implements Initializable {
     public void connectServer(InetAddress addressServer, int portServer, ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader();
 
-        loader.setLocation(getClass().getResource("AmbulanceWindow.fxml"));
+        loader.setLocation(getClass().getResource("User.fxml"));
         Parent parent = loader.load();
 
         Scene scene = new Scene(parent);
 
-        AmbulanceWindowController controller = loader.getController();
+        UserController controller = loader.getController();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         try {
             socket = new Socket(addressServer, portServer);
-            System.out.println("Socket is connected with server!");
+            ObjectInputStream fromServer= new ObjectInputStream(this.socket.getInputStream());
+            ObjectOutputStream toServer= new ObjectOutputStream(this.socket.getOutputStream());
 
             try{
-                controller.initData(socket, window);
+                controller.initData(socket, window, fromServer, toServer);
             }catch(Exception e){
                 e.printStackTrace();
             }
-            
-
+           
             window.setScene(scene);
-
             window.show();
 
         } catch (Exception e) {
@@ -86,21 +87,13 @@ public class ConnectToServerController implements Initializable {
         if(address.getText().equals("")||port.getText().equals("") ){
             label.setText("ERROR! Check the data again");  
         } else{
-            
             try{
-            
-            
                 serverAddress= InetAddress.getByName(address.getText());
-                
                 serverPort= Integer.parseInt(port.getText());
-                
-                connectServer(serverAddress, serverPort, event);
-
-                
             }catch(Exception e){
                 label.setText("ERROR! Check the data again");
             }
-            
+                connectServer(serverAddress, serverPort, event);
         } 
     }
     

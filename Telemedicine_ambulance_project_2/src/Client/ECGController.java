@@ -8,10 +8,10 @@ package Client;
 import BITalino.BITalino;
 import BITalino.BITalinoException;
 import BITalino.BitalinoDemo;
-//import static BITalino.BitalinoDemo.ecgValues;
 import BITalino.Frame;
 import Patient.Patient;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
@@ -42,38 +42,33 @@ import javafx.stage.Stage;
  */
 public class ECGController implements Initializable {
     private Socket socket;
-    //Frame frame = new Frame();
-    String lead;
-    @FXML
-    private NumberAxis y;
-    @FXML
-    private CategoryAxis x;
-    @FXML
-    private LineChart<?, ?> ecgGraphics;
+    private String lead;
     
-    ArrayList<Integer> ecgValues = new ArrayList();
-   // XYChart.Series series = new XYChart.Series();
-    Patient patient;
-    @FXML
-    private Button exit;
-    @FXML
-    private Button recordAgain;
-    XYChart.Series series;
+    @FXML private NumberAxis y;
+    @FXML private CategoryAxis x;
+    @FXML private LineChart<?, ?> ecgGraphics;
+    
+    private ArrayList<Integer> ecgValues = new ArrayList();
+    private Patient patient;
+    
+    @FXML private Button exit;
+    @FXML private Button recordAgain;
+    private XYChart.Series series;
     
     private Stage window;
     private ObjectOutputStream toServer;
-
-    
+    private ObjectInputStream fromServer;
  
-    
-    public void initData(String lead, Patient patient, Socket socket, Stage stage){
+    public void initData(String lead, Patient patient, Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo){
         this.lead=lead;
         this.patient =patient;
         this.socket=socket;
+        this.fromServer=oi;
+        this.toServer=oo;
         
         this.window=stage;
         window.setOnCloseRequest((event) -> {
-            releaseResources(this.socket);
+            releaseResources();
         });
         
         ecgValues = patient.getRecordedECG();
@@ -94,13 +89,8 @@ public class ECGController implements Initializable {
     
     @Override
     public  void initialize(URL url, ResourceBundle rb) {
-        series = new XYChart.Series();
-        //ecgValues = BitalinoDemo.ecgValues;
-        
-        
+        series = new XYChart.Series();               
     }
-    
-    
     
     @FXML
     public void closeButton(ActionEvent event)throws IOException {
@@ -112,7 +102,7 @@ public class ECGController implements Initializable {
         Scene bitalinoScene = new Scene(showParent);
 
         ShowPatientController controller = loader.getController();
-        controller.ECGnextButton(patient, socket);
+        controller.ECGnextButton(patient, socket, fromServer, toServer);
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
@@ -131,7 +121,7 @@ public class ECGController implements Initializable {
 
         BitalinoRecordingDataController controller = loader.getController();
         
-        controller.init(patient, socket, window);
+        controller.init(patient, socket, window,fromServer, toServer);
         
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
@@ -141,23 +131,27 @@ public class ECGController implements Initializable {
         
     }
     
-    private void releaseResources(Socket socket)  {
+    private void releaseResources()  {
         try {
-            toServer = new ObjectOutputStream(socket.getOutputStream());
             toServer.writeObject("logout");
-        } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) { 
+            Logger.getLogger(ECGController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             toServer.close();
+        } catch (IOException ex) { 
+            Logger.getLogger(ECGController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            fromServer.close();
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+            Logger.getLogger(ECGController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
             socket.close();
             System.out.println("socket closed");
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ECGController.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
 }

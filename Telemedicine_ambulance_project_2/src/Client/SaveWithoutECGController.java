@@ -7,11 +7,13 @@ package Client;
 
 import Patient.Patient;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -28,10 +31,12 @@ import javafx.stage.Stage;
  */
 public class SaveWithoutECGController implements Initializable {
 
-    Patient patient = new Patient();
-    ObjectOutputStream toServer;
-    Socket socket;
-    Stage stage;
+    private Patient patient = new Patient();
+    private ObjectOutputStream toServer;
+    private ObjectInputStream fromServer;
+    private Socket socket;
+    private Stage stage;
+    private Stage thisStage;
     
     @FXML
     private Button yes;
@@ -47,32 +52,40 @@ public class SaveWithoutECGController implements Initializable {
     }    
     
     @FXML 
-    public void initData (Patient p, Stage s, Socket socket){
+    public void initData (Patient p, Stage s, Stage thisStage, Socket socket, ObjectInputStream oi, ObjectOutputStream oo){
         this.patient=p;
         this.stage=s;
+        this.thisStage=thisStage;
         this.socket=socket;
+        this.fromServer=oi;
+        this.toServer=oo;
+        
+        this.thisStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    event.consume();
+                }
+            });
     }
-    
     
     @FXML
     public void yesButtonPushed(ActionEvent event) throws IOException {
         
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("ChatClient.fxml"));
-        Parent clientChatParent = loader.load();
-        Scene clientChatScene = new Scene(clientChatParent);
+        Parent parent = loader.load();
+        Scene scene = new Scene(parent);
         ChatClientController controller = loader.getController();
-        //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
-            toServer = new ObjectOutputStream(socket.getOutputStream());
             toServer.writeObject("check");
-            toServer.writeObject(patient);//patient es un objeto de la clase creada por adri
+            toServer.writeObject(patient);
+            
             toServer.flush();
 
-            controller.initData(patient, window, socket, toServer);
+            controller.initData(patient, window, socket, fromServer, toServer);
 
-            window.setScene(clientChatScene);
+            window.setScene(scene);
 
             window.show();
             stage.close();
@@ -96,25 +109,7 @@ public class SaveWithoutECGController implements Initializable {
     public void noButtonPushed(ActionEvent event) throws IOException {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.close();
-        //CERRAR LA SEGUNDA PANTALLA QUE APARECE
-        //ABRIR DE NUEVO LA OTRA CON INIT
         
-        /*
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ShowPatient.fxml"));
-        Parent showParent = loader.load();
-
-        Scene bitalinoScene = new Scene(showParent);
-
-        ShowPatientController controller = loader.getController();
-        controller.ECGnextButton(patient);
-        
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        
-
-        window.setScene(bitalinoScene);
-        window.show();
-     */   
     }
 
 }

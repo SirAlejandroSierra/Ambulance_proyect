@@ -40,18 +40,17 @@ import javafx.stage.WindowEvent;
  */
 public class ChatClientController extends Thread implements Initializable {
 
-    @FXML public TextField msgField;
-    @FXML public TextArea msgRoom;
-    @FXML public Button send;
+    @FXML private TextField msgField;
+    @FXML private TextArea msgRoom;
+    @FXML private Button send;
     
-    Patient patient;
+    private Patient patient;
     
-    ObjectOutputStream toServer;
-    //OutputStream os;
-    //ObjectOutputStream oos;
-    //PrintWriter writer;
-    Socket socket;
-    Stage stage;
+    private ObjectOutputStream toServer;
+    private ObjectInputStream fromServer;
+   
+    private Socket socket;
+    private Stage stage;
     
     public void exit(ActionEvent event) throws IOException {
         System.out.println("salir");
@@ -60,18 +59,18 @@ public class ChatClientController extends Thread implements Initializable {
                 toServer.writeObject("logout");
             }    
         } catch (IOException ex) {
-            //System.out.println(" error closed");
         }
-        releaseResources(toServer, socket);
+        releaseResources();
         stage.close();
     }
     
     @FXML
-    public void initData(Patient paciente, Stage stage, Socket socket, ObjectOutputStream output) {
+    public void initData(Patient paciente, Stage stage, Socket socket, ObjectInputStream oi, ObjectOutputStream oo) {
         this.patient=paciente;
         this.stage=stage;
         this.socket=socket;
-        this.toServer=output;
+        this.toServer=oo;
+        this.fromServer= oi;
         
         stage.setOnCloseRequest((event) -> {
             System.out.println("salir");
@@ -80,9 +79,8 @@ public class ChatClientController extends Thread implements Initializable {
                 if(socket.isClosed()){
                     toServer.writeObject("logout");}
             } catch (IOException ex) {
-                //System.out.println(" error closed");
             }
-            releaseResources(toServer, socket);
+            releaseResources();
             stage.close();
         });
     }
@@ -97,7 +95,7 @@ public class ChatClientController extends Thread implements Initializable {
     
     public void sendPatient() {
         try {
-            toServer.writeObject(patient);//patient es un ojbejto de la clase creada por adri
+            toServer.writeObject(patient);
             toServer.flush();
             
         } catch (IOException ex) {
@@ -109,8 +107,7 @@ public class ChatClientController extends Thread implements Initializable {
     public void send() throws IOException {
         int read;
         try{
-            read=socket.getInputStream().read();
-            System.out.println(read);
+            read= fromServer.readByte();
             if(read == -1){
                 msgRoom.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
                 msgRoom.appendText("Error in the connection\n");
@@ -119,7 +116,7 @@ public class ChatClientController extends Thread implements Initializable {
                 String msg = msgField.getText();
 
                 toServer.writeObject(msg);
-                read=socket.getInputStream().read();
+                read=fromServer.readByte();
                 if(read == -1){
                     msgRoom.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
                     msgRoom.appendText("Error in the connection\n");
@@ -130,7 +127,7 @@ public class ChatClientController extends Thread implements Initializable {
 
                     msgField.setText("");
                     if(msg.equalsIgnoreCase("BYE") || (msg.equalsIgnoreCase("logout"))) {
-                        releaseResources(toServer, socket);
+                        releaseResources();
                     } 
                 }
             }
@@ -140,22 +137,25 @@ public class ChatClientController extends Thread implements Initializable {
             
         }
     }
-    private static void releaseResources(ObjectOutputStream oos, Socket socket) {
+    
+    private void releaseResources() {
         if(!socket.isClosed()){    
             try {
-                oos.close();
+                toServer.close();
             } catch (IOException ex) { 
                 Logger.getLogger(ChatClientController.class.getName()).log(Level.SEVERE, null, ex);
             }
-       
+            try {
+                fromServer.close();
+            } catch (IOException ex) { 
+                Logger.getLogger(ChatClientController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             try {
                 socket.close();
             } catch (IOException ex) {
                 Logger.getLogger(ChatClientController.class.getName()).log(Level.SEVERE, null, ex);
             } 
         }
-        
-
     }
     
     @Override

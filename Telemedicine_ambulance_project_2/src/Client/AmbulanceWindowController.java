@@ -7,6 +7,7 @@ package Client;
 
 import Patient.Ambulance;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
@@ -46,28 +47,33 @@ public class AmbulanceWindowController implements Initializable {
     private Button ambulance6;
     
    private Socket socket;
-   ObjectOutputStream toServer;
-   Stage window;
+   private ObjectOutputStream toServer;
+   private ObjectInputStream fromServer;
+   private Stage window;
    
  
    
-    public void initData(Socket socket, Stage stage){
+    public void initData(Socket socket, Stage stage, ObjectInputStream oi, ObjectOutputStream oo){
         this.socket=socket;
         this.window=stage;
+        this.fromServer= oi;
+        this.toServer= oo;
+        
         window.setOnCloseRequest((event) -> {
-            releaseResources(this.socket);
+            releaseResources();
         });
         
     }
     
-    public void backToConnection(ActionEvent event) throws IOException {
+    public void backToUser(ActionEvent event) throws IOException {
         
-        releaseResources(socket);
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ConnectToServer.fxml"));
+        loader.setLocation(getClass().getResource("UserController.fxml"));
         Parent parent = loader.load();
 
         Scene scene = new Scene(parent);
+        UserController controller=loader.getController();
+        controller.initData(socket, window, fromServer, toServer);
 
         window.setScene(scene);
         window.show();
@@ -101,37 +107,41 @@ public class AmbulanceWindowController implements Initializable {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("PersonalInfo.fxml"));
-        Parent personalInfoParent = loader.load();
+        Parent parent = loader.load();
 
-        Scene PersonalInfo = new Scene(personalInfoParent);
+        Scene scene = new Scene(parent);
 
         PersonalInfoController controller = loader.getController();
         Date date = new Date();
-        controller.initData(ambulance, date, socket, window);
+        controller.initData(ambulance, date, socket, window, fromServer, toServer);
         //This line gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        window.setScene(PersonalInfo);
+        window.setScene(scene);
         window.show();
     }
     
-    private void releaseResources(Socket socket)  {
+    private void releaseResources()  {
         try {
-            toServer = new ObjectOutputStream(socket.getOutputStream());
             toServer.writeObject("logout");
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AmbulanceWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             toServer.close();
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AmbulanceWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        try {
+            fromServer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(AmbulanceWindowController.class.getName()).log(Level.SEVERE, null, ex);
         } 
         try {
             socket.close();
             System.out.println("socket closed");
         } catch (IOException ex) {
-            Logger.getLogger(ShowPatientController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AmbulanceWindowController.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
         
