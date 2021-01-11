@@ -119,7 +119,7 @@ public class ChatClientController extends Thread implements Initializable {
                 }else{
                     toServer.writeObject((String) "check");
                     msgRoom.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
-                    msgRoom.appendText("Ambulance: " + msg + "\n");
+                    msgRoom.appendText( msg + "\n");
 
                     msgField.setText("");
                     if(msg.equalsIgnoreCase("BYE") || (msg.equalsIgnoreCase("logout"))) {

@@ -81,19 +81,36 @@ public class ConnectToServerController implements Initializable {
     
     }
     
+    private boolean checkAddress(String s) {
+        try{
+            InetAddress.getByName(s);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+    
+    private boolean checkPort(String s) {
+        try{
+            Integer.parseInt(s);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+    
     @FXML
     public void connect(ActionEvent event) throws IOException{
         label.setText("");
-        if(address.getText().equals("")||port.getText().equals("") ){
-            label.setText("ERROR! Check the data again");  
-        } else{
-            try{
-                serverAddress= InetAddress.getByName(address.getText());
-                serverPort= Integer.parseInt(port.getText());
-            }catch(Exception e){
-                label.setText("ERROR! Check the data again");
-            }
-                connectServer(serverAddress, serverPort, event);
+        if(!checkAddress(address.getText()) ){
+            label.setText("Not a valid address");  
+        } else if(!checkPort(port.getText())){ 
+            label.setText("Not a valid port");
+        }else{
+            serverAddress= InetAddress.getByName(address.getText());
+            serverPort= Integer.parseInt(port.getText());
+            
+            connectServer(serverAddress, serverPort, event);
         } 
     }
     

@@ -231,8 +231,6 @@ public class ShowPatientController implements Initializable {
             SaveWithoutECGController controller = loader.getController();
             controller.initData(patient, window, secondStage, socket, fromServer, toServer, users);
             
-            
-            secondStage.setTitle("Save without ECG");
             secondStage.setScene(secondScene);
 
             secondStage.show();
