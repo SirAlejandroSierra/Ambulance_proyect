@@ -104,6 +104,7 @@ public class ConnectToServerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         label.setText("");
+        
     }    
     
 }

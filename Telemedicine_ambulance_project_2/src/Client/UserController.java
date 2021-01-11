@@ -125,6 +125,9 @@ public class UserController implements Initializable {
         Scene scene = new Scene(parent);
 
         window.setScene(scene);
+        window.setOnCloseRequest((event2) -> {
+            window.close();
+        });
         window.show();
     }
 
